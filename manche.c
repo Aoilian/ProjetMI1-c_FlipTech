@@ -1,10 +1,18 @@
 #include <stdio.h>
 
+typedef struct{
+	char prenom[TAILLE];
+	unsigned int score;
+	unsigned int nbcarte;
+	unsigned int carte[MAIN];
+	bool Ajouer;
+}Perso;
+
 //Est-ce que l'utilisateur va piocher?
-int decision(int* piocher){
-    int valide = 0;
+void decision(int* piocher,Perso* joueur){
+	int valide = 0;
      
-    do{
+	do{
 		printf("Voulez-vous piocher ? \n- oui : 1, \n- non : 0\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
@@ -14,11 +22,12 @@ int decision(int* piocher){
         	printf("Erreur : saisie invalide.\n");
         	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
         	while (getchar() != '\n'); 
-        }
+        	}
         
-    }while (valide == 0); //On recommence tant que ce n'est pas valide   
+    	}while (valide == 0); //On recommence tant que ce n'est pas valide
     
-    return piocher;
+	joueur->Ajouer = true;   
+
 }    
     
     
@@ -39,7 +48,14 @@ void nmbJoueurs(int* nbJoueurs){
 	}while(valide == 0);
 }
 
-
+bool MancheTerminer(Perso* joueurs, int nbjoueur){
+	for(int i = 0; i < nbjoueur; i++){
+		if((joueurs+i)->Ajouer == false){
+			return false;
+		}
+	}
+	return true;
+}
 
 void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs de la partie
 	//On choisit qui commence (aléatoire)
@@ -53,12 +69,12 @@ void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs
 	while (!MancheTerminer(listeJoueurs, nbJoueurs)) {
         
         // On ne fait jouer le joueur que s'il n'a pas encore joué
-        	if (listeJoueurs[joueurActuel].Ajouer == false) {
-        		printf("\nC'est au tour de %s !\n", listeJoueurs[joueurActuel].prenom);
+        	if (Joueurs[joueurActuel].Ajouer == false) {
+        		printf("\nC'est au tour de %s !\n",Joueurs[joueurActuel].prenom);
         		// jouerTourDuJoueur(&listeJoueurs[joueurActuel]); 
             
         		// Une fois qu'il a fini (stop ou bust), on marque qu'il a joué
-        		listeJoueurs[joueurActuel].Ajouer = true;
+        		Joueurs[joueurActuel].Ajouer = true;
         	}
 
         	// on passe au joueur suivant
