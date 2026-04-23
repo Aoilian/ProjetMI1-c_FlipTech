@@ -1,40 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define FLIP7 94 /* les 94 cartes du jeu FLIP7 */
-
-/* une carte du jeu */
-
-typedef struct {
-    char type; /* 'N' = carte numéro, 'B' = carte bonus, 'S' = carte spéciale */
-    int numero;  /* de 12 à 0 */
-    char* bonus; /* 6 cartes bonus */
-    char* speciale; /* 9 cartes spéciales */
-} Carte;
-
-/* le paquet de cartes */
-
-typedef struct {
-    Carte cartes[FLIP7];
-    int nbCartes; /* nombre de cartes restantes dans la pile */
-} Paquet;
-
-/* les statistiques */
-
-typedef struct {
-    int nbNumero; /* nombre de cartes numéro piochées */
-    int nbBonus; /* nombre de cartes bonus piochées */
-    int nbSpeciale; /* nombre de cartes spéciale piochées */
-} Stats;
+#include "cartes.h"
 
 /* permet d'afficher tout le paquet pour contrôle avant et après mélange*/
 
 void afficherPaquet(Paquet *p) {
     for (int i = 0; i < 94; i++) {
         if (p->cartes[i].type == 'N') printf("Carte numéro %d\n",p->cartes[i].numero);
-        else if (p->cartes[i].type == 'B') printf("Carte bonus %s\n",p->cartes[i].bonus);
-        else printf("Carte speciale %s\n",p->cartes[i].speciale);
+        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
+        else printf("Carte speciale %d\n",p->cartes[i].speciale);
     }
 }
 
@@ -47,143 +22,143 @@ void creerPaquet(Paquet *p) {
     for (int i = 0; i < 12; i++) {
         p->cartes[i].type = 'N';
         p->cartes[i].numero = 12;
-        p->cartes[i].bonus = NULL;
-        p->cartes[i].speciale = NULL;
+        p->cartes[i].bonus = 0;
+        p->cartes[i].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 11; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 11;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 10; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 10;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 9; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 9;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 8; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 8;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 7; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 7;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 6; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 6;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 5; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 5;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 4; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 4;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 3; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 3;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     for (int i = 0; i < 2; i++) {
         p->cartes[pos].type = 'N';
         p->cartes[pos].numero = 2;
-        p->cartes[pos].bonus = NULL;
-        p->cartes[pos].speciale = NULL;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
     }
     p->cartes[pos].type = 'N';
     p->cartes[pos].numero = 1;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = 0;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'N';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = 0;
+    p->cartes[pos].speciale = 0;
     pos++;
 
     /* 6 cartes bonus */
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "*2";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = FOIS2;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "+2";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = PLUS2;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "+4";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = PLUS4;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "+6";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = PLUS6;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "+8";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = PLUS8;
+    p->cartes[pos].speciale = 0;
     pos++;
     p->cartes[pos].type = 'B';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = "+10";
-    p->cartes[pos].speciale = NULL;
+    p->cartes[pos].bonus = PLUS10;
+    p->cartes[pos].speciale = 0;
     pos++;
 
     /* 9 cartes spéciales */
     for (int i = 0; i < 3; i++) {
     p->cartes[pos].type = 'S';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "STOP";
+    p->cartes[pos].bonus = 0;
+    p->cartes[pos].speciale = SPECIAL1;
     pos++;
     }
     for (int i = 0; i < 3; i++) {
     p->cartes[pos].type = 'S';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "TROIS A LA SUITE";
+    p->cartes[pos].bonus = 0;
+    p->cartes[pos].speciale = SPECIAL2;
     pos++;
     }
     for (int i = 0; i < 3; i++) {
     p->cartes[pos].type = 'S';
     p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "SECONDE CHANCE";
+    p->cartes[pos].bonus = 0;
+    p->cartes[pos].speciale = SPECIAL3;
     pos++;
     }
     afficherPaquet(p); /* pour contrôle */
@@ -231,8 +206,8 @@ void majStats(Paquet *p, Stats *s) {
 void afficherCarte(Carte c) {
     printf("Carte(type=%c",c.type);
     if (c.type == 'N') printf(", valeur=%d",c.numero);
-    if (c.bonus) printf(", bonus=%s", c.bonus);
-    if (c.speciale) printf(", speciale=%s", c.speciale);
+    if (c.bonus) printf(", bonus=%d", c.bonus);
+    if (c.speciale) printf(", speciale=%d", c.speciale);
     printf(")\n");
 }
 
