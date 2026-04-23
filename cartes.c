@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include "cartes.h"
 
 /* permet d'afficher tout le paquet pour contrôle avant et après mélange*/
@@ -211,39 +208,39 @@ void afficherCarte(Carte c) {
     printf(")\n");
 }
 
-int main() {
-    Paquet paquet;
-    Carte c;
-    Stats statistiques = {0,0,0}; /* Ne pas oublier de mettre 0 */
+// int main() {
+//   Paquet paquet;
+//  Carte c;
+//    Stats statistiques = {0,0,0}; /* Ne pas oublier de mettre 0 */
     
-    srand(time(NULL));
+//    srand(time(NULL));
     
-    creerPaquet(&paquet);
+//    creerPaquet(&paquet);
 
-    melanger(&paquet);
+//    melanger(&paquet);
     
-    printf("\nPaquet créé et mélangé avec %d cartes.\n", paquet.nbCartes);
+//    printf("\nPaquet créé et mélangé avec %d cartes.\n", paquet.nbCartes);
 
     /* on pioche tant que le paquet n'est pas vide */
     
-    do {
-    c = piocher(&paquet);
-    afficherCarte(c);
-    majStats(&paquet, &statistiques);
-    } while (paquet.nbCartes > 0);
+//    do {
+//    c = piocher(&paquet);
+//    afficherCarte(c);
+//    majStats(&paquet, &statistiques);
+//    } while (paquet.nbCartes > 0);
 
     
 
     /* contrôle des statistiques */
 
-    printf("\nLe paquet est vide, ");
-    printf("%d cartes numéro ont été piochées, ", statistiques.nbNumero);
-    printf("%d cartes bonus ont été piochées ", statistiques.nbBonus);
-    printf("et %d cartes spéciales ont été piochées\n", statistiques.nbSpeciale);
-    printf("Tout est correct !");
+//    printf("\nLe paquet est vide, ");
+//    printf("%d cartes numéro ont été piochées, ", statistiques.nbNumero);
+//    printf("%d cartes bonus ont été piochées ", statistiques.nbBonus);
+//    printf("et %d cartes spéciales ont été piochées\n", statistiques.nbSpeciale);
+//    printf("Tout est correct !");
 
-    return 0;
-}
+//    return 0;
+// }
 
 
 
