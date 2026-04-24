@@ -1,4 +1,6 @@
 #include <stdio.h>
+#define TAILLE 255
+#define MAIN
 
 typedef struct{
 	char prenom[TAILLE];
