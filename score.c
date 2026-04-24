@@ -9,6 +9,8 @@ typedef struct{
 	char prenom[255];
 }Perso;
 
+
+
 //On verifie que le joueur est valide
 int PersoValide(Perso a){
 		for(int i = 0; i < 7; i++ ){
