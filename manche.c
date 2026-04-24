@@ -6,7 +6,7 @@ typedef struct{
 	char prenom[TAILLE];
 	unsigned int score;
 	unsigned int nbcarte;
-	unsigned int carte[MAIN];
+	Carte carte[MAIN];
 	bool Ajouer;
 }Perso;
 
@@ -50,7 +50,7 @@ void nmbJoueurs(int* nbJoueurs){
 	}while(valide == 0);
 }
 
-bool MancheTerminer(Perso* joueurs, int nbjoueur){
+bool tourTerminer(Perso* joueurs, int nbjoueur){
 	for(int i = 0; i < nbjoueur; i++){
 		if((joueurs+i)->Ajouer == false){
 			return false;
@@ -58,6 +58,25 @@ bool MancheTerminer(Perso* joueurs, int nbjoueur){
 	}
 	return true;
 }
+
+bool Flip7(Perso joueur) {
+    if(joueur.nbcarte == 7) {
+        return true; // GAGNÉ ! Le joueur a 7 cartes différentes.
+    }
+    return false;
+}
+
+bool NoDoublon(Carte carte, Perso joueur){
+	int nodoublon = true;
+	for(int i = 0; i<joueur.nbcarte; i++){
+		if(joueur.carte[i] == carte){
+			nodoublon = false;
+		}
+	}
+	return nodoublon;
+
+}
+
 
 void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs de la partie
 	//On choisit qui commence (aléatoire)
@@ -68,7 +87,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs
 	printf("Le hasard a choisi : %s commence !\n", listeJoueurs[joueurActuel].prenom);
 
 	//boucle de la manche : tant que tout le monde n'a pas fini son tour
-	while (!MancheTerminer(listeJoueurs, nbJoueurs)) {
+	while (!tourTerminer(listeJoueurs, nbJoueurs)) {
         
         // On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
