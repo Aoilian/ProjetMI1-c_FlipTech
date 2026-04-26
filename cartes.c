@@ -6,8 +6,9 @@
 void afficherPaquet(Paquet *p) {
     for (int i = 0; i < FLIP7; i++) {
         if (p->cartes[i].type == 'N') printf("Carte numéro %d\n",p->cartes[i].numero);
-        else if (p->cartes[i].type == 'B') printf("Carte bonus %s\n",p->cartes[i].bonus);
-        else printf("Carte speciale %s\n",p->cartes[i].speciale);
+        else printf("Carte bonus %d\n",p->cartes[i].bonus);
+        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
+//        else printf("Carte speciale %d\n",p->cartes[i].speciale);
     }
 }
 
@@ -136,29 +137,29 @@ void creerPaquet(Paquet *p) {
 //  p->cartes[pos].speciale = 0;
     pos++;
 
-    /* 9 cartes spéciales */
-    for (int i = 0; i < 3; i++) {
-    p->cartes[pos].type = 'S';
-    p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "STOP";
-    pos++;
-    }
-    for (int i = 0; i < 3; i++) {
-    p->cartes[pos].type = 'S';
-    p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "TROIS A LA SUITE";
-    pos++;
-    }
-    for (int i = 0; i < 3; i++) {
-    p->cartes[pos].type = 'S';
-    p->cartes[pos].numero = 0;
-    p->cartes[pos].bonus = NULL;
-    p->cartes[pos].speciale = "SECONDE CHANCE";
-    pos++;
-    }
-    afficherPaquet(p); /* pour contrôle */
+    // 9 cartes spéciales 
+//    for (int i = 0; i < 3; i++) {
+//    p->cartes[pos].type = 'S';
+//    p->cartes[pos].numero = 0;
+//   p->cartes[pos].bonus = 0;
+//    p->cartes[pos].speciale = SPECIAL1;
+//    pos++;
+//    }
+//    for (int i = 0; i < 3; i++) {
+//    p->cartes[pos].type = 'S';
+//    p->cartes[pos].numero = 0;
+//    p->cartes[pos].bonus = 0;
+//    p->cartes[pos].speciale = SPECIAL2;
+//    pos++;
+//    }
+//    for (int i = 0; i < 3; i++) {
+//    p->cartes[pos].type = 'S';
+//    p->cartes[pos].numero = 0;
+//    p->cartes[pos].bonus = 0;
+//    p->cartes[pos].speciale = SPECIAL3;
+//    pos++;
+//    }
+    afficherPaquet(p); // Affichage du paquet pour vérification 
     printf("\n");
     p->nbCartes = FLIP7; // nouveau paquet de 85 cartes 
 }
@@ -189,9 +190,9 @@ Carte piocher(Paquet *p) {
 // Met à jour les statistiques après avoir pioché p->cartes[p->nbCartes] 
 void majStats(Paquet *p, Stats *s) {
 
-    if (p->cartes[p->nbCartes].type == 'N') s->nbNumero++; /* compteur cartes numéro piochées */
-    if (p->cartes[p->nbCartes].type == 'B') s->nbBonus++; /* compteur cartes bonus piochées */
-    if (p->cartes[p->nbCartes].type == 'S') s->nbSpeciale++; /* compteur cartes spéciales piochées */
+    if (p->cartes[p->nbCartes].type == 'N') s->nbNumero++; // compteur cartes numéro piochées 
+    if (p->cartes[p->nbCartes].type == 'B') s->nbBonus++; // compteur cartes bonus piochées 
+//    if (p->cartes[p->nbCartes].type == 'S') s->nbSpeciale++; // compteur cartes spéciales piochées 
 
 }
 
@@ -204,10 +205,10 @@ void afficherCarte(Carte c) {
     printf(")\n");
 }
 
-int main() {
-    Paquet paquet;
-    Carte c;
-    Stats statistiques = {0,0,0}; /* Ne pas oublier de mettre 0 */
+// int main() {
+//   Paquet paquet;
+//  Carte c;
+//    Stats statistiques = {0,0,0}; // Ne pas oublier de mettre 0 
     
 //    srand(time(NULL));
     
