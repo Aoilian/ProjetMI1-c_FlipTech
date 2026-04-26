@@ -1,5 +1,7 @@
 #include "cartes.h"
 
+/* Pour afficher les caractères accentués, ne pas oublier chcp 65001; UTF-8*/
+
 int main() {
     Paquet paquet;
     Carte c;
