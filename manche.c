@@ -67,12 +67,12 @@ bool Flip7(Perso joueur) {
 bool NoDoublon(Carte carte, Perso joueur){
 	int nodoublon = true;
 	for(int i = 0; i<joueur.nbcarte; i++){
-		if(joueur.carte[i] == carte){
+		if(joueur.carte[i].numero == carte.numero && joueur.carte[i].bonus == carte.bonus){
 			nodoublon = false;
 		}
+	
 	}
 	return nodoublon;
-
 }
 
 
