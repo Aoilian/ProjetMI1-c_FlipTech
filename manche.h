@@ -1,4 +1,5 @@
 #ifndef MANCHE_H //Garde d'inclusion pour éviter les inclusions multiples
+#define MANCHE_H 
 
 #include <stdbool>
 #define TAILLE 255
