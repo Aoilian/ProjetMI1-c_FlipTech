@@ -7,7 +7,7 @@ void afficherPaquet(Paquet *p) {
     for (int i = 0; i < FLIP7; i++) {
         if (p->cartes[i].type == 'N') printf("Carte numéro %d\n",p->cartes[i].numero);
         else printf("Carte bonus %d\n",p->cartes[i].bonus);
-        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
+//        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
 //        else printf("Carte speciale %d\n",p->cartes[i].speciale);
     }
 }

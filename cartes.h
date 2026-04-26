@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "structure.h"
 
 #define FLIP7 85
 #define FOIS2 15
