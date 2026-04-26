@@ -1,3 +1,5 @@
+#ifndef MANCHE_H //Garde d'inclusion pour éviter les inclusions multiples
+
 #include <stdbool>
 #define TAILLE 255
 #define MAIN 7
@@ -10,3 +12,4 @@ bool NoDoublon(Carte carte, Perso joueur);
 void lancerTour(Perso* Joueurs, int nbJoueurs);
 void enregistrerJoueurs(Perso* joueurs, int n);
 
+#endif //Fin de la garde d'inclusion
