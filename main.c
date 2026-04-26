@@ -1,11 +1,11 @@
 #include "cartes.h"
 
-/* Pour afficher les caractères accentués, ne pas oublier chcp 65001; UTF-8*/
+/* Pour afficher les caractères accentués ne pas oublier chcp 65001; UTF-8 */
 
 int main() {
     Paquet paquet;
     Carte c;
-    Stats statistiques = {0,0,0}; /* Ne pas oublier de mettre 0 */
+    Stats statistiques = {0,0}; /* Ne pas oublier de mettre 0 */
     
     srand(time(NULL));
     
@@ -30,7 +30,7 @@ int main() {
     printf("\nLe paquet est vide, ");
     printf("%d cartes numéro ont été piochées, ", statistiques.nbNumero);
     printf("%d cartes bonus ont été piochées ", statistiques.nbBonus);
-    printf("et %d cartes spéciales ont été piochées\n", statistiques.nbSpeciale);
+//  printf("et %d cartes spéciales ont été piochées\n", statistiques.nbSpeciale);
     printf("Tout est correct !");
 
     return 0;
