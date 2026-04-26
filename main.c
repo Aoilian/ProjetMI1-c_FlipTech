@@ -1,11 +1,10 @@
 #include "cartes.h"
-
-/* Pour afficher les caractères accentués ne pas oublier chcp 65001; UTF-8 */
+#include <time.h>
 
 int main() {
     Paquet paquet;
     Carte c;
-    Stats statistiques = {0,0}; /* Ne pas oublier de mettre 0 */
+    Stats statistiques = {0,0}; // Ne pas oublier de mettre 0 
     
     srand(time(NULL));
     
@@ -15,7 +14,7 @@ int main() {
     
     printf("\nPaquet créé et mélangé avec %d cartes.\n", paquet.nbCartes);
 
-    /* on pioche tant que le paquet n'est pas vide */
+    // on pioche tant que le paquet n'est pas vide 
     
     do {
     c = piocher(&paquet);
@@ -25,7 +24,7 @@ int main() {
 
     
 
-    /* contrôle des statistiques */
+    // contrôle des statistiques 
 
     printf("\nLe paquet est vide, ");
     printf("%d cartes numéro ont été piochées, ", statistiques.nbNumero);
