@@ -1,14 +1,9 @@
 #include <stdio.h>
+#include <stdbool.h>
+#include <stlib.h>
+#include "manche.h"
 #define TAILLE 255
 #define MAIN 7
-
-typedef struct{
-	char prenom[TAILLE];
-	unsigned int score;
-	unsigned int nbcarte;
-	Carte carte[MAIN];
-	bool Ajouer;
-}Perso;
 
 //Est-ce que l'utilisateur va piocher?
 void decision(int* piocher,Perso* joueur){
@@ -115,7 +110,7 @@ void enregistrerJoueurs(Perso* joueurs, int n) {
         joueurs[i].Ajouer = false; // ou 0 ??
     }
 }
-
+/*
 int main(){
 	int piocher;
 	int nbJoueur;
@@ -124,7 +119,6 @@ int main(){
 	return 0;
 }
 
-/*
 Pour le main : 
 while(partie_en_cours) {
     while(tour_en_cours) {
