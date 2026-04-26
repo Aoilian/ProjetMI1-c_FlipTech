@@ -2,8 +2,7 @@
 #include <stdbool.h>
 #include <stlib.h>
 #include "manche.h"
-#define TAILLE 255
-#define MAIN 7
+
 
 //Est-ce que l'utilisateur va piocher?
 void decision(int* piocher,Perso* joueur){
