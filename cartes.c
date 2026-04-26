@@ -1,22 +1,22 @@
 #include "cartes.h"
+#include "structure.h"
 
-/* permet d'afficher tout le paquet pour contrôle avant et après mélange*/
 
+// Affiche toutes les cartes du paquet 
 void afficherPaquet(Paquet *p) {
     for (int i = 0; i < FLIP7; i++) {
         if (p->cartes[i].type == 'N') printf("Carte numéro %d\n",p->cartes[i].numero);
         else printf("Carte bonus %d\n",p->cartes[i].bonus);
-//        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
+        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
 //        else printf("Carte speciale %d\n",p->cartes[i].speciale);
     }
 }
 
-/* permet d'initialiser le paquet avec toutes les cartes du jeu */
-
+// Initialise le paquet avec toutes les cartes du jeu 
 void creerPaquet(Paquet *p) {
-    int pos = 0; /* position dans le paquet de 0 à 93 */
+    int pos = 0; // position dans le paquet de 0 à 93 
 
-    /* 79 cartes numéro */
+    // Initialisation des 79 cartes numéro
     for (int i = 0; i < 12; i++) {
         p->cartes[i].type = 'N';
         p->cartes[i].numero = 12;
@@ -137,7 +137,7 @@ void creerPaquet(Paquet *p) {
 //  p->cartes[pos].speciale = 0;
     pos++;
 
-    /* 9 cartes spéciales */
+    // 9 cartes spéciales 
 //    for (int i = 0; i < 3; i++) {
 //    p->cartes[pos].type = 'S';
 //    p->cartes[pos].numero = 0;
@@ -159,48 +159,44 @@ void creerPaquet(Paquet *p) {
 //    p->cartes[pos].speciale = SPECIAL3;
 //    pos++;
 //    }
-    afficherPaquet(p); /* pour contrôle */
+    afficherPaquet(p); // Affichage du paquet pour vérification 
     printf("\n");
-    p->nbCartes = FLIP7; /* nouveau paquet de 94 cartes */
+    p->nbCartes = FLIP7; // nouveau paquet de 85 cartes 
 }
 
-/* permet de mélanger aléatoirement les cartes */
-
+// Mélange aléatoirement les cartes du paquet
 void melanger(Paquet *p) {
     int j;
     Carte tmp; 
 
     for (int i = p->nbCartes - 1; i > 0; i--) {
-        /* formule rand() %(max-min+1) + min = Valeurs aléatoires entre 0 et i-1 */
+        // formule rand() %(max-min+1) + min = Valeurs aléatoires entre 0 et i-1 
         j = rand() % i ; 
-        /* on inverse les 2 cartes */
+        // on inverse les 2 cartes 
         tmp = p->cartes[i];
         p->cartes[i] = p->cartes[j];
         p->cartes[j] = tmp;
     }
-    afficherPaquet(p); /* pour contrôle */
+    afficherPaquet(p); // pour contrôle 
 }
 
-/* retourne la carte en haut de la pile et met à jour les statistiques */
-
+// Retourne la carte en haut de la pile et met à jour les statistiques 
 Carte piocher(Paquet *p) {
     printf("\nCartes restantes : %d\n", p->nbCartes);
     p->nbCartes = p->nbCartes - 1;
-    return p->cartes[p->nbCartes]; /* carte piochée */
+    return p->cartes[p->nbCartes]; // carte piochée 
 }
 
-/* permet de mettre à jour les statistiques après avoir pioché p->cartes[p->nbCartes] */
-
+// Met à jour les statistiques après avoir pioché p->cartes[p->nbCartes] 
 void majStats(Paquet *p, Stats *s) {
 
-    if (p->cartes[p->nbCartes].type == 'N') s->nbNumero++; /* compteur cartes numéro piochées */
-    if (p->cartes[p->nbCartes].type == 'B') s->nbBonus++; /* compteur cartes bonus piochées */
-//    if (p->cartes[p->nbCartes].type == 'S') s->nbSpeciale++; /* compteur cartes spéciales piochées */
+    if (p->cartes[p->nbCartes].type == 'N') s->nbNumero++; // compteur cartes numéro piochées 
+    if (p->cartes[p->nbCartes].type == 'B') s->nbBonus++; // compteur cartes bonus piochées 
+//    if (p->cartes[p->nbCartes].type == 'S') s->nbSpeciale++; // compteur cartes spéciales piochées 
 
 }
 
-/* permet d'afficher une carte */
-
+// Affiche les détails d'une carte 
 void afficherCarte(Carte c) {
     printf("Carte(type=%c",c.type);
     if (c.type == 'N') printf(", valeur=%d",c.numero);
@@ -212,7 +208,7 @@ void afficherCarte(Carte c) {
 // int main() {
 //   Paquet paquet;
 //  Carte c;
-//    Stats statistiques = {0,0,0}; /* Ne pas oublier de mettre 0 */
+//    Stats statistiques = {0,0,0}; // Ne pas oublier de mettre 0 
     
 //    srand(time(NULL));
     
@@ -222,7 +218,7 @@ void afficherCarte(Carte c) {
     
 //    printf("\nPaquet créé et mélangé avec %d cartes.\n", paquet.nbCartes);
 
-    /* on pioche tant que le paquet n'est pas vide */
+    // on pioche tant que le paquet n'est pas vide 
     
 //    do {
 //    c = piocher(&paquet);
