@@ -1,6 +1,6 @@
 #include <stdio.h>
 #define TAILLE 255
-#define MAIN
+#define MAIN 7
 
 typedef struct{
 	char prenom[TAILLE];
@@ -31,8 +31,6 @@ void decision(int* piocher,Perso* joueur){
 	joueur->Ajouer = true;   
 
 }    
-    
-    
     
     
 //nombre de joueurs dans la partie ?
