@@ -76,7 +76,7 @@ bool NoDoublon(Carte carte, Perso joueur){
 }
 
 
-void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs de la partie
+void lancerTour(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs de la partie
 	//On choisit qui commence (aléatoire)
 	int joueurActuel = rand() % nbJoueurs;
 	int toursCompletes = 0;
@@ -100,7 +100,6 @@ void lancerManche(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs
         	joueurActuel = (joueurActuel + 1) % nbJoueurs;
     	}
 	
-	printf("\nFin de la manche ! Tout le monde a joue.\n");
 }
 
 
