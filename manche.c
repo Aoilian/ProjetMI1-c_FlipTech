@@ -5,6 +5,9 @@
 
 //Est-ce que l'utilisateur va piocher?
 void Decision(int* decision,Perso* joueur){
+	if(*decision == NULL || *joueurs == NULL){
+		exit(10);
+	}
 	int valide = 0;
      
 	do{
@@ -27,6 +30,9 @@ void Decision(int* decision,Perso* joueur){
     
 //nombre de joueurs dans la partie ?
 void nmbJoueurs(int* nbJoueurs){
+	if(*nbJoueurs == NULL){
+		exit(12);
+	}
 	int valide = 0;
 	do{
 		printf("Combien y a t-il de joueurs dans la partie ?\n");
@@ -41,6 +47,9 @@ void nmbJoueurs(int* nbJoueurs){
 }
 
 bool tourTerminer(Perso* joueurs, int nbjoueur){
+	if(joueurs == NULL){
+		exit(13);
+	}
 	for(int i = 0; i < nbjoueur; i++){
 		if((joueurs+i)->Ajouer == false){
 			return false;
@@ -68,6 +77,9 @@ bool NoDoublon(Carte carte, Perso joueur){
 }
 
 void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
+	if(*Joueurs == NULL || *p == NULL){
+		exit(14);
+	}
     for (int i = 0; i < nbJoueurs; i++) {
         Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
         Joueurs[i].nbcarte = 0;    // On vide les mains
@@ -79,6 +91,9 @@ void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
 }
 
 bool MancheTerminee(Perso* joueurs, int nbjoueur){
+	if(*joueurs == NULL){
+		exit(15);
+	}
 	for(int i = 0; i < nbjoueur; i++){
 		if((joueurs+i)->Ajouer == false){
 			return false;
@@ -88,6 +103,9 @@ bool MancheTerminee(Perso* joueurs, int nbjoueur){
 }
 
 void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => tous les joueurs de la partie
+	if(*Joueurs == NULL || *paquet == NULL){
+		exit(16);
+	}
 	//On choisit qui commence (aléatoire)
 	int joueurActuel = rand() % nbJoueurs;
 
@@ -96,7 +114,6 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 
 	//boucle du tour : tant que tout le monde n'a pas fini son tour
 	while (!MancheTerminee(listeJoueurs, nbJoueurs)){
-        
         
         	// On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
@@ -143,17 +160,20 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 }
 
 
-void enregistrerJoueurs(Perso* joueurs, int n) {
-    for(int i = 0; i < n; i++) {
-        printf("\n--- Joueur %d ---\n", i + 1);
-        printf("Nom : ");
-        scanf("%s", joueurs[i].prenom); // On stocke dans la i-ème case
-        
-        // initialisation du score, etc, à 0;
-        joueurs[i].score = 0;
-        joueurs[i].nbcarte = 0;
-        joueurs[i].Ajouer = false; // ou 0 ??
-    }
+void enregistrerJoueurs(Perso* joueurs, int n){
+	if(*joueurs == NULL){
+		exit(17);
+	}
+	for(int i = 0; i < n; i++) {
+	        printf("\n--- Joueur %d ---\n", i + 1);
+	        printf("Nom : ");
+	        scanf("%s", joueurs[i].prenom); // On stocke dans la i-ème case
+	        
+	        // initialisation du score, etc, à 0;
+	        joueurs[i].score = 0;
+	        joueurs[i].nbcarte = 0;
+	        joueurs[i].Ajouer = false; // ou 0 ??
+	}
 }
 /*
 int main(){
