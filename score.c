@@ -1,19 +1,26 @@
+#include <stdbool.h>
+#include <string.h>
+#include "manche.h"
+#include "carte.h"
 #include "score.h"
 
-
+// Met la première lettre du prénom en majuscule
 void Maj(char* prenom){
 	if(prenom[0] != '\0' && (prenom[0] > 96 && prenom[0] < 123)){
-		prenom[0] += 'A' - 'a' ; // On met la première lettre du prénom en majuscule
+		prenom[0] += 'A' - 'a' ; 
 	}
 }
 
+// Met toutes les autres lettre du en minuscule
 void Min(char* prenom){
-	for(int i = 1; i < strlen(prenom); i++){
-			
-				prenom[i] -= 'A' - 'a'; // Toute les autres lettre du prénom seront en minuscule
+	if(strlen(prenom) >= 2){
+		for(int i = 1; i < strlen(prenom); i++){
+					prenom[i] -= 'A' - 'a'; 
+		}
 	}
 }
 
+// Verifie la validité du prénom du joueur
 bool PrenomValide(char* prenom){
 	for(int i = 0; i < strlen(prenom); i++){
 				if(prenom[i] >  122 || prenom[i] < 65 || (prenom[i] > 90 && prenom[i] < 97)){
@@ -34,13 +41,23 @@ int PersoValide(Perso a){
 				}
 		}
 		if(a.nbcarte < 0 || a.nbcarte > 7){
-			return -1;
+				return -1;
+		}
+		else if(PrenomValide(a.prenom) == false){
+				return -1;
 		}
 		return 0;
 }
 
-
-
+unsigned int CalculScore(Perso joueur, Carte carte){
+			if(PersoValide(a) == -1){
+						exit(1000);
+			}
+			if(carte.type == 'N'){
+						perso.score += carte.numero;
+			}
+}
+					
 unsigned int AjouterBonus(Perso a, int bonus){
 	if(PersoValide(a) == -1){
 		exit(100);
@@ -65,7 +82,6 @@ unsigned int AjouterBonus(Perso a, int bonus){
 	}
 	
 }
-
 
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 2){
