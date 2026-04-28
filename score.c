@@ -49,15 +49,6 @@ int PersoValide(Perso a){
 		return 0;
 }
 
-unsigned int CalculScore(Perso joueur, Carte carte){
-			if(PersoValide(a) == -1){
-						exit(1000);
-			}
-			if(carte.type == 'N'){
-						perso.score += carte.numero;
-			}
-}
-					
 unsigned int AjouterBonus(Perso a, int bonus){
 	if(PersoValide(a) == -1){
 		exit(100);
@@ -66,22 +57,45 @@ unsigned int AjouterBonus(Perso a, int bonus){
 	//On applique les bonus au score du joueur
 	switch (bonus) { 
 	        case 1 :
-					return a.score * 2;
-			case 2 :
 					return a.score + 2;
-			case 3 :
+			case 2 :
 					return a.score + 4;
-			case 4 :
+			case 3 :
 					return a.score + 6;
-			case 5 :
+			case 4 :
 					return a.score + 8;
-			case 6 :
+			case 5 :
 					return a.score + 10;
+			case 6 :
+					return a.score * 2;
 			default : 
 					return a.score;
 	}
 	
 }
+
+/* On part du principe que si un joueur a plusieurs bonus il voudra appliquer le *2 en dernier */
+// On échange les bonus de place avec un tri pour que le *2 soit a la fin de la main du joueur 
+void EchangeBonus(Perso joueur, Carte* main, int taille){
+			
+		
+
+// Calcule le score du joueur a la fin de la manche 
+unsigned int CalculScore(Perso joueur, Carte* main, int taille){
+			if(PersoValide(a) == -1){
+						exit(1000);
+			}
+			EchangerBonus(joueur, main, taille);
+			for(int i = 0; i < taille; i++){
+					if(main[i].type == 'N'){
+							perso.score += carte.numero;
+					}
+					else{
+							AjouterBonus(joueur, (main+i)->bonus);
+					}
+}
+					
+
 
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 2){
