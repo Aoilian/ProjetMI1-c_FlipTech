@@ -1,19 +1,27 @@
+#include <stdbool.h>
+#include <string.h>
+#include "structure.h"
+#include "manche.h"
+#include "carte.h"
 #include "score.h"
 
-
+// Met la première lettre du prénom en majuscule
 void Maj(char* prenom){
 	if(prenom[0] != '\0' && (prenom[0] > 96 && prenom[0] < 123)){
-		prenom[0] += 'A' - 'a' ; // On met la première lettre du prénom en majuscule
+		prenom[0] += 'A' - 'a' ; 
 	}
 }
 
+// Met toutes les autres lettre du en minuscule
 void Min(char* prenom){
-	for(int i = 1; i < strlen(prenom); i++){
-			
-				prenom[i] -= 'A' - 'a'; // Toute les autres lettre du prénom seront en minuscule
+	if(strlen(prenom) >= 2){
+		for(int i = 1; i < strlen(prenom); i++){
+					prenom[i] -= 'A' - 'a'; 
+		}
 	}
 }
 
+// Verifie la validité du prénom du joueur
 bool PrenomValide(char* prenom){
 	for(int i = 0; i < strlen(prenom); i++){
 				if(prenom[i] >  122 || prenom[i] < 65 || (prenom[i] > 90 && prenom[i] < 97)){
@@ -23,7 +31,7 @@ bool PrenomValide(char* prenom){
 	return true;
 }
 
-//On verifie que le joueur est valide
+// Verifie que le joueur est valide
 int PersoValide(Perso a){
 		for(int i = 0; i < 7; i++ ){
 				if(a.carte[i].type == 'N' && (a.carte[i].numero < 0 || a.carte[i].numero > 12)){
@@ -34,41 +42,79 @@ int PersoValide(Perso a){
 				}
 		}
 		if(a.nbcarte < 0 || a.nbcarte > 7){
-			return -1;
+				return -1;
+		}
+		else if(PrenomValide(a.prenom) == false){
+				return -1;
 		}
 		return 0;
 }
 
-
-
-unsigned int AjouterBonus(Perso a, int bonus){
-	if(PersoValide(a) == -1){
+unsigned int AjouterBonus(unsigned int score, int bonus){
+	if(score < 0 || ( bonus < 1 || bonus > 6){
 		exit(100);
 	}
 
 	//On applique les bonus au score du joueur
 	switch (bonus) { 
 	        case 1 :
-					return a.score * 2;
+					return score + 2;
 			case 2 :
-					return a.score + 2;
+					return score + 4;
 			case 3 :
-					return a.score + 4;
+					return score + 6;
 			case 4 :
-					return a.score + 6;
+					return score + 8;
 			case 5 :
-					return a.score + 8;
+					return score + 10;
 			case 6 :
-					return a.score + 10;
+					return score * 2;
 			default : 
-					return a.score;
+					return score;
 	}
 	
 }
 
+// Calcule le score du joueur a la fin de son tour
+void CalculScore(Perso* joueur, Carte* main, int taille){
+			if(PersoValide(joueur) == -1 || taille <= 0){
+						exit(1000);
+			}
+			unsigned int somme = 0, b = 0;
 
+			// Total de toutes las cartes numéro piochés
+			for(int i = 0; i < taille; i++){
+					if(main[i].type == 'N'){
+							somme += (main+i)->numero;
+					}
+			}
+			b = somme;
+
+			// Ajout des cartes bonus après le tour 
+			for(int j = 0; j < taille; j++){
+					// On part du principe que le joueur voudra appliquer le *2 en dernier si il a plusieurs bonus
+					if(main[j].type == 'B' && (main+j)->bonus != 6){
+							b = Ajouterbonus(b, (main+j)->bonus);
+					}
+			}
+
+			// On applique le *2 à la fin 
+			for(int k = 0; k < taille; k++){
+					if(main[k].type == 'B' && (main+k)->bonus == 6)
+							b = Ajouterbonus(b, (main+k)->bonus);
+					}
+			}
+
+			// Si le joueur a un doublon il ne marque aucun point
+			if(!NoDoublon){
+						b = 0;
+			}
+	
+			joueur->score += b;
+}
+					
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
-		if(joueurs == NULL || nbjoueur < 2){
+		if(joueurs == NULL || nbjoueur < 3){
                 	printf("Erreur\n");
                 	exit(1);
 		}
@@ -100,38 +146,25 @@ bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 }
 
 Perso* designerGagnant(Perso* joueurs, int nbjoueur){
-	    if(joueurs == NULL || nbjoueur < 2){
+	    if(joueurs == NULL || nbjoueur < 3){
                 printf("Erreur\n");
                 exit(1);
         }
 
 	    //On initialise le max et son adresse avec celle du premier joueur
 	    unsigned int max = joueurs->score;
-	    Perso* adresseMax; 
-		Perso* adresseMax2;
+	    Perso* adresseMax;
 		adresseMax = joueurs;
-		adresseMax2 = NULL;
 
 	    //On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
 				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
-				adresseMax2 = NULL;
 			} 
-			else if(joueurs[j].score == max){ //Cas ou Deux joueurs ont le même score a la fin de la partie
-				   max = (joueurs + j)->score;
-				   adresseMax2 = joueurs + j;
-			}
-	     }
-
-		 if(adresseMax2 != NULL){
-			printf("Les gagnant sont : %s et %s  avec un score de  %u   \n",adresseMax->prenom, adresseMax2->prenom, max);
-		 }
-		 else{
-			printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
-		 }
-	     
+			
+		printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
+	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
 }
@@ -156,9 +189,9 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}
 		if(choix == 'O'){
-			//
+			// On affiche le joueur et on indique qu'il a gagné la partie
 			if((a + i) == designerGagnant(a, nbjoueur)){
-						fprintf(fichier, "Prenom : %s | score : %u | vainqueur \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
+						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip7 \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
 			}
 			fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
 		}
