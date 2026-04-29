@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <structure.h>
 #define TAILLE 255
-#define MAIN 7
+#define MAIN 13
 
 void decision(int* piocher,Perso* joueur);
 void nmbJoueurs(int* nbJoueurs);
