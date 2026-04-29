@@ -30,7 +30,7 @@ bool PrenomValide(char* prenom){
 	return true;
 }
 
-//On verifie que le joueur est valide
+// Verifie que le joueur est valide
 int PersoValide(Perso a){
 		for(int i = 0; i < 7; i++ ){
 				if(a.carte[i].type == 'N' && (a.carte[i].numero < 0 || a.carte[i].numero > 12)){
@@ -49,7 +49,7 @@ int PersoValide(Perso a){
 		return 0;
 }
 
-unsigned int AjouterBonus(Perso a, int bonus){
+unsigned int AjouterBonus(unsigned int score, int bonus){
 	if(PersoValide(a) == -1){
 		exit(100);
 	}
@@ -57,42 +57,45 @@ unsigned int AjouterBonus(Perso a, int bonus){
 	//On applique les bonus au score du joueur
 	switch (bonus) { 
 	        case 1 :
-					return a.score + 2;
+					return score + 2;
 			case 2 :
-					return a.score + 4;
+					return score + 4;
 			case 3 :
-					return a.score + 6;
+					return score + 6;
 			case 4 :
-					return a.score + 8;
+					return score + 8;
 			case 5 :
-					return a.score + 10;
+					return score + 10;
 			case 6 :
-					return a.score * 2;
+					return score * 2;
 			default : 
-					return a.score;
+					return score;
 	}
 	
 }
 
-/* On part du principe que si un joueur a plusieurs bonus il voudra appliquer le *2 en dernier */
-// On échange les bonus de place avec un tri pour que le *2 soit a la fin de la main du joueur 
-void EchangeBonus(Perso joueur, Carte* main, int taille){
-			
-		
-
-// Calcule le score du joueur a la fin de la manche 
-unsigned int CalculScore(Perso joueur, Carte* main, int taille){
+// Calcule le score du joueur a la fin de son tour
+void CalculScore(Perso joueur, Carte* main, int taille){
 			if(PersoValide(a) == -1){
 						exit(1000);
 			}
-			EchangerBonus(joueur, main, taille);
+			unsigned int somme = 0, b = 0;
+
+			// Total de toutes las cartes numéro piochés
 			for(int i = 0; i < taille; i++){
 					if(main[i].type == 'N'){
-							perso.score += carte.numero;
+							somme += (main+i)->numero;
 					}
-					else{
-							AjouterBonus(joueur, (main+i)->bonus);
+
+			b = somme;
+
+			// Ajout des cartes bonus après le tour 
+			for(int j = 0; i < taille; i++){
+					if(main[i].type == 'B'){
+							b += Ajouterbonus(somme, (main+i)->numero);
 					}
+
+			joueur.score = b;
 }
 					
 
@@ -137,31 +140,18 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 
 	    //On initialise le max et son adresse avec celle du premier joueur
 	    unsigned int max = joueurs->score;
-	    Perso* adresseMax; 
-		Perso* adresseMax2;
+	    Perso* adresseMax;
 		adresseMax = joueurs;
-		adresseMax2 = NULL;
 
 	    //On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
 				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
-				adresseMax2 = NULL;
 			} 
-			else if(joueurs[j].score == max){ //Cas ou Deux joueurs ont le même score a la fin de la partie
-				   max = (joueurs + j)->score;
-				   adresseMax2 = joueurs + j;
-			}
-	     }
-
-		 if(adresseMax2 != NULL){
-			printf("Les gagnant sont : %s et %s  avec un score de  %u   \n",adresseMax->prenom, adresseMax2->prenom, max);
-		 }
-		 else{
-			printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
-		 }
-	     
+			
+		printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
+	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
 }
@@ -186,9 +176,9 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}
 		if(choix == 'O'){
-			//
+			// On affiche le joueur et on indique qu'il a gagné la partie
 			if((a + i) == designerGagnant(a, nbjoueur)){
-						fprintf(fichier, "Prenom : %s | score : %u | vainqueur \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
+						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip7 \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
 			}
 			fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
 		}
