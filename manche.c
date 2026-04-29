@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <stlib.h>
+#include <stdlib.h>
 #include "manche.h"
 
 //Est-ce que l'utilisateur va piocher?
@@ -27,7 +27,6 @@ void Decision(int* decision,Perso* joueur){
 
 }    
     
-    
 //nombre de joueurs dans la partie ?
 void nmbJoueurs(int* nbJoueurs){
 	if(*nbJoueurs == NULL){
@@ -46,23 +45,18 @@ void nmbJoueurs(int* nbJoueurs){
 	}while(valide == 0);
 }
 
-bool tourTerminer(Perso* joueurs, int nbjoueur){
-	if(joueurs == NULL){
-		exit(13);
-	}
-	for(int i = 0; i < nbjoueur; i++){
-		if((joueurs+i)->Ajouer == false){
-			return false;
+bool Flip7(Perso joueur){
+	int num = 0;
+	for(int i = 0; i<joueur.nbcarte; i++){
+		if(joueur.main[i].type == 'N'){
+			num++;
 		}
 	}
-	return true;
-}
-
-bool Flip7(Perso joueur) {
-    if(joueur.nbcarte == 7) {
-        return true; // GAGNÉ ! Le joueur a 7 cartes différentes.
-    }
-    return false;
+	if(num == 7){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 bool NoDoublon(Carte carte, Perso joueur){
