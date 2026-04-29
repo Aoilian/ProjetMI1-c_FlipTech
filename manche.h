@@ -1,7 +1,7 @@
 #ifndef MANCHE_H //Garde d'inclusion pour éviter les inclusions multiples
 #define MANCHE_H 
 
-include <stdbool.h>
+#include <stdbool.h>
 #define TAILLE 255
 #define MAIN 7
 
