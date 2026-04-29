@@ -3,16 +3,18 @@
 #include <stlib.h>
 #include "manche.h"
 
-
 //Est-ce que l'utilisateur va piocher?
-void decision(int* piocher,Perso* joueur){
+void Decision(int* decision,Perso* joueur){
+	if(*decision == NULL || *joueurs == NULL){
+		exit(10);
+	}
 	int valide = 0;
      
 	do{
 		printf("Voulez-vous piocher ? \n- oui : 1, \n- non : 0\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
-        	if (scanf("%d", piocher) == 1 && (*piocher == 0 || *piocher == 1)) {
+        	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1)) {
             		valide = 1; //si c'est valide, c'est fini
         }else{
         	printf("Erreur : saisie invalide.\n");
@@ -21,14 +23,16 @@ void decision(int* piocher,Perso* joueur){
         	}
         
     	}while (valide == 0); //On recommence tant que ce n'est pas valide
-    
-	joueur->Ajouer = true;   
+  
 
 }    
     
     
 //nombre de joueurs dans la partie ?
 void nmbJoueurs(int* nbJoueurs){
+	if(*nbJoueurs == NULL){
+		exit(12);
+	}
 	int valide = 0;
 	do{
 		printf("Combien y a t-il de joueurs dans la partie ?\n");
@@ -43,6 +47,9 @@ void nmbJoueurs(int* nbJoueurs){
 }
 
 bool tourTerminer(Perso* joueurs, int nbjoueur){
+	if(joueurs == NULL){
+		exit(13);
+	}
 	for(int i = 0; i < nbjoueur; i++){
 		if((joueurs+i)->Ajouer == false){
 			return false;
@@ -69,45 +76,104 @@ bool NoDoublon(Carte carte, Perso joueur){
 	return nodoublon;
 }
 
+void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
+	if(*Joueurs == NULL || *p == NULL){
+		exit(14);
+	}
+    for (int i = 0; i < nbJoueurs; i++) {
+        Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
+        Joueurs[i].nbcarte = 0;    // On vide les mains
+    }
+    //on creer le nouveau paquet
+    creerPaquet(p);
+    melanger(p);
+    printf("Le paquet a été reformé et mélanger. C'est parti pour la nouvelle manche !");
+}
 
-void lancerTour(Perso* Joueurs, int nbJoueurs) { //Joueurs => tous les joueurs de la partie
+bool MancheTerminee(Perso* joueurs, int nbjoueur){
+	if(*joueurs == NULL){
+		exit(15);
+	}
+	for(int i = 0; i < nbjoueur; i++){
+		if((joueurs+i)->Ajouer == false){
+			return false;
+		}
+	}
+	return true;
+}
+
+void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => tous les joueurs de la partie
+	if(*Joueurs == NULL || *paquet == NULL){
+		exit(16);
+	}
 	//On choisit qui commence (aléatoire)
 	int joueurActuel = rand() % nbJoueurs;
-	int toursCompletes = 0;
 
-	printf("\n--- LA MANCHE COMMENCE ---\n");
+	printf("\n--- LE TOUR COMMENCE ---\n");
 	printf("Le hasard a choisi : %s commence !\n", listeJoueurs[joueurActuel].prenom);
 
-	//boucle de la manche : tant que tout le monde n'a pas fini son tour
-	while (!tourTerminer(listeJoueurs, nbJoueurs)) {
+	//boucle du tour : tant que tout le monde n'a pas fini son tour
+	while (!MancheTerminee(listeJoueurs, nbJoueurs)){
         
-        // On ne fait jouer le joueur que s'il n'a pas encore joué
+        	// On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
-        		printf("\nC'est au tour de %s !\n",Joueurs[joueurActuel].prenom);
-        		// jouerTourDuJoueur(&listeJoueurs[joueurActuel]); 
-            
-        		// Une fois qu'il a fini (stop ou bust), on marque qu'il a joué
+        		
+        		int decision = 1; //initialisation à 1 pour rentrer dans la boucle
+        		bool doublon = false;
+        		bool gagne = false;
+        	}
+        		//boucle de la pioche du joueur 
+        	while(decision == 1 && !doublon && !gagne){
+                    	Decision(&decision, &Joueurs[joueurActuel]);
+       			if(decision == 1){
+        			Carte c = piocher(paquet);
+        			afficherCarte(c);
+        			nbpioche ++;
+        		}
+        		if(!NoDoublon(c,Joueurs[JoueurActuel]){
+        			Printf("Vous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche\n");
+        			Joueurs[joueurActuel].nbcarte = 0; // Il perd ses cartes
+                        	doublon = true;
+        		}else{
+        			//On ajoute la carte à la main du joueur
+                        	Joueurs[joueurActuel].main[Joueurs[joueurActuel].nbcarte] = c;
+                        	Joueurs[joueurActuel].nbcarte++;
+                        }
+        		
+            				
+            		if(flip7(Joueurs[JoueurActuel])){
+            					printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[JoueurActuel].prenom,Joueurs[JoueurActuel].prenom);
+            					gagne = true;
+            		}      				                 		
+        		//Une fois qu'il a fini, on marque qu'il a joué
         		Joueurs[joueurActuel].Ajouer = true;
+        		if(gagne){
+        			break;
+        		}
         	}
 
-        	// on passe au joueur suivant
+        	//on passe au joueur suivant
         	joueurActuel = (joueurActuel + 1) % nbJoueurs;
+        	printf("C'est à %s de jouer !\n",Joueur[JoueurActuel]);
     	}
 	
 }
 
 
-void enregistrerJoueurs(Perso* joueurs, int n) {
-    for(int i = 0; i < n; i++) {
-        printf("\n--- Joueur %d ---\n", i + 1);
-        printf("Nom : ");
-        scanf("%s", joueurs[i].prenom); // On stocke dans la i-ème case
-        
-        // initialisation du score, etc, à 0;
-        joueurs[i].score = 0;
-        joueurs[i].nbcarte = 0;
-        joueurs[i].Ajouer = false; // ou 0 ??
-    }
+void enregistrerJoueurs(Perso* joueurs, int n){
+	if(*joueurs == NULL){
+		exit(17);
+	}
+	for(int i = 0; i < n; i++) {
+	        printf("\n--- Joueur %d ---\n", i + 1);
+	        printf("Nom : ");
+	        scanf("%s", joueurs[i].prenom); // On stocke dans la i-ème case
+	        
+	        // initialisation du score, etc, à 0;
+	        joueurs[i].score = 0;
+	        joueurs[i].nbcarte = 0;
+	        joueurs[i].Ajouer = false; // ou 0 ??
+	}
 }
 /*
 int main(){
