@@ -50,7 +50,7 @@ int PersoValide(Perso a){
 }
 
 unsigned int AjouterBonus(unsigned int score, int bonus){
-	if(PersoValide(a) == -1){
+	if(score < 0 || ( bonus < 1 || bonus > 6){
 		exit(100);
 	}
 
@@ -75,7 +75,7 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 }
 
 // Calcule le score du joueur a la fin de son tour
-void CalculScore(Perso joueur, Carte* main, int taille){
+void CalculScore(Perso* joueur, Carte* main, int taille){
 			if(PersoValide(a) == -1){
 						exit(1000);
 			}
@@ -86,20 +86,27 @@ void CalculScore(Perso joueur, Carte* main, int taille){
 					if(main[i].type == 'N'){
 							somme += (main+i)->numero;
 					}
-
+			}
 			b = somme;
 
 			// Ajout des cartes bonus après le tour 
-			for(int j = 0; i < taille; i++){
-					if(main[i].type == 'B'){
-							b += Ajouterbonus(somme, (main+i)->numero);
+			for(int j = 0; j < taille; j++){
+					// On part du principe que le joueur voudra appliquer le *2 en dernier si il a plusieurs bonus
+					if(main[j].type == 'B' && (main+j)->bonus != 6){
+							b = Ajouterbonus(b, (main+j)->bonus);
 					}
+			}
 
-			joueur.score = b;
+			// On applique le *2 à la fin 
+			for(int k = 0; k < taille; k++){
+					if(main[k].type == 'B' && (main+k)->bonus == 6)
+							b = Ajouterbonus(b, (main+k)->bonus);
+					}
+			}
+	
+			joueur->score = b;
 }
 					
-
-
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 2){
                 	printf("Erreur\n");
