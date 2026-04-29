@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <string.h>
+#include "structure.h"
 #include "manche.h"
 #include "carte.h"
 #include "score.h"
@@ -76,7 +77,7 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 
 // Calcule le score du joueur a la fin de son tour
 void CalculScore(Perso* joueur, Carte* main, int taille){
-			if(PersoValide(a) == -1){
+			if(PersoValide(joueur) == -1 || taille <= 0){
 						exit(1000);
 			}
 			unsigned int somme = 0, b = 0;
@@ -103,12 +104,17 @@ void CalculScore(Perso* joueur, Carte* main, int taille){
 							b = Ajouterbonus(b, (main+k)->bonus);
 					}
 			}
+
+			// Si le joueur a un doublon il ne marque aucun point
+			if(!NoDoublon){
+						b = 0;
+			}
 	
-			joueur->score = b;
+			joueur->score += b;
 }
 					
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
-		if(joueurs == NULL || nbjoueur < 2){
+		if(joueurs == NULL || nbjoueur < 3){
                 	printf("Erreur\n");
                 	exit(1);
 		}
@@ -140,7 +146,7 @@ bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 }
 
 Perso* designerGagnant(Perso* joueurs, int nbjoueur){
-	    if(joueurs == NULL || nbjoueur < 2){
+	    if(joueurs == NULL || nbjoueur < 3){
                 printf("Erreur\n");
                 exit(1);
         }
