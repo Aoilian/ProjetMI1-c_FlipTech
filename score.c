@@ -197,4 +197,3 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 		}
 	}
 }
-
