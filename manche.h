@@ -2,6 +2,7 @@
 #define MANCHE_H 
 
 #include <stdbool.h>
+#include <structure.h>
 #define TAILLE 255
 #define MAIN 7
 
