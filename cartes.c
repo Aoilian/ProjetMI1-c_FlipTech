@@ -1,12 +1,18 @@
 #include "cartes.h"
 #include "structure.h"
+#include <stdio.h>
 
 
 // Affiche toutes les cartes du paquet 
 void afficherPaquet(Paquet *p) {
+    printf("\n");
     for (int i = 0; i < FLIP7; i++) {
-        if (p->cartes[i].type == 'N') printf("Carte numéro %d\n",p->cartes[i].numero);
-        else printf("Carte bonus %d\n",p->cartes[i].bonus);
+        if (p->cartes[i].type == 'N') {
+            printf("numéro : %d | ", p->cartes[i].numero);
+        } 
+        else{
+            printf("bonus :  %d | ", p->cartes[i].bonus);
+        }
 //        else if (p->cartes[i].type == 'B') printf("Carte bonus %d\n",p->cartes[i].bonus);
 //        else printf("Carte speciale %d\n",p->cartes[i].speciale);
     }
@@ -177,7 +183,7 @@ void melanger(Paquet *p) {
         p->cartes[i] = p->cartes[j];
         p->cartes[j] = tmp;
     }
-    afficherPaquet(p); // pour contrôle 
+    printf("\n------------------- Mélange en cours -------------------\n"); // pour contrôle 
 }
 
 // Retourne la carte en haut de la pile et met à jour les statistiques 
@@ -223,7 +229,7 @@ void afficherCarte(Carte c) {
 //    do {
 //    c = piocher(&paquet);
 //    afficherCarte(c);
-//    majStats(&paquet, &statistiques);
+//    
 //    } while (paquet.nbCartes > 0);
 
     

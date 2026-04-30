@@ -1,6 +1,8 @@
 #ifndef STRUCTURE_H //Garde d'inclusion pour éviter les inclusions multiples
 #define STRUCTURE_H 
-
+#include <stdbool.h>
+#define TAILLE 255
+#define MAIN 7
 
 typedef struct {
     char type; // 'N' = carte numéro, 'B' = carte bonus
@@ -9,10 +11,11 @@ typedef struct {
 } Carte;
 
 typedef struct{
-	Carte carte[7];
+	Carte carte[MAIN];
 	unsigned int score;
 	unsigned int nbcarte;
-	char prenom[255];
+	char prenom[TAILLE];
+	bool Ajouer;
 }Perso;
 
 typedef struct {

@@ -2,7 +2,7 @@
 #include <string.h>
 #include "structure.h"
 #include "manche.h"
-#include "carte.h"
+#include "cartes.h"
 #include "score.h"
 
 // Met la première lettre du prénom en majuscule
@@ -16,7 +16,9 @@ void Maj(char* prenom){
 void Min(char* prenom){
 	if(strlen(prenom) >= 2){
 		for(int i = 1; i < strlen(prenom); i++){
+			if(prenom[i] != '\0' && (prenom[i] > 64 && prenom[i] < 91)){
 					prenom[i] -= 'A' - 'a'; 
+			}
 		}
 	}
 }
@@ -51,7 +53,7 @@ int PersoValide(Perso a){
 }
 
 unsigned int AjouterBonus(unsigned int score, int bonus){
-	if(score < 0 || ( bonus < 1 || bonus > 6){
+	if(score < 0 || ( bonus < 1 || bonus > 6)){
 		exit(100);
 	}
 
@@ -76,8 +78,8 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 }
 
 // Calcule le score du joueur a la fin de son tour
-void CalculScore(Perso* joueur, Carte* main, int taille){
-			if(PersoValide(joueur) == -1 || taille <= 0){
+void CalculScore(Perso* joueurs, Carte* main, int taille){
+			if(joueurs == NULL || taille <= 0){
 						exit(1000);
 			}
 			unsigned int somme = 0, b = 0;
@@ -93,24 +95,24 @@ void CalculScore(Perso* joueur, Carte* main, int taille){
 			// Ajout des cartes bonus après le tour 
 			for(int j = 0; j < taille; j++){
 					// On part du principe que le joueur voudra appliquer le *2 en dernier si il a plusieurs bonus
-					if(main[j].type == 'B' && (main+j)->bonus != 6){
-							b = Ajouterbonus(b, (main+j)->bonus);
+					if(main[j].type == 'B' && (main+j)->bonus != 1){
+							b = AjouterBonus(b, (main+j)->bonus);
 					}
 			}
 
 			// On applique le *2 à la fin 
 			for(int k = 0; k < taille; k++){
-					if(main[k].type == 'B' && (main+k)->bonus == 6)
-							b = Ajouterbonus(b, (main+k)->bonus);
+					if(main[k].type == 'B' && (main+k)->bonus == 1){
+							b = AjouterBonus(b, (main+k)->bonus);
 					}
 			}
 
 			// Si le joueur a un doublon il ne marque aucun point
-			if(!NoDoublon){
+			if(!NoDoublon(main[taille-1], *joueurs)){
 						b = 0;
 			}
 	
-			joueur->score += b;
+			joueurs->score += b;
 }
 					
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
@@ -149,12 +151,12 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    if(joueurs == NULL || nbjoueur < 3){
                 printf("Erreur\n");
                 exit(1);
-        }
+            }
 
 	    //On initialise le max et son adresse avec celle du premier joueur
 	    unsigned int max = joueurs->score;
 	    Perso* adresseMax;
-		adresseMax = joueurs;
+	    adresseMax = joueurs;
 
 	    //On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
@@ -162,7 +164,7 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
 			} 
-			
+		}	
 		printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
 	 
 		 //On retourne l'adresse du joueur qui a gagné
