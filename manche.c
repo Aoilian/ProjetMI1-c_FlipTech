@@ -125,22 +125,22 @@ void lancerManche(Perso* Joueurs, int nbJoueurgccs, Paquet *paquet) { //Joueurs 
         			Carte c = piocher(paquet);
         			afficherCarte(c);
         			nbpioche ++;
-        		}
-        		if(!NoDoublon(c,Joueurs[JoueurActuel]){
-        			Printf("Vous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche\n");
-        			Joueurs[joueurActuel].nbcarte = 0; // Il perd ses cartes
-                        	doublon = true;
-        		}else{
+        			if(!NoDoublon(c,Joueurs[JoueurActuel]){
+        				Printf("Vous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche\n");
+        				Joueurs[joueurActuel].nbcarte = 0; // Il perd ses cartes
+                        		doublon = true;
+        			}else{
         			//On ajoute la carte à la main du joueur
-                        	Joueurs[joueurActuel].main[Joueurs[joueurActuel].nbcarte] = c;
-                        	Joueurs[joueurActuel].nbcarte++;
-                        }
+                        		Joueurs[joueurActuel].main[Joueurs[joueurActuel].nbcarte] = c;
+                        		Joueurs[joueurActuel].nbcarte++;
+                        	}
         		
             				
-            		if(flip7(Joueurs[JoueurActuel])){
+            			if(flip7(Joueurs[JoueurActuel])){
             					printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[JoueurActuel].prenom,Joueurs[JoueurActuel].prenom);
             					gagne = true;
-            		}      				                 		
+            			}
+            		}			                 		
         		//Une fois qu'il a fini, on marque qu'il a joué
         		Joueurs[joueurActuel].Ajouer = true;
         		if(gagne){
