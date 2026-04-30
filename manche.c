@@ -3,9 +3,11 @@
 #include <stdlib.h>
 #include "manche.h"
 
+
+
 //Est-ce que l'utilisateur va piocher?
-void Decision(int* decision,Perso* joueur){
-	if(*decision == NULL || *joueurs == NULL){
+void Decision(int* decision,Perso joueur){
+	if(decision == NULL ){
 		exit(10);
 	}
 	int valide = 0;
@@ -29,7 +31,7 @@ void Decision(int* decision,Perso* joueur){
     
 //nombre de joueurs dans la partie ?
 void nmbJoueurs(int* nbJoueurs){
-	if(*nbJoueurs == NULL){
+	if(nbJoueurs == NULL){
 		exit(12);
 	}
 	int valide = 0;
@@ -71,7 +73,7 @@ bool NoDoublon(Carte carte, Perso joueur){
 }
 
 void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
-	if(*Joueurs == NULL || *p == NULL){
+	if(Joueurs == NULL || p == NULL){
 		exit(14);
 	}
     for (int i = 0; i < nbJoueurs; i++) {
@@ -85,7 +87,7 @@ void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
 }
 
 bool MancheTerminee(Perso* joueurs, int nbjoueur){
-	if(*joueurs == NULL){
+	if(joueurs == NULL){
 		exit(15);
 	}
 	for(int i = 0; i < nbjoueur; i++){
@@ -96,8 +98,8 @@ bool MancheTerminee(Perso* joueurs, int nbjoueur){
 	return true;
 }
 
-void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => tous les joueurs de la partie
-	if(*Joueurs == NULL || *paquet == NULL){
+void lancerManche(Perso* Joueurs, int nbJoueurgccs, Paquet *paquet) { //Joueurs => tous les joueurs de la partie
+	if(Joueurs == NULL || paquet == NULL){
 		exit(16);
 	}
 	//On choisit qui commence (aléatoire)
@@ -118,7 +120,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
         	}
         		//boucle de la pioche du joueur 
         	while(decision == 1 && !doublon && !gagne){
-                    	Decision(&decision, &Joueurs[joueurActuel]);
+                    	Decision(&decision, Joueurs[joueurActuel]);
        			if(decision == 1){
         			Carte c = piocher(paquet);
         			afficherCarte(c);
@@ -155,7 +157,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 
 
 void enregistrerJoueurs(Perso* joueurs, int n){
-	if(*joueurs == NULL){
+	if(joueurs == NULL){
 		exit(17);
 	}
 	for(int i = 0; i < n; i++) {
