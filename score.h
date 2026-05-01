@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "structure.h"
 
 
 void Maj(char* prenom);
@@ -12,7 +13,7 @@ void Min(char* prenom);
 bool PrenomValide(char* prenom);
 int PersoValide(Perso a);
 unsigned int AjouterBonus(unsigned int score, int bonus);
-void CalculScore(Perso* joueurs, Carte* main, int taille);
+void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon);
 bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur);
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur);
 Perso* designerGagnant(Perso* joueurs, int taille);

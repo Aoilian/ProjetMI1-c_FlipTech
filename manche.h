@@ -11,7 +11,7 @@ bool Flip7(Perso joueur);
 bool NoDoublon(Carte carte, Perso joueur);
 void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p);
 bool MancheTerminee(Perso* joueurs, int nbjoueur);
-void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche);
+void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, bool* doublon);
 void enregistrerJoueurs(Perso* joueurs, int n);
 
 #endif //Fin de la garde d'inclusion

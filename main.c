@@ -13,7 +13,9 @@ int main() {
     Stats statistiques = {0,0,0}; 
     int nbJoueurs, nbpioche;
     Perso* joueurs;
+    
    
+    
     // Saisie des joueurs
     nmbJoueurs(&nbJoueurs);
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
@@ -22,6 +24,9 @@ int main() {
             Maj((joueurs+j)->prenom);
             Min((joueurs+j)->prenom);
     }
+
+    // tableux pour savoir si un joueur a fait un doublon ou pas pendant la manche
+    bool doublon[nbJoueurs];
     
     // Initialisation du paquet 
     creerPaquet(&paquet);
@@ -29,12 +34,12 @@ int main() {
 
     // Boucle de jeu
     while(!FinDePartie(joueurs, paquet, nbJoueurs)){
-            lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche);
+            lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche, doublon);
             for(int i = 0; i < nbJoueurs; i++){
-                    CalculScore(&joueurs[i], joueurs[i].carte, joueurs[i].nbcarte);
+                    CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, doublon[i]);
                     printf("\n%s a un score de %u \n", joueurs[i].prenom, joueurs[i].score);
             }
-            reinitialiserJoueur(joueurs, nbJoueurs);
+            preparerNouvelleManche(joueurs, nbJoueurs, &paquet);
             majStats(&paquet, &statistiques);
     }
     

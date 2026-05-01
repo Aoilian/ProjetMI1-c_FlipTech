@@ -78,8 +78,8 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 }
 
 // Calcule le score du joueur a la fin de son tour
-void CalculScore(Perso* joueurs, Carte* main, int taille){
-			if(joueurs == NULL || taille <= 0){
+void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
+			if(joueurs == NULL || taille < 0){
 						exit(1000);
 			}
 			unsigned int somme = 0, b = 0;
@@ -106,12 +106,9 @@ void CalculScore(Perso* joueurs, Carte* main, int taille){
 							b = AjouterBonus(b, (main+k)->bonus);
 					}
 			}
-
-			// Si le joueur a un doublon il ne marque aucun point
-			if(!NoDoublon(main[taille-1], *joueurs)){
-						b = 0;
+			if(doublon){
+				b = 0;
 			}
-	
 			joueurs->score += b;
 }
 					
@@ -165,7 +162,7 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 				adresseMax =  joueurs + j;
 			} 
 		}	
-		printf("Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
+		printf("\n 	Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
 	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
@@ -185,8 +182,8 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 	for(int i = 0; i < nbjoueur; i++){
 		char choix;
 
-		printf("%s veux tu enregistrer ton score sur le fichier Fliptech ? \n", (a + i)->prenom);
-		while(scanf("%c",&choix) != 1 && (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
+		printf("%s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
+		while(scanf(" %c",&choix) != 1 && (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
 					printf("Saisi invalide, veuillre réessayer. \n");
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}

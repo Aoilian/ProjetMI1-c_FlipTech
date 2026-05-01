@@ -165,7 +165,7 @@ void creerPaquet(Paquet *p) {
 //    p->cartes[pos].speciale = SPECIAL3;
 //    pos++;
 //    }
-    afficherPaquet(p); // Affichage du paquet pour vérification 
+    //afficherPaquet(p); // Affichage du paquet pour vérification 
     printf("\n");
     p->nbCartes = FLIP7; // nouveau paquet de 85 cartes 
 }
@@ -204,9 +204,13 @@ void majStats(Paquet *p, Stats *s) {
 
 // Affiche les détails d'une carte 
 void afficherCarte(Carte c) {
-    printf("Carte(type=%c",c.type);
-    if (c.type == 'N') printf(", valeur=%d",c.numero);
-    if (c.bonus) printf(", bonus=%d", c.bonus);
+    printf("Carte ");
+    if (c.type == 'N') {
+        printf("numero : %d",c.numero);
+    }
+    if (c.type == 'B'){
+        printf("bonus : %d", c.bonus);
+    }
 //    if (c.speciale) printf(", speciale=%d", c.speciale);
     printf(")\n");
 }
@@ -243,7 +247,4 @@ void afficherCarte(Carte c) {
 //    printf("Tout est correct !");
 
 //    return 0;
-// }
-
-
-
+// }    
