@@ -5,6 +5,7 @@
 #include "cartes.h"
 #include "score.h"
 
+
 // Met la première lettre du prénom en majuscule
 void Maj(char* prenom){
 	if(prenom[0] != '\0' && (prenom[0] > 96 && prenom[0] < 123)){
@@ -53,7 +54,7 @@ int PersoValide(Perso a){
 }
 
 unsigned int AjouterBonus(unsigned int score, int bonus){
-	if(score < 0 || ( bonus < 1 || bonus > 6)){
+	if(bonus < 1 || bonus > 6){
 		exit(100);
 	}
 
@@ -71,16 +72,14 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 					return score + 10;
 			case 6 :
 					return score * 2;
-			default : 
-					return score;
 	}
 	
 }
 
 // Calcule le score du joueur a la fin de son tour
 void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
-			if(joueurs == NULL || taille < 0){
-						exit(1000);
+			if(joueurs == NULL || taille <= 0){
+						return;
 			}
 			unsigned int somme = 0, b = 0;
 
@@ -130,14 +129,14 @@ void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 }
 
 bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
-	if(joueurs == NULL || nbjoueur == 0 || pioche.nbCartes < 0){
+	if(joueurs == NULL || nbjoueur < 3){
 		printf("Erreur \n");
 		exit(160);
  	}
 
 	for(int i = 0; i < nbjoueur; i++){
 		//La partie prend fin si un des joueurs atteint ou dépasse le seuil de 200 point ou que la pioche est vide 
-		if((joueurs+i)->score >= 200 ||  pioche.nbCartes == 0){
+		if((joueurs+i)->score >= 200){
 			return true;
 		}
 	}
@@ -174,6 +173,7 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
             printf("Erreur\n");
             exit(5);
     }
+	Perso* gagnant = designerGagnant(a, nbjoueur);
 
 	//On ouvre le fichier Fliptech.txt
 	FILE* fichier = NULL; 
@@ -188,11 +188,14 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}
 		if(choix == 'O'){
-			// On affiche le joueur et on indique qu'il a gagné la partie
-			if((a + i) == designerGagnant(a, nbjoueur)){
-						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip7 \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
+			// On affiche le joueur et on indique qu'il est vainqeur du flip tech si il a gagné une partie
+			if((a + i) == gagnant){
+						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip tech \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
 			}
-			fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
+			else{
+				fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
+			}
 		}
 	}
+	fclose(fichier);
 }

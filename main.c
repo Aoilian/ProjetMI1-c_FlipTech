@@ -11,8 +11,8 @@ int main() {
     
     Paquet paquet;
     Stats statistiques = {0,0,0}; 
-    int nbJoueurs, nbpioche;
     Perso* joueurs;
+    int nbJoueurs = 0, nbpioche = 0, compteur = 2;
     
    
     
@@ -36,11 +36,14 @@ int main() {
     while(!FinDePartie(joueurs, paquet, nbJoueurs)){
             lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche, doublon);
             for(int i = 0; i < nbJoueurs; i++){
+                if(joueurs[i].nbcarte > 0){
                     CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, doublon[i]);
                     printf("\n%s a un score de %u \n", joueurs[i].prenom, joueurs[i].score);
+                }
             }
-            preparerNouvelleManche(joueurs, nbJoueurs, &paquet);
             majStats(&paquet, &statistiques);
+            preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
+            compteur++;
     }
     
     // Fin de partie  
