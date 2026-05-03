@@ -40,10 +40,10 @@ void nmbJoueurs(int* nbJoueurs){
 		printf("Combien y a t-il de joueurs dans la partie ?\n");
 		if(scanf("%d",nbJoueurs) && (*nbJoueurs >= 3 && *nbJoueurs <= 18)){
 			valide = 1;
+			while(getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}else{
-		printf("Erreur : saisie invalide.\n");
-           	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-            	while (getchar() != '\n'); 
+			printf("Erreur : saisie invalide.\n");
+            while (getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}
 	}while(valide == 0);
 }
@@ -65,7 +65,7 @@ bool Flip7(Perso joueur){
 bool NoDoublon(Carte carte, Perso joueur){
 	int nodoublon = true;
 	for(int i = 0; i<joueur.nbcarte; i++){
-		if(joueur.carte[i].numero == carte.numero && joueur.carte[i].bonus == carte.bonus){
+		if(joueur.carte[i].type == 'N' && (joueur.carte[i].numero == carte.numero)){
 			nodoublon = false;
 		}
 	
@@ -73,7 +73,7 @@ bool NoDoublon(Carte carte, Perso joueur){
 	return nodoublon;
 }
 
-void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
+void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p, int compteur) {
 	if(Joueurs == NULL || p == NULL){
 		exit(14);
 	}
@@ -81,7 +81,9 @@ void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p) {
         Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
         Joueurs[i].nbcarte = 0;    // On vide les mains
     }
-    printf("\n ---------------------------  C'est parti pour la nouvelle manche !  ---------------------------\n");
+	creerPaquet(p);
+	melanger(p);
+    printf("\n ---------------------------  C'est parti pour la manche %d  ---------------------------\n", compteur);
 }
 
 bool MancheTerminee(Perso* joueurs, int nbJoueurs){
@@ -122,25 +124,25 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 
         	// On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
-        		*doublon = false;
+        		doublon[joueurActuel] = false;
         		gagne = false;
 				Decision(&decision, &Joueurs[joueurActuel]); // on demande au joueur s'il veut piocher ou pas
         	}
         		//boucle de la pioche du joueur 
-        	while(decision == 1 && !(*doublon) && !gagne){
+        	while(decision == 1 && !(doublon[joueurActuel]) && !gagne){
        			if(decision == 1){
 					c = piocher(paquet);
         			afficherCarte(c);
         			(*nbpioche)++;
 					if(!NoDoublon(c,Joueurs[joueurActuel])){
         					printf("Vous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche \n\n");
-                        	*doublon = true;
+                        	doublon[joueurActuel] = true;
         			}
 					else{
         			//On ajoute la carte à la main du joueur
                         	Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
                         	Joueurs[joueurActuel].nbcarte++;
-							*doublon = false;
+							doublon[joueurActuel] = false;
 					}
         		
             				
@@ -149,7 +151,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
             					gagne = true;
             		}      			
         		}
-				if(!gagne && !(*doublon)){
+				if(!gagne && !(doublon[joueurActuel])){
 					Decision(&decision, &Joueurs[joueurActuel]); // on redemande au joueur s'il veut piocher ou pas
 				}
         			                 		
@@ -161,9 +163,12 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 			//Une fois qu'il a fini, on marque qu'il a joué
         	Joueurs[joueurActuel].Ajouer = true;
 
-        	//on passe au joueur suivant
-        	joueurActuel = (joueurActuel + 1) % nbJoueurs;
-        	printf("C'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
+        	//on passe au joueur suivant à condition que la manche ne soit pas terminer
+			if(!MancheTerminee(Joueurs,nbJoueurs)){
+				joueurActuel = (joueurActuel + 1) % nbJoueurs;
+				printf("C'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
+			}
+        	
     	}
 	
 }

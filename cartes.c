@@ -209,7 +209,21 @@ void afficherCarte(Carte c) {
         printf("numero : %d",c.numero);
     }
     if (c.type == 'B'){
-        printf("bonus : %d", c.bonus);
+        printf("bonus : ");
+        switch (c.bonus) {
+            case 1 : printf("+2");
+                     break;
+            case 2 : printf("+4");
+                     break;
+            case 3 : printf("+6");
+                     break;
+            case 4 : printf("+8");
+                     break;
+            case 5 : printf("+10");
+                     break;
+            case 6 : printf("x2");
+                     break;
+        }
     }
 //    if (c.speciale) printf(", speciale=%d", c.speciale);
     printf(")\n");
