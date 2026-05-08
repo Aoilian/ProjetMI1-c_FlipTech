@@ -8,6 +8,7 @@ typedef struct {
     char type; // 'N' = carte numéro, 'B' = carte bonus
     int numero;  // de 12 à 0 
     int bonus; // 6 cartes bonus 
+    //int speciale;
 } Carte;
 
 typedef struct{
