@@ -41,14 +41,13 @@ int main() {
 
     // Boucle de jeu
     while(!FinDePartie(joueurs, paquet,  nbJoueurs)){
-            lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche, doublon);
+            lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche, doublon, statistiques);
             for(int i = 0; i < nbJoueurs; i++){
                 if(joueurs[i].nbcarte > 0){
                     CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, doublon[i]);
                 }
                 afficherTableauScores(&joueurs[i], joueurs, nbJoueurs);
             }
-            majStats(&paquet, &statistiques);
             preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
             compteur++;
     }

@@ -4,17 +4,18 @@
 #include "cartes.h"
 #include "score.h"
 #include "affichage.h"
+#include "structure.h"
 
 
 //Est-ce que l'utilisateur va piocher?
-void Decision(int* decision,Perso* joueurs){
-	if(decision == NULL || joueurs == NULL){
+void Decision(int* decision,Perso* joueur){
+	if(decision == NULL || joueur == NULL){
 		exit(10);
 	}
 	int valide = 0;
      
 	do{
-		printf("Voulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
+		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1)) {
@@ -37,7 +38,7 @@ void nmbJoueurs(int* nbJoueurs){
 	}
 	int valide = 0;
 	do{
-		printf("Combien y a t-il de joueurs dans la partie ?\n");
+		printf("Combien il y a t-il de joueurs dans la partie ?"EMOJI_JOUEUR"\n");
 		if(scanf("%d",nbJoueurs) && (*nbJoueurs >= 3 && *nbJoueurs <= 18)){
 			valide = 1;
 			while(getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
@@ -97,11 +98,11 @@ void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p, int compteu
 	if(!FinDePartie(Joueurs, *p, nbJoueurs)){
 		creerPaquet(p);
 		melanger(p);
-    	printf("\n ---------------------------  C'est parti pour la manche %d  ---------------------------\n", compteur);
+    	printf("\n---------------------------  C'est parti pour la manche %d  ---------------------------\n", compteur);
 	}
 }
 
-void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, bool* doublon){ //Joueurs => tous les joueurs de la partie
+void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, bool* doublon, Stats statistiques){ //Joueurs => tous les joueurs de la partie
 	if(Joueurs == NULL || paquet == NULL || (nbJoueurs < 3 || nbJoueurs >18)){
 		exit(16);
 	}
@@ -112,13 +113,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 	Carte c;
 	bool gagne;
 
-	// On affiche la main du joueur au debut de la manche
-	if(Joueurs[joueurActuel].nbcarte > 0){
-			printf("\n Voici ta main %s :  \n", Joueurs[joueurActuel].prenom);
-			for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
-				afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
-			}
-	}
+	
 
 	// On initialise le tableau de doublon à "faux" pour tous les joueurs au début de la manche
 	for(int i = 0; i < nbJoueurs; i++){
@@ -132,6 +127,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 
 	//boucle du tour : tant que tout le monde n'a pas fini son tour
 	while (!MancheTerminee(Joueurs, nbJoueurs)){
+			 afficherPaquet(paquet);
 
         	// On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
@@ -144,6 +140,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         	//boucle de la pioche du joueur 
         	while(decision == 1 && !(doublon[joueurActuel]) && !gagne){
        			if(decision == 1){
+					printf("\nCarte piochée : ");
 					c = piocher(paquet);
         			afficherCarteEsthetique(c);
         			(*nbpioche)++;
@@ -156,6 +153,11 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
                         	Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
                         	Joueurs[joueurActuel].nbcarte++;
 							doublon[joueurActuel] = false;
+							printf("\n Voici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
+							for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
+									afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
+							}
+							printf("\n");
 					}
         		
             				
@@ -181,7 +183,8 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 				joueurActuel = (joueurActuel + 1) % nbJoueurs;
 				printf("C'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
 			}
-        	
+			majStats(paquet, &statistiques);
+            afficherStat(statistiques);
     	}
 	
 }
@@ -193,12 +196,12 @@ void enregistrerJoueurs(Perso* joueurs, int n){
 	}
 	for(int i = 0; i < n; i++) {
 	        printf("\n--- Joueur %d ---\n", i + 1);
-	        printf("Nom : ");
+	        printf("Prenom : ");
 			scanf("%s", joueurs[i].prenom);
 	        
 	        while(!PrenomValide(joueurs[i].prenom)){
-	            printf("saisie invalide\n");
-	            printf("Nom : ");	
+	            printf("Saisie invalide, veuillez recommencer\n");
+	            printf("Prenom : ");	
 				scanf("%s", joueurs[i].prenom);
 	        }
 
@@ -208,22 +211,3 @@ void enregistrerJoueurs(Perso* joueurs, int n){
 	        joueurs[i].Ajouer = false; // ou 0 ??
 	}
 }
-/*
-int main(){
-	int piocher;
-	int nbJoueur;
-	decision(&piocher);
-	nmbJoueurs(&nbJoueur);
-	return 0;
-}
-
-Pour le main : 
-while(partie_en_cours) {
-    while(tour_en_cours) {
-        // Appelle ta fonction decision()
-        // Si piocher == 1 -> tire une carte -> verifie doublon
-        // Si doublon -> tour_en_cours = 0 et score_tour = 0
-        // Si piocher == 0 -> ajoute score_tour au score_total et tour_en_cours = 0
-    }
-}
-*/

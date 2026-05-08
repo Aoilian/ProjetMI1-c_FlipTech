@@ -1,7 +1,8 @@
 #include <stdbool.h>
 #include <string.h>
+
+#include "affichage.h"
 #include "structure.h"
-#include "cartes.h"
 #include "score.h"
 
 
@@ -161,7 +162,7 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 				adresseMax =  joueurs + j;
 			} 
 		}	
-		printf("\n 	Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
+		printf(GRAS "\n 	Le gagnant est : %s  avec un score de  %u " EMOJI_FEU "\n",adresseMax->prenom, max);
 	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
@@ -201,150 +202,3 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 	fclose(fichier);
 }
 
-/*
-void CarteSpeciale(Perso* joueur, Perso* joueurs, int nbJoueurs, int special, Paquet* paquet, bool* doublon){
-		if(joueurs == NULL || nbjoueur < 3 || (special < 1 || special > 3)){
-                	printf("Erreur\n");
-                	exit(1);
-		}
-
-		char prenom[TAILLE];
-		bool trouve = false;
-		
-		//On compte combien de joueurs sont en =core dans la manche
-		int encoreEnJeu = 0;
-		for(int i = 0; i < nbJoueurs; i++){
-					if((joueurs+i)->Ajouer == false){
-							encoreEnJeu++;
-					}
-		}
-		do{
-			if(encoreEnJeu <= 1){
-					printf("\n Vous êtes le seul joueur encore dans la manche, vous vous ciblez vous-même. \n");
-					strcpy(prenom, joueur->prenom);
-			}
-			else{
-					printf("\n %s, qui veux-tu stopper ? \n", joueur->prenom);
-					while(scanf("%s", prenom) != 1 && PrenomValide(prenom) == false){
-						printf("Saisi invalide, veuillez recommencer");
-						while(getchar() != '\n'); //On vide le tampon
-			}
-			}
-			for(int i = 0; i < nbJoueurs; i++){
-			    // On compare les prénom pour voir si on trouve le joueur
-				if(strcmp(prenom, (joueurs+i)->prenom) != 0){
-					trouve = true;
-					if((joueurs+i)->Ajouer == false ){
-						(joueurs+i)->Ajouer = true; 
-					}
-					else{
-						printf("Ce joueur a déjà joué, choisi en un autre \n");
-						trouve = false; 
-					}
-					break; 
-				}
-			}
-			if(!trouve && encoreEnJeu > 1){
-				printf("\n Joueur introuvable, veuillez recommencer. \n");
-			}
-		}
-}while(!trouve)
-		
-		// carte seconde chance
-		if(special == 2){
-			if(joueur->aScondechance == true){
-				//il doit donner à un autre joueur qui n'en a pas
-				bool donne = false;
-			}
-			for(int i = 0; i < nbjoueurs; i++){
-					if((joueurs+i)->Ajouer == false && strcmp((joueurs+i)->prenom, joueur->prenom) != 0 && (joueurs+i)->aScondechance = false){
-							(joueurs+i)->aScondechance = true;
-							printf(" \n %s donne sa Seconde Chanche à %s. \n", joueur->prenom, (joueurs+i)->prenom);
-							donne = true;
-							break;
-					}
-			}
-			if(!donne){
-				printf("\n Pas de joueur disponible, la carte Seconde chance est défaussée. \n")
-			}
-			else{
-				joueur->aScondechance = true;
-			    printf("\n %s obtient une Seconde Chance ! \n", joueur->prenom);
-			
-			}
-		}
-
-		// --- carte trois à la suite ---
-		if(special == 3){
-
-			do{
-				trouve = false;
-				printf("\n %s, qui veux tu cibler (peut-être toi-même) ? \n", joueur->prenom);
-				while(scanf("%s", prenom) != 1 && PrenomValide(prenom) == false){
-					printf("Saisi invalide, veuillez recommencer");
-					while(getchar() != '\n'); //On vide le tampon
-				}
-
-				for(int i = 0; i < nbjoueurs; i++){
-					if(strcmp((joueurs+i)->prenom, joueur->prenom) == 0){
-						if((joueurs+i)->Ajouer == false){	
-							trouve = true
-							printf("\n Distribution de 3 cartes à %s: \n", (joueurs+i)->prenom);
-
-							int carteDistrib = 0;
-							bool specialPendant = false;
-							carte carteSpecialeTrouvee;
-
-							while(carteDistrib < 3 && !(doublon[i]) && !Flip7(joueurs[i])){
-									carte c = piocher(paquet);
-									afficherCarte(c);
-
-									if(c.type == 'S'){
-									// Carte trouvee pendant l'effet : on la garde et l'applique à la fin sauf si il y a eu un flip 7 ou un doublon avant
-
-									specialPendant =  true;
-									carteSpecialTrouvee = c;
-									cartesdDistrib++;
-									continue; // Va a la prochaine itération directement
-									
-									}
-
-									if(!NoDoublon(c, joueurs[i])){
-										printf("%s saute ! Distribution arrêtée. \n", (joueurs+i)->prenom);
-
-										doublon[i] = true;
-										// Si une carte special à été révélée pendant l'effet le joueur doit sibler quelqu'un
-										if(specialPendant){
-											printf("Une carte speciale avait été révélée, %s doit cibler un autre joueur. \n", (joueurs+i)->prenom)
-											CarteSpeciale(joueurs+i, joueurs, nbJoueurs, carteSpecialeTrouvee.special, paquet, doublon);
-										}
-										else{
-											(joueurs+i)->carte[(joueurs+i)->nbcarte] = c;
-											(joueurs+i)->nbcarte++;
-											carteDistrib++;
-										}
-
-										if(Flip7(joueurs[i])){
-											printf("\n FLIP 7 ! Distribution arrêtée. \n");
-											if(specialPendant){
-													CarteSpeciale(joueurs+i, joueurs, nbJoueurs, carteSpecialeTrouvee.special, paquet, doublon);
-											}
-
-										}
-									}
-									// On applique la carte speciale après les 3 cartes si pas de saut
-									if(specialPendant && !doublon[i] && !Flip7(joueurs[i])){
-										CarteSpeciale(joueurs+i, joueurs, nbJoueurs, carteSpecialeTrouvee.special, paquet, doublon);
-									}
-									else{
-										printf("Ce joueur a déjà joué, choisis-en un autre. \n");
-									}
-									break;
-								}
-							}
-							if(!trouve){
-								printf("Joueur introuvable ! Veuillez recommencer \n");
-							}
-			}while(!trouve)
-}
-*/
