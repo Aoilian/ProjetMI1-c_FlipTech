@@ -14,14 +14,14 @@
 #define CLIGNOTE "\033[5m"
 
 
-/* Couleurs de textes*/
+/* Couleurs de textes */
 #define JAUNE "\033[33m"
 #define CYAN "\033[36m"
 
 /* Couleurs du fond*/
 #define F_BLANC "\033[47m"
 
-/* Couleurs Vives*/
+/* Couleurs Vives */
 #define V_NOIR "\033[90m"
 #define V_JAUNE "\033[93m"
 #define V_VERT "\033[92m"
@@ -60,6 +60,7 @@ void afficherCarteEsthetique(Carte c);
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
 void afficherPaquet(Paquet* p);
 void afficherStat(Stats statistiques);
+void afficherGagnant(char* prenom, unsigned int score);
 
 
 #endif //Fin de la garde d'inclusion

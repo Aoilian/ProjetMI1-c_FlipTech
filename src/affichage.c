@@ -78,12 +78,13 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
         
         if(joueur->score == scoreMax){
             printf("\n╔═══════════════════════════════════════════╗ ");
-            printf("\n║"EMOJI_SCORE" SCORE de %-15s = %5d pts "EMOJI_ETOILE" ║" , joueur->prenom, joueur->score);
+            printf("\n║"EMOJI_SCORE" SCORE de %-14s = %5d pts" , joueur->prenom, joueur->score);
+            printf(" "EMOJI_ETOILE "  ║");
             printf("\n╚═══════════════════════════════════════════╝ \n");
         }
         else{
             printf("\n╔═══════════════════════════════════════╗ ");
-            printf("\n║"EMOJI_SCORE" SCORE de %-15s = %5d pts ║  ", joueur->prenom, joueur->score);
+            printf("\n║"EMOJI_SCORE" SCORE de %-15s = %5d pts║  ", joueur->prenom, joueur->score);
             printf("\n╚═══════════════════════════════════════╝\n");
         }
     }
@@ -96,9 +97,9 @@ void afficherPaquet(Paquet* p){
 
     int total = 85;
     int restant = p->nbCartes;
-    int barre = 85;
+    int barre = 42;
     int plein = (restant*barre)/total;
-    printf("Nombre de carte restante dans le paquet : ");
+    printf("Il reste %d cartes dans le paquet :  ",p->nbCartes);
     for(int i = 0; i < barre; i++){
         if(i < plein){
             printf(V_VERT""BOITE_PLEINE""RESET);
@@ -113,9 +114,16 @@ void afficherPaquet(Paquet* p){
 
 
 void afficherStat(Stats statistiques){
+    printf("\n");
     afficherSeparateur(50);
     printf(GRAS "" EMOJI_SCORE " STATISTIQUES DE LA PARTIE : ");
     printf("\n %d cartes numéro ont été piochées, ", statistiques.nbNumero);
     printf("\n %d cartes bonus ont été piochées \n" RESET, statistiques.nbBonus);
     afficherSeparateur(50);
+}
+void afficherGagnant(char* prenom, unsigned int score){
+        printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+		printf(  GRAS "\n┃ Le gagnant de la partie est : %-5s avec un score de %u ",prenom, score);
+		                                                           printf(EMOJI_TROPHEE"        ┃\n");
+	             printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
 }

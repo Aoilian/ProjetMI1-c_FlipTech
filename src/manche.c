@@ -21,7 +21,7 @@ void Decision(int* decision,Perso* joueur){
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1)) {
             		valide = 1; //si c'est valide, c'est fini
         }else{
-        	printf("Erreur : saisie invalide.\n");
+        	printf("\nErreur : saisie invalide.\n");
         	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
         	while (getchar() != '\n'); 
         	}
@@ -43,7 +43,7 @@ void nmbJoueurs(int* nbJoueurs){
 			valide = 1;
 			while(getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}else{
-			printf("Erreur : saisie invalide.\n");
+			printf("\nErreur : saisie invalide.\n");
             while (getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}
 	}while(valide == 0);
@@ -143,7 +143,11 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 					printf("\nCarte piochée : ");
 					c = piocher(paquet);
         			afficherCarteEsthetique(c);
+					printf("\n");
+
         			(*nbpioche)++;
+					majStats(c, &statistiques);
+            		
 					if(!NoDoublon(c,Joueurs[joueurActuel])){
         					printf("Vous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche \n\n");
                         	doublon[joueurActuel] = true;
@@ -153,7 +157,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
                         	Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
                         	Joueurs[joueurActuel].nbcarte++;
 							doublon[joueurActuel] = false;
-							printf("\n Voici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
+							printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
 							for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
 									afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
 							}
@@ -162,11 +166,12 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         		
             				
             		if(Flip7(Joueurs[joueurActuel])){
-            					printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
+            					printf("\nBravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
             					gagne = true;
             		}      			
         		}
 				if(!gagne && !(doublon[joueurActuel])){
+					afficherStat(statistiques);
 					Decision(&decision, &Joueurs[joueurActuel]); // on redemande au joueur s'il veut piocher ou pas
 				}
         			                 		
@@ -181,10 +186,9 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         	//on passe au joueur suivant à condition que la manche ne soit pas terminer
 			if(!MancheTerminee(Joueurs,nbJoueurs)){
 				joueurActuel = (joueurActuel + 1) % nbJoueurs;
-				printf("C'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
+				printf("\nC'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
 			}
-			majStats(paquet, &statistiques);
-            afficherStat(statistiques);
+			
     	}
 	
 }
