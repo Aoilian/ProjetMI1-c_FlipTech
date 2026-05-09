@@ -46,6 +46,8 @@ int main() {
                 if(joueurs[i].nbcarte > 0){
                     CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, doublon[i]);
                 }
+            }
+            for(int i = 0; i < nbJoueurs; i++){
                 afficherTableauScores(&joueurs[i], joueurs, nbJoueurs);
             }
             preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);

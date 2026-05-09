@@ -114,7 +114,7 @@ void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
 					
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 3){
-                	printf("Erreur\n");
+                	printf("\nErreur\n");
                 	exit(1);
 		}
 		for(int i = 0; i < nbjoueur; i++){
@@ -131,7 +131,7 @@ void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 
 bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 	if(joueurs == NULL || nbjoueur < 3){
-		printf("Erreur \n");
+		printf("\nErreur \n");
 		exit(160);
  	}
 
@@ -146,23 +146,23 @@ bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 
 Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    if(joueurs == NULL || nbjoueur < 3){
-                printf("Erreur\n");
+                printf("\nErreur\n");
                 exit(1);
             }
 
-	    //On initialise le max et son adresse avec celle du premier joueur
+	    // On initialise le max et son adresse avec celle du premier joueur
 	    unsigned int max = joueurs->score;
 	    Perso* adresseMax;
 	    adresseMax = joueurs;
 
-	    //On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
+	    // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
 				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
 			} 
 		}	
-		printf(GRAS "\n 	Le gagnant est : %s  avec un score de  %u " EMOJI_FEU "\n",adresseMax->prenom, max);
+		afficherGagnant(adresseMax->prenom,max);
 	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
@@ -170,8 +170,8 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 
 //On enregistre le Nom de chaque gagnant de la partie
 void Enregistrejoueurs(Perso* a, int nbjoueur){
-	if(a == NULL || nbjoueur < 2){
-            printf("Erreur\n");
+	if(a == NULL || nbjoueur < 3){
+            printf("\nErreur\n");
             exit(5);
     }
 	Perso* gagnant = designerGagnant(a, nbjoueur);
@@ -184,8 +184,8 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 		char choix;
 
 
-		printf("\n %s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
-		while(scanf(" %c",&choix) != 1 && (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
+		printf(RESET"\n%s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
+		while(scanf(" %c",&choix) != 1 || (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
 					printf("Saisi invalide, veuillre réessayer. \n");
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}

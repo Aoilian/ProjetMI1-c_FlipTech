@@ -141,12 +141,12 @@ Carte piocher(Paquet *p) {
 }
 
 // Met à jour les statistiques après avoir pioché p->cartes[p->nbCartes] 
-void majStats(Paquet *p, Stats *s) {
+void majStats(Carte n, Stats *s) {
 
-    if (p->cartes[p->nbCartes].type == 'N'){
+    if (n.type == 'N'){
             s->nbNumero++; // compteur cartes numéro piochées
     }  
-    if (p->cartes[p->nbCartes].type == 'B'){
+    if (n.type == 'B'){
              s->nbBonus++; // compteur cartes bonus piochées 
     }
 }

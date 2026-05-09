@@ -17,7 +17,7 @@
 void creerPaquet(Paquet *p);
 void melanger(Paquet *p);
 Carte piocher(Paquet *p);
-void majStats(Paquet *p, Stats *s);
+void majStats(Carte n, Stats *s);
 void afficherCarte(Carte c);
 
 #endif //Fin de la garde d'inclusion
