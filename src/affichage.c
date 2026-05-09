@@ -121,6 +121,33 @@ void afficherStat(Stats statistiques){
     printf("\n %d cartes bonus ont été piochées \n" RESET, statistiques.nbBonus);
     afficherSeparateur(50);
 }
+
+void afficherNbcarte(Paquet* p){
+    printf("\n");
+    afficherSeparateur(50);
+    printf(GRAS "" EMOJI_SCORE " Cartes restantes dans le paquet : ");
+    printf("\n");
+    for(int i = 0; i < 13; i++){
+        int restante = 0;
+        for(int j = 0; j < p->nbCartes; j++){
+            if(p->cartes[j].type == 'N' && p->cartes[j].numero == i){
+                restante ++;
+            }
+        }
+        if(i == 0){
+                printf(" Carte %d = %d / 1 |", i , restante);
+        }
+        else if(i == 12){
+                printf(" Carte %d = %d / %d ", i , restante, i);
+        }
+        else{
+                printf(" Carte %d = %d / %d | ", i , restante, i);
+        }
+    }
+    printf("\n");
+    afficherSeparateur(50);
+}
+
 void afficherGagnant(char* prenom, unsigned int score){
         printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 		printf(  GRAS "\n┃ Le gagnant de la partie est : %-5s avec un score de %u ",prenom, score);
