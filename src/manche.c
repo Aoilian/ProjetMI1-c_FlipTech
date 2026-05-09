@@ -171,7 +171,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
             		}      			
         		}
 				if(!gagne && !(doublon[joueurActuel])){
-					afficherStat(statistiques);
+					afficherNbcarte(paquet);
 					Decision(&decision, &Joueurs[joueurActuel]); // on redemande au joueur s'il veut piocher ou pas
 				}
         			                 		

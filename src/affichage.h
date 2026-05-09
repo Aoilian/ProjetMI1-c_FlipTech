@@ -60,6 +60,7 @@ void afficherCarteEsthetique(Carte c);
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
 void afficherPaquet(Paquet* p);
 void afficherStat(Stats statistiques);
+void afficherNbcarte(Paquet* p);
 void afficherGagnant(char* prenom, unsigned int score);
 
 
