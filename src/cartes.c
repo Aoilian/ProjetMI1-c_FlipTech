@@ -134,10 +134,15 @@ void melanger(Paquet *p) {
     printf("\n------------------- "EMOJI_MELANGE" Mélange en cours"EMOJI_MELANGE" -------------------\n"); // pour contrôle 
 }
 
-// Retourne la carte en haut de la pile et met à jour les statistiques 
-Carte piocher(Paquet *p) {
-    p->nbCartes = p->nbCartes - 1;
-    return p->cartes[p->nbCartes]; // carte piochée 
+// Retourne la carte en haut de la pile 
+Carte piocher(Paquet *p){
+    if(p == 0){
+       exit(12);
+    }
+    else{
+        p->nbCartes = p->nbCartes - 1;
+        return p->cartes[p->nbCartes]; // carte piochée 
+    }
 }
 
 // Met à jour les statistiques après avoir pioché p->cartes[p->nbCartes] 

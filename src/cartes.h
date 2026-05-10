@@ -7,12 +7,12 @@
 #include "structure.h"
 
 #define FLIP7 85
-#define FOIS2 1
-#define PLUS2 2
-#define PLUS4 3
-#define PLUS6 4
-#define PLUS8 5
-#define PLUS10 6
+#define PLUS2 1
+#define PLUS4 2
+#define PLUS6 3
+#define PLUS8 4
+#define PLUS10 5
+#define FOIS2 6
 
 void creerPaquet(Paquet *p);
 void melanger(Paquet *p);

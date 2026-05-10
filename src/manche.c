@@ -154,14 +154,19 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         			}
 					else{
         			//On ajoute la carte à la main du joueur
-                        	Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
-                        	Joueurs[joueurActuel].nbcarte++;
-							doublon[joueurActuel] = false;
-							printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
-							for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
-									afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
+							if(Joueurs[joueurActuel].nbcarte < MAIN){
+                        		Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
+                        		Joueurs[joueurActuel].nbcarte++;
+								doublon[joueurActuel] = false;
+								printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
+								for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
+										afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
+								}
+								printf("\n");
 							}
-							printf("\n");
+							else{
+								printf("\n Votre main est pleine il n'est pas possible d'ajouter d'autres cartes ! \n");
+							}
 					}
         		
             				
