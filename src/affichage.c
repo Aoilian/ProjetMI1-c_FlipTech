@@ -42,21 +42,21 @@ void afficherCarteEsthetique(Carte c){
     }
     else if (c.type == 'B'){
         switch (c.bonus) {
-            case 1 : printf(V_MAGENTA "[ +2 ] " RESET);
+            case 1 : printf(V_MAGENTA "[ +2 ] ");
                      break;
-            case 2 : printf(V_MAGENTA"[ +4 ] " RESET);
+            case 2 : printf("[ +4 ] ");
                      break;
-            case 3 : printf(V_MAGENTA"[ +6 ] " RESET);
+            case 3 : printf("[ +6 ] ");
                      break;
-            case 4 : printf(V_MAGENTA"[ +8 ] " RESET);
+            case 4 : printf("[ +8 ] ");
                      break;
-            case 5 : printf(V_MAGENTA"[ +10 ] " RESET);
+            case 5 : printf("[ +10 ] ");
                      break;
-            case 6 : printf(V_MAGENTA"[ x2 ] " RESET );
+            case 6 : printf("[ x2 ] ");
                      break;
         }
     }
-    printf(" ");
+    printf(RESET " ");
 }
 
 
@@ -114,7 +114,7 @@ void afficherPaquet(Paquet* p){
 
 
 void afficherStat(Stats statistiques){
-    printf("\n");
+    printf(GRAS"\n");
     afficherSeparateur(50);
     printf(GRAS "" EMOJI_SCORE " STATISTIQUES DE LA PARTIE : ");
     printf("\n %d cartes numéro ont été piochées, ", statistiques.nbNumero);
@@ -124,28 +124,48 @@ void afficherStat(Stats statistiques){
 
 void afficherNbcarte(Paquet* p){
     printf("\n");
-    afficherSeparateur(50);
-    printf(GRAS "" EMOJI_SCORE " Cartes restantes dans le paquet : ");
+    afficherSeparateur(79);
+    printf(EMOJI_SCORE GRAS" Cartes restantes dans le paquet : ");
     printf("\n");
     for(int i = 0; i < 13; i++){
-        int restante = 0;
+        int restanteNum = 0;
         for(int j = 0; j < p->nbCartes; j++){
             if(p->cartes[j].type == 'N' && p->cartes[j].numero == i){
-                restante ++;
+                restanteNum ++;
             }
         }
-        if(i == 0){
-                printf(" Carte %d = %d / 1 |", i , restante);
-        }
-        else if(i == 12){
-                printf(" Carte %d = %d / %d ", i , restante, i);
-        }
-        else{
-                printf(" Carte %d = %d / %d | ", i , restante, i);
+        printf(GRAS V_BLANC"[%2d:%2d] ", i , restanteNum);
+        if(i == 9){
+            printf("\n");
         }
     }
-    printf("\n");
-    afficherSeparateur(50);
+    
+    for(int i = 1; i < 7; i++){
+        int restanteBon = 0;
+        for(int j = 0; j < p->nbCartes; j++){
+            if(p->cartes[j].type == 'B' && p->cartes[j].numero == i){
+                restanteBon ++;
+            }
+        }
+        switch(i){
+                case 1 : printf( GRAS V_BLANC"[+2: %d] ", restanteBon);
+                     break;
+                case 2 : printf("[+4: %d] ", restanteBon);
+                     break;
+                case 3 : printf("[+6: %d] " , restanteBon);
+                     break;
+                case 4 : printf("[+8: %d] ", restanteBon);
+                     break;
+                case 5 : printf("[+10:%d] ", restanteBon);
+                     break;
+                case 6 : printf("[x2: %d] ", restanteBon);
+                     break;
+        }
+        
+    }
+    printf(RESET GRAS"\n");
+    afficherSeparateur(79);
+   
 }
 
 void afficherGagnant(char* prenom, unsigned int score){

@@ -2,7 +2,7 @@
 #define STRUCTURE_H 
 #include <stdbool.h>
 #define TAILLE 255
-#define MAIN 7
+#define MAIN 13 // 6 cartes bonus + 7 cartes numero maximum
 
 typedef struct {
     char type; // 'N' = carte numéro, 'B' = carte bonus
@@ -20,7 +20,7 @@ typedef struct{
 }Perso;
 
 typedef struct {
-    Carte cartes[85];
+    Carte* cartes;
     int nbCartes; // nombre de cartes restantes dans la pile
 } Paquet;
 

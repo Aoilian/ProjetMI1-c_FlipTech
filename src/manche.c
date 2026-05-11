@@ -39,7 +39,7 @@ void nmbJoueurs(int* nbJoueurs){
 	int valide = 0;
 	do{
 		printf("Combien il y a t-il de joueurs dans la partie ?"EMOJI_JOUEUR"\n");
-		if(scanf("%d",nbJoueurs) && (*nbJoueurs >= 3 && *nbJoueurs <= 18)){
+		if(scanf("%d",nbJoueurs) && (*nbJoueurs >= 3)){
 			valide = 1;
 			while(getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}else{
@@ -76,7 +76,7 @@ bool NoDoublon(Carte carte, Perso joueur){
 
 
 bool MancheTerminee(Perso* joueurs, int nbJoueurs){
-	if(joueurs == NULL || (nbJoueurs < 3 || nbJoueurs >18)){
+	if(joueurs == NULL || nbJoueurs < 3 ){
 		exit(15);
 	}
 	for(int i = 0; i < nbJoueurs; i++){
@@ -96,14 +96,14 @@ void preparerNouvelleManche(Perso* Joueurs, int nbJoueurs,Paquet* p, int compteu
         Joueurs[i].nbcarte = 0;    // On vide les mains
     }
 	if(!FinDePartie(Joueurs, *p, nbJoueurs)){
-		creerPaquet(p);
+		creerPaquet(p,nbJoueurs);
 		melanger(p);
     	printf("\n---------------------------  C'est parti pour la manche %d  ---------------------------\n", compteur);
 	}
 }
 
 void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, bool* doublon, Stats statistiques){ //Joueurs => tous les joueurs de la partie
-	if(Joueurs == NULL || paquet == NULL || (nbJoueurs < 3 || nbJoueurs >18)){
+	if(Joueurs == NULL || paquet == NULL || nbJoueurs < 3 ){
 		exit(16);
 	}
 	//On choisit qui commence (aléatoire)
@@ -154,14 +154,19 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         			}
 					else{
         			//On ajoute la carte à la main du joueur
-                        	Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
-                        	Joueurs[joueurActuel].nbcarte++;
-							doublon[joueurActuel] = false;
-							printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
-							for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
-									afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
+							if(Joueurs[joueurActuel].nbcarte < MAIN){
+                        		Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
+                        		Joueurs[joueurActuel].nbcarte++;
+								doublon[joueurActuel] = false;
+								printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
+								for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
+										afficherCarteEsthetique(Joueurs[joueurActuel].carte[i]);
+								}
+								printf("\n");
 							}
-							printf("\n");
+							else{
+								printf("\n Votre main est pleine il n'est pas possible d'ajouter d'autres cartes ! \n");
+							}
 					}
         		
             				
