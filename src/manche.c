@@ -111,7 +111,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 
 	int decision = 0;
 	Carte c;
-	bool gagne;
+	bool gagne, flip_7;
 
 	
 
@@ -125,8 +125,8 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 	printf("\n--- LE TOUR COMMENCE ---\n");
 	printf("Le hasard a choisi : %s commence !\n", Joueurs[joueurActuel].prenom);
 
-	//boucle du tour : tant que tout le monde n'a pas fini son tour
-	while (!MancheTerminee(Joueurs, nbJoueurs)){
+	//boucle du tour : tant que tout le monde n'a pas fini son tour et que personne n'a fais de flip7
+	while (!MancheTerminee(Joueurs, nbJoueurs) && !flip_7){
 			 afficherPaquet(paquet);
 
         	// On ne fait jouer le joueur que s'il n'a pas encore joué
@@ -173,6 +173,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
             		if(Flip7(Joueurs[joueurActuel])){
             					printf("\nBravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
             					gagne = true;
+								flip_7 = true; // pour sortir de la manche
             		}      			
         		}
 				if(!gagne && !(doublon[joueurActuel])){
