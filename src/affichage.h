@@ -18,28 +18,28 @@
 #define JAUNE "\033[33m"
 #define CYAN "\033[36m"
 
-/* Couleurs du fond*/
+/* Couleurs du fond */
 #define F_BLANC "\033[47m"
 
 /* Couleurs Vives */
 #define V_NOIR "\033[90m"
-#define V_JAUNE "\033[93m"
-#define V_VERT "\033[92m"
 #define V_ROUGE "\033[91m"
-#define V_BLEU "\033[95m"
+#define V_VERT "\033[92m"
+#define V_JAUNE "\033[93m"
+#define V_BLEU "\033[94m"
 #define V_MAGENTA "\033[95m"
-#define V_BLANC "\033[97m"
 #define V_CYAN "\033[96m"
+#define V_BLANC "\033[97m"
+
 
 /* Emoji */
 #define EMOJI_CARTE "🃏"
-#define EMOJI_SCORE "📊"
-#define EMOJI_MELANGE "🔀"
 #define EMOJI_ETOILE "⭐"
 #define EMOJI_FEU "🔥"
-#define EMOJI_TROPHEE "🏆"
 #define EMOJI_JOUEUR "🧑"
-
+#define EMOJI_MELANGE "🔀"
+#define EMOJI_SCORE "📊"
+#define EMOJI_TROPHEE "🏆"
 
 /* Caractère de tracé de boites */
 #define BOITE_HG "╔" // Coin haut gauche 

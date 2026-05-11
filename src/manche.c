@@ -111,7 +111,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
 
 	int decision = 0;
 	Carte c;
-	bool gagne, flip_7;
+	bool gagne = false, flip_7 = false;
 
 	
 
@@ -190,7 +190,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet, int* nbpioche, 
         	Joueurs[joueurActuel].Ajouer = true;
 
         	//on passe au joueur suivant à condition que la manche ne soit pas terminer
-			if(!MancheTerminee(Joueurs,nbJoueurs)){
+			if(!MancheTerminee(Joueurs,nbJoueurs) && !flip_7){
 				joueurActuel = (joueurActuel + 1) % nbJoueurs;
 				printf("\nC'est à %s de jouer !\n",Joueurs[joueurActuel].prenom);
 			}
