@@ -14,7 +14,7 @@
 #define PLUS10 5
 #define FOIS2 6
 
-void creerPaquet(Paquet *p);
+void creerPaquet(Paquet *p, int nbJoueurs);
 void melanger(Paquet *p);
 Carte piocher(Paquet *p);
 void majStats(Carte n, Stats *s);

@@ -114,7 +114,7 @@ void afficherPaquet(Paquet* p){
 
 
 void afficherStat(Stats statistiques){
-    printf("\n");
+    printf(GRAS"\n");
     afficherSeparateur(50);
     printf(GRAS "" EMOJI_SCORE " STATISTIQUES DE LA PARTIE : ");
     printf("\n %d cartes numéro ont été piochées, ", statistiques.nbNumero);
@@ -123,9 +123,9 @@ void afficherStat(Stats statistiques){
 }
 
 void afficherNbcarte(Paquet* p){
-    printf(GRAS"\n");
+    printf("\n");
     afficherSeparateur(79);
-    printf(EMOJI_SCORE " Cartes restantes dans le paquet : ");
+    printf(EMOJI_SCORE GRAS" Cartes restantes dans le paquet : ");
     printf("\n");
     for(int i = 0; i < 13; i++){
         int restanteNum = 0;

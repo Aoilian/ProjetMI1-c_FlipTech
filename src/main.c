@@ -36,7 +36,7 @@ int main() {
 
     
     // Initialisation du paquet 
-    creerPaquet(&paquet);
+    creerPaquet(&paquet,nbJoueurs);
     melanger(&paquet);
 
     // Boucle de jeu
@@ -58,5 +58,6 @@ int main() {
     Enregistrejoueurs (joueurs, nbJoueurs);
 
     free(joueurs);
+    free(paquet.cartes);
     return 0;
 }

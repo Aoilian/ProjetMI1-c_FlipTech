@@ -20,7 +20,7 @@ typedef struct{
 }Perso;
 
 typedef struct {
-    Carte cartes[85];
+    Carte* cartes;
     int nbCartes; // nombre de cartes restantes dans la pile
 } Paquet;
 
