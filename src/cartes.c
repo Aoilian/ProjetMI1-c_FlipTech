@@ -18,9 +18,9 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
     for(int i = 0; i < nbPaquet; i++){
     // Initialisation des 79 cartes numéro
         for (int i = 0; i < 12; i++) {
-            p->cartes[i].type = 'N';
-            p->cartes[i].numero = 12;
-            p->cartes[i].bonus = 0;
+            p->cartes[pos].type = 'N';
+            p->cartes[pos].numero = 12;
+            p->cartes[pos].bonus = 0;
             pos++;
         }
         for (int i = 0; i < 11; i++) {
