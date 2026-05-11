@@ -1,9 +1,10 @@
 #include <stdbool.h>
 #include <string.h>
+
+#include "affichage.h"
 #include "structure.h"
-#include "manche.h"
-#include "cartes.h"
 #include "score.h"
+
 
 // Met la première lettre du prénom en majuscule
 void Maj(char* prenom){
@@ -15,7 +16,7 @@ void Maj(char* prenom){
 // Met toutes les autres lettre du en minuscule
 void Min(char* prenom){
 	if(strlen(prenom) >= 2){
-		for(int i = 1; i < strlen(prenom); i++){
+		for(unsigned int i = 1; i < strlen(prenom); i++){
 			if(prenom[i] != '\0' && (prenom[i] > 64 && prenom[i] < 91)){
 					prenom[i] -= 'A' - 'a'; 
 			}
@@ -25,7 +26,7 @@ void Min(char* prenom){
 
 // Verifie la validité du prénom du joueur
 bool PrenomValide(char* prenom){
-	for(int i = 0; i < strlen(prenom); i++){
+	for(unsigned int i = 0; i < strlen(prenom); i++){
 				if(prenom[i] >  122 || prenom[i] < 65 || (prenom[i] > 90 && prenom[i] < 97)){
 					return false;
 				}
@@ -43,7 +44,7 @@ int PersoValide(Perso a){
 					return -1;
 				}
 		}
-		if(a.nbcarte < 0 || a.nbcarte > 7){
+		if(a.nbcarte > 7){
 				return -1;
 		}
 		else if(PrenomValide(a.prenom) == false){
@@ -53,7 +54,7 @@ int PersoValide(Perso a){
 }
 
 unsigned int AjouterBonus(unsigned int score, int bonus){
-	if(score < 0 || ( bonus < 1 || bonus > 6)){
+	if(bonus < 1 || bonus > 6){
 		exit(100);
 	}
 
@@ -71,16 +72,14 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 					return score + 10;
 			case 6 :
 					return score * 2;
-			default : 
-					return score;
 	}
-	
+	return score;
 }
 
 // Calcule le score du joueur a la fin de son tour
 void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
-			if(joueurs == NULL || taille < 0){
-						exit(1000);
+			if(joueurs == NULL || taille <= 0){
+						return;
 			}
 			unsigned int somme = 0, b = 0;
 
@@ -111,10 +110,11 @@ void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
 			}
 			joueurs->score += b;
 }
+			
 					
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 3){
-                	printf("Erreur\n");
+                	printf("\nErreur\n");
                 	exit(1);
 		}
 		for(int i = 0; i < nbjoueur; i++){
@@ -130,14 +130,14 @@ void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 }
 
 bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
-	if(joueurs == NULL || nbjoueur == 0 || pioche.nbCartes < 0){
-		printf("Erreur \n");
+	if(joueurs == NULL || nbjoueur < 3){
+		printf("\nErreur \n");
 		exit(160);
  	}
 
 	for(int i = 0; i < nbjoueur; i++){
 		//La partie prend fin si un des joueurs atteint ou dépasse le seuil de 200 point ou que la pioche est vide 
-		if((joueurs+i)->score >= 200 ||  pioche.nbCartes == 0){
+		if((joueurs+i)->score >= 200 || pioche.nbCartes == 0){
 			return true;
 		}
 	}
@@ -146,23 +146,23 @@ bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 
 Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    if(joueurs == NULL || nbjoueur < 3){
-                printf("Erreur\n");
+                printf("\nErreur\n");
                 exit(1);
             }
 
-	    //On initialise le max et son adresse avec celle du premier joueur
+	    // On initialise le max et son adresse avec celle du premier joueur
 	    unsigned int max = joueurs->score;
 	    Perso* adresseMax;
 	    adresseMax = joueurs;
 
-	    //On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
+	    // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
 				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
 			} 
 		}	
-		printf("\n 	Le gagnant est : %s  avec un score de  %u   \n",adresseMax->prenom, max);
+		afficherGagnant(adresseMax->prenom,max);
 	 
 		 //On retourne l'adresse du joueur qui a gagné
 		 return adresseMax;
@@ -170,10 +170,11 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 
 //On enregistre le Nom de chaque gagnant de la partie
 void Enregistrejoueurs(Perso* a, int nbjoueur){
-	if(a == NULL || nbjoueur < 2){
-            printf("Erreur\n");
+	if(a == NULL || nbjoueur < 3){
+            printf("\nErreur\n");
             exit(5);
     }
+	Perso* gagnant = designerGagnant(a, nbjoueur);
 
 	//On ouvre le fichier Fliptech.txt
 	FILE* fichier = NULL; 
@@ -182,17 +183,22 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 	for(int i = 0; i < nbjoueur; i++){
 		char choix;
 
-		printf("%s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
-		while(scanf(" %c",&choix) != 1 && (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
+
+		printf(RESET"\n%s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
+		while(scanf(" %c",&choix) != 1 || (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
 					printf("Saisi invalide, veuillre réessayer. \n");
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur
 		}
 		if(choix == 'O'){
-			// On affiche le joueur et on indique qu'il a gagné la partie
-			if((a + i) == designerGagnant(a, nbjoueur)){
-						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip7 \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
+			// On affiche le joueur et on indique qu'il est vainqeur du flip tech si il a gagné une partie
+			if((a + i) == gagnant){
+						fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip tech \n", (a + i)->prenom, (a + i)->score); //On enregistre le nom du gagnant de la partie dans le fichier Fliptech.txt
 			}
-			fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
+			else{
+				fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom, (a + i)->score);
+			}
 		}
 	}
+	fclose(fichier);
 }
+
