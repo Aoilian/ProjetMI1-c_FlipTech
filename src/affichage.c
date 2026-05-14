@@ -1,8 +1,11 @@
-#include "affichage.h"
-#include "structure.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "cartes.h"
+#include "erreur.h"
+#include "affichage.h"
+#include "structure.h"
 
 
 void effacerEcran(){
@@ -17,12 +20,14 @@ void afficherSeparateur(int largeur){
 }
 
 void afficherTitrePrincipal(){
+    int espacement = (150 - strlen(" F L I P T E C H - Le jeu de cartes ultime")) / 2;
+
     effacerEcran();
-    printf("\n");
-    afficherSeparateur(50);
-    printf(RESET " " EMOJI_CARTE " " CLIGNOTE GRAS V_NOIR  " F L I P T E C H - Le jeu de cartes ultime " RESET " " EMOJI_CARTE "\n" );
-    afficherSeparateur(50);
-    printf("\n");
+    printf("\n" V_NOIR);
+    afficherSeparateur(150);
+    printf(RESET CLIGNOTE  "%*s%s%*s", espacement, "", RESET EMOJI_CARTE GRAS V_NOIR " F L I P T E C H - Le jeu de cartes ultime" RESET EMOJI_CARTE,espacement, "\n" V_NOIR);
+    afficherSeparateur(150);
+    printf("\n" RESET);
 }
 
 void afficherCarteEsthetique(Carte c){
@@ -42,19 +47,22 @@ void afficherCarteEsthetique(Carte c){
     }
     else if (c.type == 'B'){
         switch (c.bonus) {
-            case 1 : printf(V_MAGENTA "[ +2 ] ");
+            case PLUS2 : printf(V_MAGENTA "[ +2 ] ");
                      break;
-            case 2 : printf("[ +4 ] ");
+            case PLUS4 : printf("[ +4 ] ");
                      break;
-            case 3 : printf("[ +6 ] ");
+            case PLUS6 : printf("[ +6 ] ");
                      break;
-            case 4 : printf("[ +8 ] ");
+            case PLUS8 : printf("[ +8 ] ");
                      break;
-            case 5 : printf("[ +10 ] ");
+            case PLUS10 : printf("[ +10 ] ");
                      break;
-            case 6 : printf("[ x2 ] ");
+            case FOIS2 : printf("[ x2 ] ");
                      break;
         }
+    }
+    else{
+        printf("[STOP] ");
     }
     printf(RESET " ");
 }
@@ -62,7 +70,7 @@ void afficherCarteEsthetique(Carte c){
 
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
     if(joueurs == NULL || joueur == NULL){
-        exit(10);
+        exit(ERREUR_15);
     }
 
     unsigned int scoreMax = 0;
@@ -92,13 +100,14 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
 
 void afficherPaquet(Paquet* p){
     if(p == NULL){
-        exit(32);
+        exit(ERREUR_16);
     }
 
     int total = 85;
     int restant = p->nbCartes;
     int barre = 42;
     int plein = (restant*barre)/total;
+    
     printf("Il reste %d cartes dans le paquet :  ",p->nbCartes);
     for(int i = 0; i < barre; i++){
         if(i < plein){
@@ -107,7 +116,6 @@ void afficherPaquet(Paquet* p){
         else{
             printf(V_BLANC""BOITE_M""RESET);
         }
-        
     }
     printf("\n");
 }
@@ -123,12 +131,19 @@ void afficherStat(Stats statistiques){
 }
 
 void afficherNbcarte(Paquet* p){
-    printf("\n");
-    afficherSeparateur(79);
+    if(p == NULL){
+        exit(ERREUR_17);
+    }
+
+    int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0;
+
+    printf("\n" GRAS);
+    afficherSeparateur(81);
     printf(EMOJI_SCORE GRAS" Cartes restantes dans le paquet : ");
     printf("\n");
+
     for(int i = 0; i < 13; i++){
-        int restanteNum = 0;
+        restanteNum = 0;
         for(int j = 0; j < p->nbCartes; j++){
             if(p->cartes[j].type == 'N' && p->cartes[j].numero == i){
                 restanteNum ++;
@@ -141,36 +156,86 @@ void afficherNbcarte(Paquet* p){
     }
     
     for(int i = 1; i < 7; i++){
-        int restanteBon = 0;
+        restanteBon = 0;
         for(int j = 0; j < p->nbCartes; j++){
-            if(p->cartes[j].type == 'B' && p->cartes[j].numero == i){
+            if(p->cartes[j].type == 'B' && p->cartes[j].bonus == i){
                 restanteBon ++;
             }
+               
         }
+     
         switch(i){
-                case 1 : printf( GRAS V_BLANC"[+2: %d] ", restanteBon);
+                case PLUS2 : printf( GRAS V_BLANC"[+2: %d] ", restanteBon);
                      break;
-                case 2 : printf("[+4: %d] ", restanteBon);
+                case PLUS4 : printf("[+4: %d] ", restanteBon);
                      break;
-                case 3 : printf("[+6: %d] " , restanteBon);
+                case PLUS6 : printf("[+6: %d] " , restanteBon);
                      break;
-                case 4 : printf("[+8: %d] ", restanteBon);
+                case PLUS8 : printf("[+8: %d] ", restanteBon);
                      break;
-                case 5 : printf("[+10:%d] ", restanteBon);
+                case PLUS10 : printf("[+10:%d] ", restanteBon);
                      break;
-                case 6 : printf("[x2: %d] ", restanteBon);
+                case FOIS2 : printf("[x2: %d] ", restanteBon);
                      break;
         }
         
     }
+
+  
+    restanteSpeciale = 0;
+    for(int j = 0; j < p->nbCartes; j++){
+        if(p->cartes[j].type == 'S' && p->cartes[j].numero == STOP){
+            restanteSpeciale ++;
+        }
+    }
+    printf(GRAS V_BLANC"[STOP:%2d] ", restanteSpeciale);
     printf(RESET GRAS"\n");
-    afficherSeparateur(79);
-   
+    afficherSeparateur(81);
 }
+
+
+void afficherJoueur(char* prenom){
+    if(prenom == NULL){
+        exit(ERREUR_18);
+    }
+
+    printf(V_NOIR "\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n");
+    printf("┃ " RESET "" EMOJI_JOUEUR GRAS V_BLANC" A toi de jouer : %-23s"V_NOIR"┃\n" RESET, prenom);
+    printf(V_NOIR"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"RESET);
+}
+
 
 void afficherGagnant(char* prenom, unsigned int score){
         printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 		printf(  GRAS "\n┃ Le gagnant de la partie est : %-5s avec un score de %u ",prenom, score);
 		                                                           printf(EMOJI_TROPHEE"        ┃\n");
 	             printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+}
+
+
+void afficherStatut (Perso* joueurs, int nbJoueurs) {
+    if(joueurs == NULL){
+        exit(ERREUR_19);
+    }
+
+    printf("%s\n", ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
+    for(int i = 0; i < nbJoueurs; i++){       
+        if(joueurs[i].Ajouer == false){
+            printf(ITALIC V_VERT"►►► %s ◄◄◄ " RESET, joueurs[i].prenom );
+        }
+        else{
+            printf(ITALIC V_ROUGE"►►► %s ◄◄◄ " RESET, joueurs[i].prenom );
+        }
+    }
+     printf("\n\n");
+}
+
+void afficheRegle(){
+     #ifdef __WIN64__   
+            system("start regle.txt");
+      #elif __APPLE__   
+            system("open regle.txt");
+     #else
+            system("xdg-open regle.txt");
+     #endif
 }
