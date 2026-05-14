@@ -33,6 +33,7 @@
 
 
 /* Emoji */
+#define EMOJI_BLESSURE "🤕"
 #define EMOJI_CARTE "🃏"
 #define EMOJI_ETOILE "⭐"
 #define EMOJI_FEU "🔥"
@@ -40,6 +41,8 @@
 #define EMOJI_MELANGE "🔀"
 #define EMOJI_SCORE "📊"
 #define EMOJI_TROPHEE "🏆"
+#define EMOJI_STOP "⛔"
+#define EMOJI_ECRIRE "📝"
 
 /* Caractère de tracé de boites */
 #define BOITE_HG "╔" // Coin haut gauche 
@@ -61,7 +64,10 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
 void afficherPaquet(Paquet* p);
 void afficherStat(Stats statistiques);
 void afficherNbcarte(Paquet* p);
+void afficherJoueur(char* prenom);
 void afficherGagnant(char* prenom, unsigned int score);
+void afficherStatut(Perso* joueurs, int nbJoueurs);
+void afficheRegle();
 
 
 #endif //Fin de la garde d'inclusion

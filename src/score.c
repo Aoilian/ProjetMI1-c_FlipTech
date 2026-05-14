@@ -1,10 +1,9 @@
 #include <stdbool.h>
 #include <string.h>
-
 #include "affichage.h"
 #include "structure.h"
 #include "score.h"
-
+#include "erreur.h"
 
 // Met la première lettre du prénom en majuscule
 void Maj(char* prenom){
@@ -55,7 +54,7 @@ int PersoValide(Perso a){
 
 unsigned int AjouterBonus(unsigned int score, int bonus){
 	if(bonus < 1 || bonus > 6){
-		exit(100);
+		exit(ERREUR_1);
 	}
 
 	//On applique les bonus au score du joueur
@@ -115,7 +114,7 @@ void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
 void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 3){
                 	printf("\nErreur\n");
-                	exit(1);
+                	exit(ERREUR_2);
 		}
 		for(int i = 0; i < nbjoueur; i++){
 			//On remet à 0 le nombre de carte que les joueurs possèdent quand la manche est terminé
@@ -132,7 +131,7 @@ void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
 bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 	if(joueurs == NULL || nbjoueur < 3){
 		printf("\nErreur \n");
-		exit(160);
+		exit(ERREUR_3);
  	}
 
 	for(int i = 0; i < nbjoueur; i++){
@@ -147,7 +146,7 @@ bool FinDePartie(Perso* joueurs, Paquet pioche, int nbjoueur){
 Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    if(joueurs == NULL || nbjoueur < 3){
                 printf("\nErreur\n");
-                exit(1);
+                exit(ERREUR_4);
             }
 
 	    // On initialise le max et son adresse avec celle du premier joueur
@@ -172,7 +171,7 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 void Enregistrejoueurs(Perso* a, int nbjoueur){
 	if(a == NULL || nbjoueur < 3){
             printf("\nErreur\n");
-            exit(5);
+            exit(ERREUR_5);
     }
 	Perso* gagnant = designerGagnant(a, nbjoueur);
 

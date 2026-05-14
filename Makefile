@@ -6,7 +6,7 @@ SRC := src/main.c src/score.c src/cartes.c src/manche.c src/affichage.c
 OBJ := $(SRC:%.c=build/%.o)
 DEP := $(SRC:%.c=build/%.d)
 
-EXEC = programme
+EXEC = fliptech
 
 .PHONY: all clean fclean re
 

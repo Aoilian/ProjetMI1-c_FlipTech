@@ -1,19 +1,20 @@
+#include <stdlib.h>
+#include <time.h>
 #include "structure.h"
 #include "affichage.h"
 #include "cartes.h"
 #include "manche.h"
 #include "score.h"
-#include <stdlib.h>
-#include <time.h>
+
+
 
 int main() {
     // On crée une nouvelle graine pour que les mélange ne soient pas les mêmes à chaque manche
     srand(time(NULL));
     
     Paquet paquet;
-    Stats statistiques = {0,0,0}; 
     Perso* joueurs = NULL;
-    int nbJoueurs = 0, nbpioche = 0, compteur = 2;
+    int nbJoueurs = 0, compteur = 2;
     
     effacerEcran();
     afficherTitrePrincipal();
@@ -23,17 +24,12 @@ int main() {
     // Saisie des joueurs
     nmbJoueurs(&nbJoueurs);
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
-    enregistrerJoueurs(joueurs, nbJoueurs);
+    InitialiseJoueurs(joueurs, nbJoueurs);
     
     for(int j = 0; j < nbJoueurs; j++){
             Maj((joueurs+j)->prenom);
             Min((joueurs+j)->prenom);
     }
-
-    // tableux pour savoir si un joueur a fait un doublon ou pas pendant la manche
-    bool doublon[nbJoueurs];
-    
-
     
     // Initialisation du paquet 
     creerPaquet(&paquet,nbJoueurs);
@@ -41,10 +37,10 @@ int main() {
 
     // Boucle de jeu
     while(!FinDePartie(joueurs, paquet,  nbJoueurs)){
-            lancerManche(joueurs, nbJoueurs, &paquet, &nbpioche, doublon, statistiques);
+            lancerManche(joueurs, nbJoueurs, &paquet);
             for(int i = 0; i < nbJoueurs; i++){
                 if(joueurs[i].nbcarte > 0){
-                    CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, doublon[i]);
+                    CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, joueurs[i].doublon);
                 }
             }
             for(int i = 0; i < nbJoueurs; i++){
