@@ -1,12 +1,26 @@
+#include <asm-generic/ioctls.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include "cartes.h"
 #include "erreur.h"
 #include "affichage.h"
 #include "structure.h"
 
+
+int largeurTerminal(){
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+    if (w.ws_col > 0){  
+        return w.ws_col; // Si la variable existe on la convertit en int et on la retourne
+    }
+
+    return 80; // Valeur par défaut
+}
 
 void effacerEcran(){
     printf("\033[2J\033[H"); // CSI 2J = effacer, CSI H = curseur en (0,0)
@@ -20,13 +34,15 @@ void afficherSeparateur(int largeur){
 }
 
 void afficherTitrePrincipal(){
-    int espacement = (150 - strlen(" F L I P T E C H - Le jeu de cartes ultime")) / 2;
+    int col = largeurTerminal();
+
+    int espacement = (col - strlen(" F L I P T E C H - Le jeu de cartes ultime")) / 2;
 
     effacerEcran();
     printf("\n" V_NOIR);
-    afficherSeparateur(150);
+    afficherSeparateur(col);
     printf(RESET CLIGNOTE  "%*s%s%*s", espacement, "", RESET EMOJI_CARTE GRAS V_NOIR " F L I P T E C H - Le jeu de cartes ultime" RESET EMOJI_CARTE,espacement, "\n" V_NOIR);
-    afficherSeparateur(150);
+    afficherSeparateur(col);
     printf("\n" RESET);
 }
 
@@ -135,10 +151,10 @@ void afficherNbcarte(Paquet* p){
         exit(ERREUR_17);
     }
 
-    int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0;
+    int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0, col = largeurTerminal();
 
     printf("\n" GRAS);
-    afficherSeparateur(81);
+    afficherSeparateur(col);
     printf(EMOJI_SCORE GRAS" Cartes restantes dans le paquet : ");
     printf("\n");
 
@@ -190,7 +206,7 @@ void afficherNbcarte(Paquet* p){
     }
     printf(GRAS V_BLANC"[STOP:%2d] ", restanteSpeciale);
     printf(RESET GRAS"\n");
-    afficherSeparateur(81);
+    afficherSeparateur(col);
 }
 
 
@@ -230,12 +246,3 @@ void afficherStatut (Perso* joueurs, int nbJoueurs) {
      printf("\n\n");
 }
 
-void afficheRegle(){
-     #ifdef __WIN64__   
-            system("start regle.txt");
-      #elif __APPLE__   
-            system("open regle.txt");
-     #else
-            system("xdg-open regle.txt");
-     #endif
-}
