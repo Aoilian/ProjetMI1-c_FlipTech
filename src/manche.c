@@ -21,7 +21,7 @@ void Decision(int* decision,Perso* joueur){
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 || *decision == 2)) {
             		valide = 1; //si c'est valide, c'est fini
         }else{
-        	printf("\nErreur : saisie invalide.\n");
+        	printf("\nErreur : Saisie invalide.\n");
         	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
         	while (getchar() != '\n'); 
         	}
@@ -47,6 +47,23 @@ void AfficherRegle(){
 	printf("Carte numéro déjà obtenue → Le joueur perd la manche et marque 0 point.\n7 cartes différentes obtenues → La manche s’arrête immédiatement pour tout le monde + Le joueur gagne +15 points bonus pour avoir fait un flip7.\n");
 	printf("\nFin de manche\nUne manche se termine lorsque :\nun joueur obtient 7 cartes différentes,ou tous les joueurs se sont arrêtés,ou tous les joueurs restants ont perdu en tirant un doublon\n");
 	printf("\nFin de partie\nLa partie s’arrête si : un joueur atteint 200 points ou plus\nLe joueur avec le score total le plus élevé remporte la partie.\n\n");
+}
+void VoirRegle(){
+	int lire;
+	int valide;
+	do {
+		printf("Voulez-vous consultez les rêgles du jeu ?\n-Oui : 1 \n- Non : 0");
+		if (scanf("%d", lire) == 1 && (lire == 0 || lire == 1)) {
+            		valide = 1; //si c'est valide, c'est fini
+        } else {
+        	printf("\nErreur : Saisie invalide.\n");
+        	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+        	while (getchar() != '\n'); 
+        }
+	} while(valide == 0);
+	if (lire == 1) {
+		AfficherRegle();
+	}
 }
     
 //nombre de joueurs dans la partie ?
