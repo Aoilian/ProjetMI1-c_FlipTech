@@ -19,8 +19,8 @@ int main() {
     effacerEcran();
     afficherTitrePrincipal();
     printf(RESET);
-
     
+    VoirRegle();
     // Saisie des joueurs
     nmbJoueurs(&nbJoueurs);
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
