@@ -52,7 +52,7 @@ void VoirRegle(){
 	int lire;
 	int valide;
 	do {
-		printf("Voulez-vous consultez les rêgles du jeu ?\n-Oui : 1 \n- Non : 0");
+		printf("Voulez-vous consulter les rêgles du jeu ?\n-Oui : 1 \n- Non : 0\n");
 		if (scanf("%d", lire) == 1 && (lire == 0 || lire == 1)) {
             		valide = 1; //si c'est valide, c'est fini
         } else {
