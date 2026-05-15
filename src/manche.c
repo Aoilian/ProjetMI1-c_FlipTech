@@ -32,9 +32,9 @@ void Decision(int* decision,Perso* joueur){
 }    
 
 void AfficherRegle(){
-	printf("\n\nRègles du jeu : FlipTech ou --flip7--\n");
+	printf("\n\nRègles du jeu : FlipTech ou --flip7--\n\n\n");
 	printf("Le Flip7 est un jeu de cartes mêlant hasard, statistiques et prise de risque. Il peut être joué à autant de joueurs que l’on souhaite (3 joueurs minimum).\n");
-	printf("\nObjectif du jeu : Accumuler le plus de points possible au fil des manches.\n");
+	printf("\nObjectif du jeu\nAccumuler le plus de points possible au fil des manches.\n");
 	printf("Les cartes numéros rapportent leur valeur, et les cartes bonus modifient le score final (multiplication ou ajout)\n");
 	printf("\nComposition du jeu\nLe jeu contient 85 cartes (ou plus selon le nombre de joueurs) :\n");
 	printf("- 79 cartes numéros allant de 0 à 12, avec une quantité croissante selon le numéro (ex : 1 carte “0”, 12 cartes “12”)\n");
