@@ -39,7 +39,7 @@ void AfficherRegle(){
 	printf("\nComposition du jeu\nLe jeu contient 85 cartes (ou plus selon le nombre de joueurs) :\n");
 	printf("- 79 cartes numéros allant de 0 à 12, avec une quantité croissante selon le numéro (ex : 1 carte “0”, 12 cartes “12”)\n");
 	printf("- 6 cartes bonus : x2, +2, +4, +6, +8, +10\n");
-	printf("Une carte spéciale : STOP, qui permet de stopper un autre joueur de la partie quand on la pioche\n")
+	printf("Une carte spéciale : STOP, qui permet de stopper un autre joueur de la partie quand on la pioche\n");
 	printf("\nDéroulement d’une manche\n");
 	printf("Les joueurs jouent dans le même ordre, chacun leur tour.\n");
 	printf("À son tour, un joueur peut :\n1) s'arrêter : Il conserve les points déjà accumulés dans la manche\n2) Piocher une carte (4 situations possibles :\n");
