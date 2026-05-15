@@ -172,6 +172,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
                     }
             		if (Flip7(Joueurs[joueurActuel])) {
 						printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
+						Joueurs[joueurActuel].score += 15;
 						flip_7 = true;
 
             		}
