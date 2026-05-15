@@ -196,7 +196,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 				} else if( decision == 0) {
 					printf(GRAS "\nC'est la fin de la manche pour toi !\n" RESET);
 					Joueurs[joueurActuel].Ajouer = true;
-			    } else if(decision == 2){
+			    } else {
 					AfficherRegle();
 				}    		
         	}
