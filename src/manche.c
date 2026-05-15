@@ -53,7 +53,7 @@ void VoirRegle(){
 	int valide;
 	do {
 		printf("Voulez-vous consulter les rêgles du jeu ?\n-Oui : 1 \n- Non : 0\n");
-		if (scanf("%d", lire) == 1 && (lire == 0 || lire == 1)) {
+		if (scanf("%d", &lire) == 1 && (lire == 0 || lire == 1)) {
             		valide = 1; //si c'est valide, c'est fini
         } else {
         	printf("\nErreur : Saisie invalide.\n");
