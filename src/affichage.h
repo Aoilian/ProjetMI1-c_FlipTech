@@ -67,7 +67,7 @@ void afficherNbcarte(Paquet* p);
 void afficherJoueur(char* prenom);
 void afficherGagnant(char* prenom, unsigned int score);
 void afficherStatut(Perso* joueurs, int nbJoueurs);
-void afficheRegle();
+int largeurTerminal();
 
 
 #endif //Fin de la garde d'inclusion

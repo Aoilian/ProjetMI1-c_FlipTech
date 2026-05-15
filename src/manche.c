@@ -16,7 +16,7 @@ void Decision(int* decision,Perso* joueur){
 	int valide = 0;
      
 	do{
-		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n \n-Voir les règles : 2\n");
+		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n -Voir les règles : 2\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 || *decision == 2)) {
@@ -117,7 +117,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 	}
 
 	//On choisit qui commence (aléatoire)
-	int joueurActuel = rand() % nbJoueurs, decision = 0;
+	int joueurActuel = rand() % nbJoueurs, decision = 0, col = largeurTerminal();
 
 
 	Carte c;
@@ -132,9 +132,9 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
     		// On ne fait jouer le joueur que s'il n'a pas encore joué
         	if (Joueurs[joueurActuel].Ajouer == false) {
 				
-				afficherSeparateur(100);
+				afficherSeparateur(col);
 				afficherStatut(Joueurs, nbJoueurs);
-				afficherSeparateur(100);
+				afficherSeparateur(col);
 
 				afficherJoueur(Joueurs[joueurActuel].prenom);
 				afficherNbcarte(paquet);
@@ -179,7 +179,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 					printf(GRAS "\nC'est la fin de la manche pour toi !\n" RESET);
 					Joueurs[joueurActuel].Ajouer = true;
 			    } else{
-					afficheRegle();
+					//afficheRegle();
 				}    		
         	}
         	joueurActuel = (joueurActuel + 1) % nbJoueurs;
