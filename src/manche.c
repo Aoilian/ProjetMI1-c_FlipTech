@@ -15,7 +15,7 @@ void Decision(int* decision,Perso* joueur){
 	int valide = 0;
      
 	do{
-		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n -Voir les règles : 2\n");
+		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n-Voir les règles : 2\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 || *decision == 2)) {
@@ -32,21 +32,21 @@ void Decision(int* decision,Perso* joueur){
 }    
 
 void AfficherRegle(){
-	printf("Règles du jeu du FlipTech --flip7--\n");
+	printf("\n\nRègles du jeu : Le FlipTech --flip7--\n");
 	printf("Le Flip7 est un jeu de cartes mêlant hasard, statistiques et prise de risque. Il peut être joué à autant de joueurs que l’on souhaite.\n");
 	printf("\nObjectif du jeu : Accumuler le plus de points possible au fil des manches.\n");
 	printf("Les cartes numéros rapportent leur valeur, et les cartes bonus modifient le score final (multiplication ou ajout)\n");
 	printf("\nComposition du jeu\nLe jeu contient 85 cartes (ou plus selon le nombre de joueurs) :\n");
 	printf("- 79 cartes numéros allant de 0 à 12, avec une quantité croissante selon le numéro (ex : 1 carte “0”, 12 cartes “12”)\n");
 	printf("- 6 cartes bonus : x2, +2, +4, +6, +8, +10\n");
-	printf("Une carte spéciale : STOP, qui permet de stopper un autre joueur de la partie quand on la pioche\n");
+	printf("- Une carte spéciale : STOP, qui permet de stopper un autre joueur de la partie quand on la pioche\n");
 	printf("\nDéroulement d’une manche\n");
 	printf("Les joueurs jouent dans le même ordre, chacun leur tour.\n");
 	printf("À son tour, un joueur peut :\n1) s'arrêter : Il conserve les points déjà accumulés dans la manche\n2) Piocher une carte (4 situations possibles :\n");
 	printf("Nouvelle carte numéro →  Elle s’ajoute à sa collection et augmente son score de manche.\nCarte bonus → Son effet s’appliquera au score final de la manche.\n");
 	printf("Carte numéro déjà obtenue → Le joueur perd la manche et marque 0 point.\n7 cartes différentes obtenues → La manche s’arrête immédiatement pour tout le monde + Le joueur gagne +15 points bonus pour avoir fait un flip7.\n");
 	printf("\nFin de manche\nUne manche se termine lorsque :\nun joueur obtient 7 cartes différentes,ou tous les joueurs se sont arrêtés,ou tous les joueurs restants ont perdu en tirant un doublon\n");
-	printf("\nFin de partie\nLa partie s’arrête si : un joueur atteint 200 points ou plus\nLe joueur avec le score total le plus élevé remporte la partie.\n");
+	printf("\nFin de partie\nLa partie s’arrête si : un joueur atteint 200 points ou plus\nLe joueur avec le score total le plus élevé remporte la partie.\n\n");
 }
     
 //nombre de joueurs dans la partie ?
