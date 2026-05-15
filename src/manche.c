@@ -16,7 +16,7 @@ void Decision(int* decision,Perso* joueur){
 	int valide = 0;
      
 	do{
-		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n -Voir les règles : 2\n");
+		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
         	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 || *decision == 2)) {

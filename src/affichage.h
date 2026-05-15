@@ -56,6 +56,8 @@
 #define BOITE_M "░"
 
 
+int largeurTerminal();
+int calculeLargeurUtf8 (char* chaine);
 void effacerEcran();
 void afficherSeparateur(int largeur);
 void afficherTitrePrincipal();
@@ -67,7 +69,7 @@ void afficherNbcarte(Paquet* p);
 void afficherJoueur(char* prenom);
 void afficherGagnant(char* prenom, unsigned int score);
 void afficherStatut(Perso* joueurs, int nbJoueurs);
-int largeurTerminal();
+
 
 
 #endif //Fin de la garde d'inclusion

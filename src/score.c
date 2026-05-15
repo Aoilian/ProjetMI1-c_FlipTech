@@ -5,28 +5,10 @@
 #include "score.h"
 #include "erreur.h"
 
-// Met la première lettre du prénom en majuscule
-void Maj(char* prenom){
-	if(prenom[0] != '\0' && (prenom[0] > 96 && prenom[0] < 123)){
-		prenom[0] += 'A' - 'a' ; 
-	}
-}
-
-// Met toutes les autres lettre du en minuscule
-void Min(char* prenom){
-	if(strlen(prenom) >= 2){
-		for(unsigned int i = 1; i < strlen(prenom); i++){
-			if(prenom[i] != '\0' && (prenom[i] > 64 && prenom[i] < 91)){
-					prenom[i] -= 'A' - 'a'; 
-			}
-		}
-	}
-}
-
 // Verifie la validité du prénom du joueur
 bool PrenomValide(char* prenom){
 	for(unsigned int i = 0; i < strlen(prenom); i++){
-				if(prenom[i] >  122 || prenom[i] < 65 || (prenom[i] > 90 && prenom[i] < 97)){
+				if((prenom[i] < 'A' || prenom[i] > 'Z') && (prenom[i] < 'a' || prenom[i] > 'z') && (unsigned int)prenom[i] < 0xC0){
 					return false;
 				}
 	}

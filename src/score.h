@@ -7,9 +7,6 @@
 #include <string.h>
 #include "structure.h"
 
-
-void Maj(char* prenom);
-void Min(char* prenom);
 bool PrenomValide(char* prenom);
 int PersoValide(Perso a);
 unsigned int AjouterBonus(unsigned int score, int bonus);

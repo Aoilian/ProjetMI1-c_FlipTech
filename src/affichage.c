@@ -10,17 +10,69 @@
 #include "affichage.h"
 #include "structure.h"
 
-
+/*
+    - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
+    - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir ses dimensions
+    - Renvoie la largeur du terminale ou 80 par défaut si 
+*/
 int largeurTerminal(){
+    // Structure pour stocker les dimensions du terminal (lignes et colonnes)
+    // ws_col : nombre de colonnes (entier non signé)
     struct winsize w;
+
+    // Appel du système pour obtenir les dimensions du terminal :
+    //- STDOUT_FILENO : descripteur de fichier de la sortie standrad
+    //- TIOCGWINSZ : commande  pour récupérer la taille de la fenêtre du terminal
+    //- Retourne 0 en cas de succès et -1 sinon
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
+    // On verifie que la valeur récupérée est valide
     if (w.ws_col > 0){  
-        return w.ws_col; // Si la variable existe on la convertit en int et on la retourne
+        return w.ws_col; 
     }
 
-    return 80; // Valeur par défaut
+    return 80; // Valeur par défaut si l'appel échoue -> 80 est une valeur standard pour les terminaux
 }
+
+/*
+    - Calcule la largeur en colonnes terminales d'une chaîne UTF-8
+    - En UTF-8, certains caractères (comme les accent ou les emoji) occupent plusieurs octet mais ne doivent compter que pour 1 ou 2 colonne à l'affichage
+*/
+int calculeLargeurUtf8 (char* chaine) {
+    int largeur = 0;
+
+    // Parcourt la chaine de charactère jusqu'à la fin 
+    while(*chaine != '\0'){
+
+        // CAS 1 : caractère ASCII (1 octet, 1 colonne)
+        // 0x80 = 10000000 en binaire -> Si le bit de poid fort est 0 c'est un caractère ASCII 
+        if((*chaine & 0x80) == 0){
+            
+            largeur++;
+            chaine++;
+        } 
+        // CAS 2 : caractère UTF-8 (2 octets, 1 colonne)
+        // 0xE0 = 11100000 en binaire -> Si les 3 premiers bits sont 110, c'est un caractère sur 2 octets  
+        else if ((*chaine & 0xE0) == 0xC0) {
+            largeur++;
+            chaine += 2;
+        } 
+        // CAS 3 : caractère UTF-8 (3 octet, 1 colonne)
+        // 0xF0 = 11110000 en binaire -> Si les 4 premiers bits sont 1110, c'est un caractère sur 3 octets  
+        else if ((*chaine & 0xF0) == 0xE0) {
+            largeur++;
+            chaine += 3;
+        }  
+        // CAS 4 : caractère UTF-8 (4 octet, 2 colonne)
+        // 0xF0 = 11110000 en binaire -> Si les 5 premiers bits sont 11110, c'est un caractère sur 4 octets
+        else{
+            largeur += 2;
+            chaine += 4;
+        }
+    }
+    return largeur;
+}
+
 
 void effacerEcran(){
     printf("\033[2J\033[H"); // CSI 2J = effacer, CSI H = curseur en (0,0)
@@ -90,7 +142,13 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
     }
 
     unsigned int scoreMax = 0;
+    int largeurPrenom = calculeLargeurUtf8(joueur->prenom);
+    int espaceRestant = 15 - largeurPrenom;
     
+    if(espaceRestant < 0){
+        espaceRestant = 0;
+    }
+
 
     for(int i = 0; i < nbJoueurs; i++){
         if(joueurs[i].score > scoreMax){
@@ -98,20 +156,27 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
         }
     }
 
-        printf("\n");
-        
-        if(joueur->score == scoreMax){
-            printf("\n╔═══════════════════════════════════════════╗ ");
-            printf("\n║"EMOJI_SCORE" SCORE de %-14s = %5d pts" , joueur->prenom, joueur->score);
-            printf(" "EMOJI_ETOILE "  ║");
-            printf("\n╚═══════════════════════════════════════════╝ \n");
+    printf("\n");
+    
+    if(joueur->score == scoreMax){
+        printf("\n╔═══════════════════════════════════════════╗ ");
+        printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts" , joueur->prenom, joueur->score);
+        for(int i = 0; i < espaceRestant-1; i++){
+            printf(" ");
         }
-        else{
-            printf("\n╔═══════════════════════════════════════╗ ");
-            printf("\n║"EMOJI_SCORE" SCORE de %-15s = %5d pts║  ", joueur->prenom, joueur->score);
-            printf("\n╚═══════════════════════════════════════╝\n");
-        }
+        printf(" "EMOJI_ETOILE "  ║");
+        printf("\n╚═══════════════════════════════════════════╝ \n");
     }
+    else{
+        printf("\n╔═══════════════════════════════════════╗ ");
+        printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts", joueur->prenom, joueur->score);
+        for(int i = 0; i < espaceRestant; i++){
+            printf(" ");
+        }
+        printf("║");
+        printf("\n╚═══════════════════════════════════════╝\n");
+    }
+}
 
 
 void afficherPaquet(Paquet* p){
@@ -165,7 +230,7 @@ void afficherNbcarte(Paquet* p){
                 restanteNum ++;
             }
         }
-        printf(GRAS V_BLANC"[%2d:%2d] ", i , restanteNum);
+        printf(GRAS V_BLANC"[%2d:%2d]    ", i , restanteNum);
         if(i == 9){
             printf("\n");
         }
@@ -183,15 +248,15 @@ void afficherNbcarte(Paquet* p){
         switch(i){
                 case PLUS2 : printf( GRAS V_BLANC"[+2: %d] ", restanteBon);
                      break;
-                case PLUS4 : printf("[+4: %d] ", restanteBon);
+                case PLUS4 : printf("[+4: %d]    ", restanteBon);
                      break;
-                case PLUS6 : printf("[+6: %d] " , restanteBon);
+                case PLUS6 : printf("[+6: %d]    " , restanteBon);
                      break;
-                case PLUS8 : printf("[+8: %d] ", restanteBon);
+                case PLUS8 : printf("[+8: %d]    ", restanteBon);
                      break;
-                case PLUS10 : printf("[+10:%d] ", restanteBon);
+                case PLUS10 : printf("[+10:%d]    ", restanteBon);
                      break;
-                case FOIS2 : printf("[x2: %d] ", restanteBon);
+                case FOIS2 : printf("[x2: %d]    ", restanteBon);
                      break;
         }
         
@@ -215,13 +280,26 @@ void afficherJoueur(char* prenom){
         exit(ERREUR_18);
     }
 
+    int largeurPrenom = calculeLargeurUtf8(prenom);
+    int espaceRestant = 23 - largeurPrenom;
+    
+    if(espaceRestant < 0){
+        espaceRestant = 0;
+    }
+
     printf(V_NOIR "\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n");
-    printf("┃ " RESET "" EMOJI_JOUEUR GRAS V_BLANC" A toi de jouer : %-23s"V_NOIR"┃\n" RESET, prenom);
-    printf(V_NOIR"┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"RESET);
+    printf("┃ " RESET "" EMOJI_JOUEUR GRAS V_BLANC" A toi de jouer : %s", prenom);
+    for(int i = 0; i < espaceRestant; i++){
+        printf(" ");
+    }
+    printf(V_NOIR"┃\n");
+    printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"RESET);
 }
 
 
 void afficherGagnant(char* prenom, unsigned int score){
+
+        
         printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 		printf(  GRAS "\n┃ Le gagnant de la partie est : %-5s avec un score de %u ",prenom, score);
 		                                                           printf(EMOJI_TROPHEE"        ┃\n");
