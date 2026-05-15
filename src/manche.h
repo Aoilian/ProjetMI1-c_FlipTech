@@ -6,6 +6,8 @@
 
 
 void decision(int* piocher,Perso* joueur);
+void AfficherRegle();
+void VoirRegle();
 void nmbJoueurs(int* nbJoueurs);
 bool Flip7(Perso joueur);
 bool Doublon( Perso joueur);
