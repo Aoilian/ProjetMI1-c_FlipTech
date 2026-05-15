@@ -26,11 +26,6 @@ int main() {
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
     InitialiseJoueurs(joueurs, nbJoueurs);
     
-    for(int j = 0; j < nbJoueurs; j++){
-            Maj((joueurs+j)->prenom);
-            Min((joueurs+j)->prenom);
-    }
-    
     // Initialisation du paquet 
     creerPaquet(&paquet,nbJoueurs);
     melanger(&paquet);
