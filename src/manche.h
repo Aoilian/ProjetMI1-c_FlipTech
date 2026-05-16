@@ -4,7 +4,9 @@
 #include <stdbool.h>
 #include "structure.h"
 
-
+void Maj(char* prenom);
+void Min(char* prenom);
+void normaliserPrenom (char* prenom);
 void decision(int* piocher,Perso* joueur);
 void AfficherRegle();
 void VoirRegle();

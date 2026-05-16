@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include "affichage.h"
 #include "structure.h"
@@ -93,7 +94,7 @@ void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
 }
 			
 					
-void reinitialiserJoueur(Perso* joueurs, int nbjoueur){
+void VideLaMain(Perso* joueurs, int nbjoueur){
 		if(joueurs == NULL || nbjoueur < 3){
                 	printf("\nErreur\n");
                 	exit(ERREUR_2);
@@ -139,14 +140,13 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
-				max = joueurs[j].score;
 				adresseMax =  joueurs + j;
 			} 
 		}	
-		afficherGagnant(adresseMax->prenom,max);
+		afficherGagnant(adresseMax->prenom);
 	 
-		 //On retourne l'adresse du joueur qui a gagné
-		 return adresseMax;
+		//On retourne l'adresse du joueur qui a gagné
+		return adresseMax;
 }
 
 //On enregistre le Nom de chaque gagnant de la partie
@@ -156,16 +156,23 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
             exit(ERREUR_5);
     }
 	Perso* gagnant = designerGagnant(a, nbjoueur);
+	char nomFichier[255];
+
+	printf("\nQuel nom donnez vous au fichier ?\n ");
+	while(scanf("%s", nomFichier) != 1){
+		printf("Saisie invalide, veuillez recommmencer");
+		while(getchar() != '\n'); // On vide le tampon
+	}
 
 	//On ouvre le fichier Fliptech.txt
 	FILE* fichier = NULL; 
-	fichier = fopen("Fliptech.txt", "w+"); 
+	fichier = fopen(nomFichier, "w+"); 
 
 	for(int i = 0; i < nbjoueur; i++){
 		char choix;
 
 
-		printf(RESET"\n%s veux tu enregistrer ton score sur le fichier Fliptech ? (oui : O / non : N) \n", (a + i)->prenom);
+		printf(RESET"\n%s veux tu enregistrer ton score sur le fichier %s ? (oui : O / non : N) \n", (a + i)->prenom, nomFichier);
 		while(scanf(" %c",&choix) != 1 || (choix != 'O' && choix != 'N')){ //Tant que l'utilisateur ne saisi pas 'O4 OU 'N' on lui redemande de saisir
 					printf("Saisi invalide, veuillre réessayer. \n");
 					while(getchar() != '\n'); //On vide le tampon après la saisi de l'utilisateur

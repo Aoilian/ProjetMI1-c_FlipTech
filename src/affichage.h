@@ -3,10 +3,10 @@
 #include <stdbool.h>
 #include "structure.h"
 
-/* Remise à zero */
+// Remise à zero 
 #define RESET "\033[0m"
 
-/* Styles */
+// Styles 
 #define GRAS "\033[1m"
 #define DIM "\033[2m"
 #define ITALIC "\033[3m"
@@ -14,14 +14,14 @@
 #define CLIGNOTE "\033[5m"
 
 
-/* Couleurs de textes */
+// Couleurs de textes 
 #define JAUNE "\033[33m"
 #define CYAN "\033[36m"
 
-/* Couleurs du fond */
+// Couleurs du fond */
 #define F_BLANC "\033[47m"
 
-/* Couleurs Vives */
+// Couleurs Vives 
 #define V_NOIR "\033[90m"
 #define V_ROUGE "\033[91m"
 #define V_VERT "\033[92m"
@@ -32,26 +32,20 @@
 #define V_BLANC "\033[97m"
 
 
-/* Emoji */
+// Emoji 
 #define EMOJI_BLESSURE "🤕"
 #define EMOJI_CARTE "🃏"
 #define EMOJI_ETOILE "⭐"
 #define EMOJI_FEU "🔥"
 #define EMOJI_JOUEUR "🧑"
 #define EMOJI_MELANGE "🔀"
+#define EMOJI_NOTE "📋"
 #define EMOJI_SCORE "📊"
 #define EMOJI_TROPHEE "🏆"
 #define EMOJI_STOP "⛔"
 #define EMOJI_ECRIRE "📝"
 
-/* Caractère de tracé de boites */
-#define BOITE_HG "╔" // Coin haut gauche 
-#define BOITE_HD " ╗" // Coin haut droite
-#define BOITE_BG "╚" // Coin bas gauche
-#define BOITE_BD "╝" // Coin bas droite
-#define BOITE_CR "╬" // Croissement
-#define BOITE_V "║"  // vertical
-#define BOITE_H "═" // horizontale
+// Caractère de tracé de boites 
 #define BOITE_PLEINE "█"
 #define BOITE_M "░"
 
@@ -64,10 +58,9 @@ void afficherTitrePrincipal();
 void afficherCarteEsthetique(Carte c);
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
 void afficherPaquet(Paquet* p);
-void afficherStat(Stats statistiques);
 void afficherNbcarte(Paquet* p);
 void afficherJoueur(char* prenom);
-void afficherGagnant(char* prenom, unsigned int score);
+void afficherGagnant(char* prenom);
 void afficherStatut(Perso* joueurs, int nbJoueurs);
 
 

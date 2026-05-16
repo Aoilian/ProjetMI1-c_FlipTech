@@ -26,11 +26,4 @@ typedef struct {
     int nbCartes; // nombre de cartes restantes dans la pile
 } Paquet;
 
-typedef struct {
-    int nbNumero; // nombre de cartes numéro piochées
-    int nbBonus; // nombre de cartes bonus piochées
-    int nbSpeciale; // nombre de cartes spéciale piochées
-} Stats;
-
-
 #endif //Fin de la garde d'inclusion
