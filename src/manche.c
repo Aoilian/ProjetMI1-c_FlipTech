@@ -42,7 +42,7 @@ void AfficherRegle(){
 	printf("- Une carte spéciale : STOP, qui permet de stopper un autre joueur de la partie quand on la pioche\n");
 	printf("\nDéroulement d’une manche\n");
 	printf("Les joueurs jouent dans le même ordre, chacun leur tour.\n");
-	printf("À son tour, un joueur peut :\n1) s'arrêter : Il conserve les points déjà accumulés dans la manche\n2) Piocher une carte (4 situations possibles :\n");
+	printf("À son tour, un joueur peut :\n1) S'arrêter : Il conserve les points déjà accumulés dans la manche\n2) Piocher une carte (4 situations possibles) :\n");
 	printf("Nouvelle carte numéro →  Elle s’ajoute à sa collection et augmente son score de manche.\nCarte bonus → Son effet s’appliquera au score final de la manche.\n");
 	printf("Carte numéro déjà obtenue → Le joueur perd la manche et marque 0 point.\n7 cartes différentes obtenues → La manche s’arrête immédiatement pour tout le monde + Le joueur gagne +15 points bonus pour avoir fait un flip7.\n");
 	printf("\nFin de manche\nUne manche se termine lorsque :\nun joueur obtient 7 cartes différentes,ou tous les joueurs se sont arrêtés,ou tous les joueurs restants ont perdu en tirant un doublon\n");
