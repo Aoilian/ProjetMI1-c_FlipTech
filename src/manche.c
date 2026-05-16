@@ -69,7 +69,7 @@ void AfficherRegle(){
 	printf("Carte numéro déjà obtenue → Le joueur perd la manche et marque 0 point.\n7 cartes différentes obtenues → La manche s’arrête immédiatement pour tout le monde + Le joueur gagne +15 points bonus pour avoir fait un flip7.\n");
 	printf("\nFin de manche\nUne manche se termine lorsque :\nun joueur obtient 7 cartes différentes,ou tous les joueurs se sont arrêtés,ou tous les joueurs restants ont perdu en tirant un doublon\n");
 	printf("\nFin de partie\nLa partie s’arrête si : \n- un joueur atteint 200 points ou plus\nLe joueur avec le score total le plus élevé remporte la partie.\n");
-	printf("- si la pioche est épuisée (dans ce cas, le bonus de 15 points n’est accordé que si le dernier joueur a bien obtenu 7 cartes différentes).\n\n\n")
+	printf("- si la pioche est épuisée (dans ce cas, le bonus de 15 points n’est accordé que si le dernier joueur a bien obtenu 7 cartes différentes).\n\n\n");
 }
 
 void VoirRegle(){
