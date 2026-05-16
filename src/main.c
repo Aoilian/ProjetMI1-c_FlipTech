@@ -25,7 +25,10 @@ int main() {
     nmbJoueurs(&nbJoueurs);
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
     InitialiseJoueurs(joueurs, nbJoueurs);
-    
+    for(int i = 0; i < nbJoueurs; i++) {
+        normaliserPrenom(joueurs[i].prenom);
+    }
+
     // Initialisation du paquet 
     creerPaquet(&paquet,nbJoueurs);
     melanger(&paquet);
@@ -38,9 +41,7 @@ int main() {
                     CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, joueurs[i].doublon);
                 }
             }
-            for(int i = 0; i < nbJoueurs; i++){
-                afficherTableauScores(&joueurs[i], joueurs, nbJoueurs);
-            }
+            
             preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
             compteur++;
     }
