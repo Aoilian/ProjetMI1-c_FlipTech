@@ -182,10 +182,9 @@ Carte piocher(Paquet *p){
     if (p == 0) {
        exit(ERREUR_7);
     }
-    else{
-        p->nbCartes = p->nbCartes - 1;
-        return p->cartes[p->nbCartes]; // carte piochée 
-    }
+    
+    p->nbCartes = p->nbCartes - 1;
+    return p->cartes[p->nbCartes]; // carte piochée 
 }
 
 void carteStop(Perso joueur, Perso* joueurs, int nbjoueur, Carte c){

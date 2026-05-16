@@ -135,7 +135,6 @@ void afficherCarteEsthetique(Carte c){
     printf(RESET " ");
 }
 
-
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
     if(joueurs == NULL || joueur == NULL){
         exit(ERREUR_15);
@@ -149,7 +148,6 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
         espaceRestant = 0;
     }
 
-
     for(int i = 0; i < nbJoueurs; i++){
         if(joueurs[i].score > scoreMax){
             scoreMax = joueurs[i].score;
@@ -158,7 +156,7 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
 
     printf("\n");
     
-    if(joueur->score == scoreMax){
+    if(joueur->score == scoreMax && joueur->score != 0){
         printf("\n╔═══════════════════════════════════════════╗ ");
         printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts" , joueur->prenom, joueur->score);
         for(int i = 0; i < espaceRestant-1; i++){
@@ -178,49 +176,17 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
     }
 }
 
-
-void afficherPaquet(Paquet* p){
-    if(p == NULL){
-        exit(ERREUR_16);
-    }
-
-    int total = 85;
-    int restant = p->nbCartes;
-    int barre = 42;
-    int plein = (restant*barre)/total;
-    
-    printf("Il reste %d cartes dans le paquet :  ",p->nbCartes);
-    for(int i = 0; i < barre; i++){
-        if(i < plein){
-            printf(V_VERT""BOITE_PLEINE""RESET);
-        }
-        else{
-            printf(V_BLANC""BOITE_M""RESET);
-        }
-    }
-    printf("\n");
-}
-
-
-void afficherStat(Stats statistiques){
-    printf(GRAS"\n");
-    afficherSeparateur(50);
-    printf(GRAS "" EMOJI_SCORE " STATISTIQUES DE LA PARTIE : ");
-    printf("\n %d cartes numéro ont été piochées, ", statistiques.nbNumero);
-    printf("\n %d cartes bonus ont été piochées \n" RESET, statistiques.nbBonus);
-    afficherSeparateur(50);
-}
-
 void afficherNbcarte(Paquet* p){
     if(p == NULL){
         exit(ERREUR_17);
     }
 
-    int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0, col = largeurTerminal();
+    int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0;
+    int col = largeurTerminal();
 
     printf("\n" GRAS);
     afficherSeparateur(col);
-    printf(EMOJI_SCORE GRAS" Cartes restantes dans le paquet : ");
+    printf(RESET EMOJI_SCORE GRAS V_BLANC" Cartes restantes dans le paquet %d : ", p->nbCartes);
     printf("\n");
 
     for(int i = 0; i < 13; i++){
@@ -230,7 +196,7 @@ void afficherNbcarte(Paquet* p){
                 restanteNum ++;
             }
         }
-        printf(GRAS V_BLANC"[%2d:%2d]    ", i , restanteNum);
+        printf(GRAS V_BLANC "[%2d:%2d]    " RESET, i , restanteNum);
         if(i == 9){
             printf("\n");
         }
@@ -245,32 +211,30 @@ void afficherNbcarte(Paquet* p){
                
         }
      
-        switch(i){
-                case PLUS2 : printf( GRAS V_BLANC"[+2: %d] ", restanteBon);
-                     break;
-                case PLUS4 : printf("[+4: %d]    ", restanteBon);
-                     break;
-                case PLUS6 : printf("[+6: %d]    " , restanteBon);
-                     break;
-                case PLUS8 : printf("[+8: %d]    ", restanteBon);
-                     break;
-                case PLUS10 : printf("[+10:%d]    ", restanteBon);
-                     break;
-                case FOIS2 : printf("[x2: %d]    ", restanteBon);
-                     break;
-        }
-        
+    switch(i){
+        case PLUS2 : printf( GRAS V_BLANC"[+2: %d]    ", restanteBon);
+                break;
+        case PLUS4 : printf("[+4: %d]    ", restanteBon);
+                break;
+        case PLUS6 : printf("[+6: %d]    " , restanteBon);
+                break;
+        case PLUS8 : printf("[+8: %d]    ", restanteBon);
+                break;
+        case PLUS10 : printf("[+10:%d]    ", restanteBon);
+                break;
+        case FOIS2 : printf("[x2: %d]    ", restanteBon);
+                break;
     }
+}
 
-  
     restanteSpeciale = 0;
     for(int j = 0; j < p->nbCartes; j++){
-        if(p->cartes[j].type == 'S' && p->cartes[j].numero == STOP){
+        if(p->cartes[j].type == 'S' && p->cartes[j].speciale == STOP){
             restanteSpeciale ++;
         }
     }
-    printf(GRAS V_BLANC"[STOP:%2d] ", restanteSpeciale);
-    printf(RESET GRAS"\n");
+    printf("[STOP:%2d] " RESET, restanteSpeciale);
+    printf("\n");
     afficherSeparateur(col);
 }
 
@@ -297,13 +261,17 @@ void afficherJoueur(char* prenom){
 }
 
 
-void afficherGagnant(char* prenom, unsigned int score){
+void afficherGagnant (char* prenom) {
 
-        
-        printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-		printf(  GRAS "\n┃ Le gagnant de la partie est : %-5s avec un score de %u ",prenom, score);
-		                                                           printf(EMOJI_TROPHEE"        ┃\n");
-	             printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+        int largeurPrenom = calculeLargeurUtf8(prenom);
+        int espaceRestant = 23 - largeurPrenom;
+        printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+		printf(  GRAS "\n┃ Le gagnant de la partie est : %-23s " , prenom);
+        for (int i = 0; i < espaceRestant; i++) {
+            printf(" ");
+        }
+        printf(EMOJI_TROPHEE"┃\n");
+        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" RESET);
 }
 
 
