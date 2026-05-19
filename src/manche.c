@@ -9,7 +9,7 @@
 
 // Met la première lettre du prénom en majuscule
 void Maj (char* prenom) {
-	if(prenom[0] != '\0' && (prenom[0] > 96 && prenom[0] < 123)){
+	if(prenom[0] != '\0' && ((prenom[0] >= 'a' && prenom[0] <= 'z') || ((unsigned int)prenom[0] >= 0xDF && (unsigned int)prenom[0] <= 0xFF))) {
 		prenom[0] += 'A' - 'a' ; 
 	}
 }
@@ -18,7 +18,7 @@ void Maj (char* prenom) {
 void Min (char* prenom) {
 	if(strlen(prenom) >= 2){
 		for(unsigned int i = 1; i < strlen(prenom); i++){
-			if(prenom[i] != '\0' && (prenom[i] > 64 && prenom[i] < 91)){
+			if(prenom[i] != '\0' && ((prenom[i] >= 'A' && prenom[i] <= 'Z') || ((unsigned int)prenom[i] >= 0xC0 && (unsigned int)prenom[i] <= 0xDE))) {
 					prenom[i] -= 'A' - 'a'; 
 			}
 		}
@@ -72,8 +72,7 @@ void AfficherRegle(){
 }
 
 void VoirRegle(){
-	int lire;
-	int valide;
+	int lire = 0, valide = 0;
 	do {
 		printf("Voulez-vous consulter les rêgles du jeu avant de commencer la partie ?\n- Oui : 1 \n- Non : 0\n");
 		if (scanf("%d", &lire) == 1 && (lire == 0 || lire == 1)) {
@@ -162,9 +161,9 @@ void preparerNouvelleManche (Perso* Joueurs, int nbJoueurs,Paquet* paquet, int c
 	}
     for (int i = 0; i < nbJoueurs; i++) {
         Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
-        VideLaMain(Joueurs, nbJoueurs);
 		Joueurs[i].doublon = false;
     }
+	VideLaMain(Joueurs, nbJoueurs);
 	if (!FinDePartie(Joueurs, *paquet, nbJoueurs) && paquet->nbCartes > 0) {
     	printf(GRAS"\n---------------------------  C'est parti pour la manche %d  ---------------------------\n" RESET, compteur);
 	}
@@ -198,7 +197,7 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 				afficherSeparateur(col);
 
 				afficherJoueur(Joueurs[joueurActuel].prenom);
-				if (Joueurs[joueurActuel].nbcarte < MAIN) {
+				if (Joueurs[joueurActuel].nbcarte > 0 && Joueurs[joueurActuel].nbcarte < MAIN) {
 					printf("\n");
 					printf("\nVoici ta main (%s) :  \n", Joueurs[joueurActuel].prenom);
 					for(unsigned int i = 0; i < Joueurs[joueurActuel].nbcarte; i++){
@@ -247,9 +246,6 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
         	printf("\nIl n'y a plus de cartes dans le paquet, la partie prend fin !\n");
 		}
 	}
-	for (int i = 0; i < nbJoueurs; i++) {
-                afficherTableauScores(&Joueurs[i], Joueurs, nbJoueurs);
-    }
 }
 
 void InitialiseJoueurs(Perso* joueurs, int n){
@@ -263,7 +259,7 @@ void InitialiseJoueurs(Perso* joueurs, int n){
 	        
 	        while(!PrenomValide(joueurs[i].prenom)){
 	            printf("Saisie invalide, veuillez recommencer\n");
-	            printf("Prenom : ");	
+	            printf("Prenom (20 caractère max): ");	
 				scanf("%s", joueurs[i].prenom);
 	        }
 
