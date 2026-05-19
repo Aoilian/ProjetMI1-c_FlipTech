@@ -257,9 +257,9 @@ void InitialiseJoueurs(Perso* joueurs, int n){
 	        printf("Prenom : ");
 			scanf("%s", joueurs[i].prenom);
 	        
-	        while(!PrenomValide(joueurs[i].prenom)){
+	        while(!PrenomValide(joueurs[i].prenom) ){
 	            printf("Saisie invalide, veuillez recommencer\n");
-	            printf("Prenom (20 caractère max): ");	
+	            printf("Prenom (20 caractères max): ");	
 				scanf("%s", joueurs[i].prenom);
 	        }
 

@@ -21,6 +21,6 @@
 #define ERREUR_18 18
 #define ERREUR_19 19
 #define ERREUR_20 20
-
+#define ERREUR_21 21
 
 #endif //Fin de la garde d'inclusion

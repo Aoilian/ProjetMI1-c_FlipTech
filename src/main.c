@@ -1,12 +1,11 @@
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "structure.h"
 #include "affichage.h"
 #include "cartes.h"
 #include "manche.h"
 #include "score.h"
-
-
 
 int main() {
     // On crée une nouvelle graine pour que les mélange ne soient pas les mêmes à chaque manche
@@ -41,7 +40,10 @@ int main() {
                     CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte, joueurs[i].doublon);
                 }
             }
-            
+            for (int j = 0; j < nbJoueurs; j++) {
+                afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
+            }
+            sleep(4); // Pause de 4 secondes
             preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
             compteur++;
     }
