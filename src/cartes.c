@@ -18,13 +18,17 @@ void RemplirPaquetNumero (Paquet* p, int* position, int numero) {
         p->cartes[*position].numero = numero;
         p->cartes[*position].bonus = 0;
         p->cartes[*position].speciale = 0;
-        position++;
+        (*position)++;
     }
 }
 
 // Initialise le paquet avec toutes les cartes du jeu 
 void creerPaquet (Paquet* p, int nbJoueurs) {
-    
+    if(p == NULL || nbJoueurs < 3){
+        printf("\nErreur de programmation !\n");
+        exit(ERREUR_22);
+    }
+
     int pos = 0;
     int nbPaquet = (nbJoueurs+9)/10; 
 
