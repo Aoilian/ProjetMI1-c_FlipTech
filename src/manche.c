@@ -9,8 +9,13 @@
 
 // Met la première lettre du prénom en majuscule
 void Maj (char* prenom) {
-	if(prenom[0] != '\0' && ((prenom[0] >= 'a' && prenom[0] <= 'z') || ((unsigned int)prenom[0] >= 0xDF && (unsigned int)prenom[0] <= 0xFF))) {
+	if(prenom[0] != '\0' && ((prenom[0] >= 'a' && prenom[0] <= 'z'))) {
 		prenom[0] += 'A' - 'a' ; 
+	}
+	else if (prenom[0] != '\0' && (unsigned char)prenom[0] != 0xF7) {
+		if((*prenom & 0xE0) == 0xC0) {
+			prenom[1] += "À"[1] - "à"[1]; // Multibyte
+		}
 	}
 }
 
@@ -18,8 +23,13 @@ void Maj (char* prenom) {
 void Min (char* prenom) {
 	if(strlen(prenom) >= 2){
 		for(unsigned int i = 1; i < strlen(prenom); i++){
-			if(prenom[i] != '\0' && ((prenom[i] >= 'A' && prenom[i] <= 'Z') || ((unsigned int)prenom[i] >= 0xC0 && (unsigned int)prenom[i] <= 0xDE))) {
-					prenom[i] -= 'A' - 'a'; 
+			if(prenom[i] != '\0' && ((prenom[i] >= 'A' && prenom[i] <= 'Z'))) {
+				prenom[i] -= 'A' - 'a'; 
+			}
+			else if( prenom[i] != '\0'){
+				if((*(prenom+i) & 0xE0) == 0xC0) {
+					prenom[1] += "À"[1] - "à"[1]; // Multibyte
+				}
 			}
 		}
 	}
