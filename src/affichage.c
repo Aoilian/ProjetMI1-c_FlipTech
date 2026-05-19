@@ -24,10 +24,8 @@ int largeurTerminal(){
     //- STDOUT_FILENO : descripteur de fichier de la sortie standrad
     //- TIOCGWINSZ : commande  pour récupérer la taille de la fenêtre du terminal
     //- Retourne 0 en cas de succès et -1 sinon
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
     // On verifie que la valeur récupérée est valide
-    if (w.ws_col > 0){  
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0 && w.ws_col > 0) {  
         return w.ws_col; 
     }
 
@@ -88,7 +86,7 @@ void afficherSeparateur(int largeur){
 void afficherTitrePrincipal(){
     int col = largeurTerminal();
 
-    int espacement = (col - strlen(" F L I P T E C H - Le jeu de cartes ultime")) / 2;
+    int espacement = (col - strlen(" F L I P T E C H - Le meilleur jeu de cartes de tous les temps")) / 2;
 
     effacerEcran();
     printf("\n" V_NOIR);
@@ -115,17 +113,17 @@ void afficherCarteEsthetique(Carte c){
     }
     else if (c.type == 'B'){
         switch (c.bonus) {
-            case PLUS2 : printf(V_MAGENTA "[ +2 ] ");
+            case PLUS2 : printf(V_MAGENTA"[ +2 ] ");
                      break;
-            case PLUS4 : printf("[ +4 ] ");
+            case PLUS4 : printf(V_MAGENTA"[ +4 ] ");
                      break;
-            case PLUS6 : printf("[ +6 ] ");
+            case PLUS6 : printf( V_MAGENTA"[ +6 ] ");
                      break;
-            case PLUS8 : printf("[ +8 ] ");
+            case PLUS8 : printf(V_MAGENTA"[ +8 ] ");
                      break;
-            case PLUS10 : printf("[ +10 ] ");
+            case PLUS10 : printf(V_MAGENTA"[ +10 ] ");
                      break;
-            case FOIS2 : printf("[ x2 ] ");
+            case FOIS2 : printf(V_MAGENTA"[ x2 ] ");
                      break;
         }
     }
@@ -142,7 +140,7 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
 
     unsigned int scoreMax = 0;
     int largeurPrenom = calculeLargeurUtf8(joueur->prenom);
-    int espaceRestant = 15 - largeurPrenom;
+    int espaceRestant = 23 - largeurPrenom;
     
     if(espaceRestant < 0){
         espaceRestant = 0;
@@ -156,23 +154,24 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
 
     printf("\n");
     
+    // Si le joueur est leader de la manche et que son score est différent de 0 on l'indique avec une étoile
     if(joueur->score == scoreMax && joueur->score != 0){
-        printf("\n╔═══════════════════════════════════════════╗ ");
+        printf("\n╔═══════════════════════════════════════════════════╗ ");
         printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts" , joueur->prenom, joueur->score);
-        for(int i = 0; i < espaceRestant-1; i++){
+        for(int i = 0; i < espaceRestant; i++){
             printf(" ");
         }
         printf(" "EMOJI_ETOILE "  ║");
-        printf("\n╚═══════════════════════════════════════════╝ \n");
+        printf("\n╚════════════════════════════════════════════════════╝ \n");
     }
     else{
-        printf("\n╔═══════════════════════════════════════╗ ");
+        printf("\n╔═══════════════════════════════════════════════╗ ");
         printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts", joueur->prenom, joueur->score);
         for(int i = 0; i < espaceRestant; i++){
             printf(" ");
         }
         printf("║");
-        printf("\n╚═══════════════════════════════════════╝\n");
+        printf("\n╚═══════════════════════════════════════════════╝\n");
     }
 }
 
@@ -214,15 +213,15 @@ void afficherNbcarte(Paquet* p){
     switch(i){
         case PLUS2 : printf( GRAS V_BLANC"[+2: %d]    ", restanteBon);
                 break;
-        case PLUS4 : printf("[+4: %d]    ", restanteBon);
+        case PLUS4 : printf(GRAS V_BLANC"[+4: %d]    ", restanteBon);
                 break;
-        case PLUS6 : printf("[+6: %d]    " , restanteBon);
+        case PLUS6 : printf(GRAS V_BLANC"[+6: %d]    " , restanteBon);
                 break;
-        case PLUS8 : printf("[+8: %d]    ", restanteBon);
+        case PLUS8 : printf(GRAS V_BLANC"[+8: %d]    ", restanteBon);
                 break;
-        case PLUS10 : printf("[+10:%d]    ", restanteBon);
+        case PLUS10 : printf(GRAS V_BLANC"[+10:%d]    ", restanteBon);
                 break;
-        case FOIS2 : printf("[x2: %d]    ", restanteBon);
+        case FOIS2 : printf(GRAS V_BLANC"[x2: %d]    ", restanteBon);
                 break;
     }
 }
@@ -233,7 +232,7 @@ void afficherNbcarte(Paquet* p){
             restanteSpeciale ++;
         }
     }
-    printf("[STOP:%2d] " RESET, restanteSpeciale);
+    printf(GRAS V_BLANC"[STOP:%2d] " RESET, restanteSpeciale);
     printf("\n");
     afficherSeparateur(col);
 }
@@ -262,22 +261,25 @@ void afficherJoueur(char* prenom){
 
 
 void afficherGagnant (char* prenom) {
+    if (prenom == NULL){
+        exit(ERREUR_19);
+    }
+    int largeurPrenom = calculeLargeurUtf8(prenom);
+    int espaceRestant = 23 - largeurPrenom;
 
-        int largeurPrenom = calculeLargeurUtf8(prenom);
-        int espaceRestant = 23 - largeurPrenom;
-        printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-		printf(  GRAS "\n┃ Le gagnant de la partie est : %-23s " , prenom);
-        for (int i = 0; i < espaceRestant; i++) {
-            printf(" ");
-        }
-        printf(EMOJI_TROPHEE"┃\n");
-        printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" RESET);
+    printf(V_BLANC"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+    printf(  GRAS "\n┃ Le gagnant de la partie est : %-23s " , prenom);
+    for (int i = 0; i < espaceRestant; i++) {
+        printf(" ");
+    }
+    printf(EMOJI_TROPHEE"┃\n");
+    printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" RESET);
 }
 
 
 void afficherStatut (Perso* joueurs, int nbJoueurs) {
     if(joueurs == NULL){
-        exit(ERREUR_19);
+        exit(ERREUR_20);
     }
 
     printf("%s\n", ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");

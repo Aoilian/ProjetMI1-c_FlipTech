@@ -13,7 +13,6 @@
 #define SOULIGNER "\033[4m"
 #define CLIGNOTE "\033[5m"
 
-
 // Couleurs de textes 
 #define JAUNE "\033[33m"
 #define CYAN "\033[36m"
@@ -31,7 +30,6 @@
 #define V_CYAN "\033[96m"
 #define V_BLANC "\033[97m"
 
-
 // Emoji 
 #define EMOJI_BLESSURE "🤕"
 #define EMOJI_CARTE "🃏"
@@ -45,11 +43,6 @@
 #define EMOJI_STOP "⛔"
 #define EMOJI_ECRIRE "📝"
 
-// Caractère de tracé de boites 
-#define BOITE_PLEINE "█"
-#define BOITE_M "░"
-
-
 int largeurTerminal();
 int calculeLargeurUtf8 (char* chaine);
 void effacerEcran();
@@ -57,12 +50,9 @@ void afficherSeparateur(int largeur);
 void afficherTitrePrincipal();
 void afficherCarteEsthetique(Carte c);
 void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
-void afficherPaquet(Paquet* p);
 void afficherNbcarte(Paquet* p);
 void afficherJoueur(char* prenom);
 void afficherGagnant(char* prenom);
 void afficherStatut(Perso* joueurs, int nbJoueurs);
-
-
 
 #endif //Fin de la garde d'inclusion
