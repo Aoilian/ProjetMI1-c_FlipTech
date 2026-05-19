@@ -25,8 +25,7 @@ void RemplirPaquetNumero (Paquet* p, int* position, int numero) {
 // Initialise le paquet avec toutes les cartes du jeu 
 void creerPaquet (Paquet* p, int nbJoueurs) {
     
-    int* pos;
-    *pos = 0; // position dans le paquet
+    int pos = 0;
     int nbPaquet = (nbJoueurs+9)/10; 
 
     p->cartes = malloc(sizeof(Carte) * (nbPaquet * FLIP7));
@@ -40,57 +39,57 @@ void creerPaquet (Paquet* p, int nbJoueurs) {
     for(int i = 0; i < nbPaquet; i++){
         // Initialisation des 79 cartes numéro
         for(int j = 1; j < 12; j++){
-            RemplirPaquetNumero(p, pos, j);
+            RemplirPaquetNumero(p, &pos, j);
         }
 
-        p->cartes[*pos].type = 'N';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = 0;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'N';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = 0;
         pos++;
 
         // Initialisation des 6 cartes bonus
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = FOIS2;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = FOIS2;
+        p->cartes[pos].speciale = 0;
         pos++;
 
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = PLUS2;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = PLUS2;
+        p->cartes[pos].speciale = 0;
         pos++;
 
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = PLUS4;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = PLUS4;
+        p->cartes[pos].speciale = 0;
         pos++;
 
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = PLUS6;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = PLUS6;
+        p->cartes[pos].speciale = 0;
         pos++;
 
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = PLUS8;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = PLUS8;
+        p->cartes[pos].speciale = 0;
         pos++;
 
-        p->cartes[*pos].type = 'B';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = PLUS10;
-        p->cartes[*pos].speciale = 0;
+        p->cartes[pos].type = 'B';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = PLUS10;
+        p->cartes[pos].speciale = 0;
         pos++;
 
         // Initialisation de la carte spéciale : STOP
-        p->cartes[*pos].type = 'S';
-        p->cartes[*pos].numero = 0;
-        p->cartes[*pos].bonus = 0;
-        p->cartes[*pos].speciale = STOP;
+        p->cartes[pos].type = 'S';
+        p->cartes[pos].numero = 0;
+        p->cartes[pos].bonus = 0;
+        p->cartes[pos].speciale = STOP;
         pos++;
     } 
     p->nbCartes = nbPaquet * FLIP7; // paquet de ... cartes
