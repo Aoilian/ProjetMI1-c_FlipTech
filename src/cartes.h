@@ -15,6 +15,7 @@
 #define FOIS2 6
 #define STOP 7
 
+void RemplirPaquetNumero(Paquet* p, int* position, int numero);
 void creerPaquet(Paquet *p, int nbJoueurs);
 void melanger(Paquet *p);
 Carte piocher(Paquet *p);
