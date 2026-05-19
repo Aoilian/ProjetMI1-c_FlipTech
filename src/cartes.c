@@ -42,7 +42,7 @@ void creerPaquet (Paquet* p, int nbJoueurs) {
     // On créer plusieurs paquet selon le nombre de joueurs
     for(int i = 0; i < nbPaquet; i++){
         // Initialisation des 79 cartes numéro
-        for(int j = 1; j < 12; j++){
+        for(int j = 1; j <= 12; j++){
             RemplirPaquetNumero(p, &pos, j);
         }
 
@@ -105,8 +105,9 @@ void melanger(Paquet *p) {
     Carte tmp; // Carte temporaire pour inverser les 2 cartes
 
     for (int i = p->nbCartes - 1; i > 0; i--) {
-        // formule rand() %(max-min+1) + min = Valeurs aléatoires entre 0 et i-1 
-        j = rand() % i ; 
+        // formule rand() %(max-min+1) + min = Valeurs aléatoires entre 0 et i 
+        j = rand() % (i+1); 
+
         // on inverse les 2 cartes 
         tmp = p->cartes[i];
         p->cartes[i] = p->cartes[j];
