@@ -85,8 +85,13 @@ void afficherSeparateur(int largeur){
 
 void afficherTitrePrincipal(){
     int col = largeurTerminal();
-
-    int espacement = (col - strlen(" F L I P T E C H - Le meilleur jeu de cartes de tous les temps")) / 2;
+    int longueurTitre = strlen(" F L I P T E C H - Le meilleur jeu de cartes de tous les temps");
+    int espacement = 0; 
+    
+    if(col > longueurTitre){
+        espacement = (col - longueurTitre)/2;
+    }
+    
 
     effacerEcran();
     printf("\n" V_NOIR);
@@ -156,7 +161,7 @@ void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs){
     
     // Si le joueur est leader de la manche et que son score est différent de 0 on l'indique avec une étoile
     if(joueur->score == scoreMax && joueur->score != 0){
-        printf("\n╔═══════════════════════════════════════════════════╗ ");
+        printf("\n╔════════════════════════════════════════════════════╗ ");
         printf("\n║"EMOJI_SCORE" SCORE de %s = %5d pts" , joueur->prenom, joueur->score);
         for(int i = 0; i < espaceRestant; i++){
             printf(" ");

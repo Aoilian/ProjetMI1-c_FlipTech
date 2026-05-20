@@ -16,7 +16,7 @@ typedef struct{
 	Carte carte[MAIN];
 	unsigned int score;
 	unsigned int nbcarte;
-	char prenom[TAILLE];
+	char prenom[50];
 	bool Ajouer;
     bool doublon;
 }Perso;

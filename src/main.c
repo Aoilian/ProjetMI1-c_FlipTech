@@ -1,6 +1,9 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <string.h>   
+#include "erreur.h"
 #include "structure.h"
 #include "affichage.h"
 #include "cartes.h"
@@ -8,7 +11,12 @@
 #include "score.h"
 
 int main() {
-    // On crée une nouvelle graine pour que les mélange ne soient pas les mêmes à chaque manche
+    printf("\x1b[8;40;120t"); // Force la taille du terminale
+    fflush(stdout);
+    
+    
+
+    // On crée une nouvelle graine pour que le mélange des cartes ne soient pas les mêmes à chaque partie
     srand(time(NULL));
     
     Paquet paquet;
@@ -19,15 +27,20 @@ int main() {
     afficherTitrePrincipal();
     printf(RESET);
     
+
     VoirRegle();
+   
+
     // Saisie des joueurs
     nmbJoueurs(&nbJoueurs);
     joueurs = malloc(sizeof(Perso) * nbJoueurs);
-    InitialiseJoueurs(joueurs, nbJoueurs);
-    for(int i = 0; i < nbJoueurs; i++) {
-        normaliserPrenom(joueurs[i].prenom);
+    if(joueurs == NULL){
+        printf("\nAllocation échouée !\n");
+        exit(ERREUR_23);
     }
 
+    InitialiseJoueurs(joueurs, nbJoueurs);
+    
     // Initialisation du paquet 
     creerPaquet(&paquet,nbJoueurs);
     melanger(&paquet);
@@ -43,7 +56,7 @@ int main() {
             for (int j = 0; j < nbJoueurs; j++) {
                 afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
             }
-            sleep(4); // Pause de 4 secondes
+            sleep(1); // Pause de 4 secondes
             preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
             compteur++;
     }

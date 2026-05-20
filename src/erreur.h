@@ -23,5 +23,7 @@
 #define ERREUR_20 20
 #define ERREUR_21 21
 #define ERREUR_22 22
+#define ERREUR_23 23
+#define ERREUR_24 24
 
 #endif //Fin de la garde d'inclusion
