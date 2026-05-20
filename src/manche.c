@@ -7,38 +7,7 @@
 #include "affichage.h"
 #include "structure.h"
 
-// Met la première lettre du prénom en majuscule
-void Maj (char* prenom) {
-	if(prenom[0] != '\0' && ((prenom[0] >= 'a' && prenom[0] <= 'z'))) {
-		prenom[0] += 'A' - 'a' ; 
-	}
-	else if (prenom[0] != '\0' && (unsigned char)prenom[0] != 0xF7) {
-		if((*prenom & 0xE0) == 0xC0) {
-			prenom[1] += "À"[1] - "à"[1]; // Multibyte
-		}
-	}
-}
 
-// Met toutes les autres lettre du en minuscule
-void Min (char* prenom) {
-	if(strlen(prenom) >= 2){
-		for(unsigned int i = 1; i < strlen(prenom); i++){
-			if(prenom[i] != '\0' && ((prenom[i] >= 'A' && prenom[i] <= 'Z'))) {
-				prenom[i] -= 'A' - 'a'; 
-			}
-			else if( prenom[i] != '\0'){
-				if((*(prenom+i) & 0xE0) == 0xC0) {
-					prenom[1] += "À"[1] - "à"[1]; // Multibyte
-				}
-			}
-		}
-	}
-}
-
-void normaliserPrenom (char* prenom) {
-	Maj(prenom);
-	Min(prenom);
-}
 
 //Est-ce que l'utilisateur va piocher?
 void Decision(int* decision,Perso* joueur){
@@ -51,9 +20,9 @@ void Decision(int* decision,Perso* joueur){
 		printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
 		
         	//verification si scanf a bien marché, et si le nombre est respecté
-        	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 || *decision == 2)) {
+        	if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1 )) {
             		valide = 1; //si c'est valide, c'est fini
-        }else{
+        } else{
         	printf("\nErreur : Saisie invalide.\n");
         	//On vide le tampon au cas où l'utilisateur aurais tapé un caractère
         	while (getchar() != '\n'); 
@@ -108,7 +77,7 @@ void nmbJoueurs(int* nbJoueurs){
 	int valide = 0;
 	do{
 		printf(RESET V_BLANC"\nCommençons, combien il y a t-il de joueurs dans la partie ?"EMOJI_JOUEUR"\n");
-		if(scanf("%d",nbJoueurs) && (*nbJoueurs >= 3)){
+		if(scanf("%d",nbJoueurs) == 1 && (*nbJoueurs >= 3)){
 			valide = 1;
 			while(getchar() != '\n'); //On vide le tampon au cas où l'utilisateur aurais tapé un caractère
 		}else{
@@ -223,29 +192,29 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 				//boucle de la pioche du joueur 
 					Decision(&decision, &Joueurs[joueurActuel]);
 					if (decision == 1) {
-							Carte c = piocher(paquet);
-							Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
-							Joueurs[joueurActuel].nbcarte++;
-							
-							printf("\nCarte piochée : ");
-							afficherCarteEsthetique(c);
+						Carte c = piocher(paquet);
+						Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = c;
+						Joueurs[joueurActuel].nbcarte++;
+						
+						printf("\nCarte piochée : ");
+						afficherCarteEsthetique(c);
 
-							carteStop(Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
-							printf("\n");
-							
+						carteStop(Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
+						printf("\n");
+						
 
-							if (Doublon(Joueurs[joueurActuel])) {
-								printf("\nVous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche\n");
-								Joueurs[joueurActuel].doublon = true;
-								Joueurs[joueurActuel].Ajouer = true;                        		
-							}
-							if (Flip7(Joueurs[joueurActuel])) {
-								printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
-								Joueurs[joueurActuel].score += 15;
-								flip_7 = true;
+						if (Doublon(Joueurs[joueurActuel])) {
+							printf("\nVous possédez déjà cette carte dans votre paquet... Vous êtes malheureusement éliminer de la manche\n");
+							Joueurs[joueurActuel].doublon = true;
+							Joueurs[joueurActuel].Ajouer = true;                        		
+						}
+						if (Flip7(Joueurs[joueurActuel])) {
+							printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s la gagne avec 15 points supplémentaires !\n",Joueurs[joueurActuel].prenom,Joueurs[joueurActuel].prenom);
+							Joueurs[joueurActuel].score += 15;
+							flip_7 = true;
 
-							}
-						} else {
+						}
+					} else {
 						printf(GRAS "\nC'est la fin de la manche pour toi !\n" RESET);
 						Joueurs[joueurActuel].Ajouer = true;    		
 					}
@@ -259,20 +228,22 @@ void lancerManche(Perso* Joueurs, int nbJoueurs, Paquet *paquet) { //Joueurs => 
 	}
 }
 
-void InitialiseJoueurs(Perso* joueurs, int n){
+void InitialiseJoueurs(Perso* joueurs, int nbjoueur){
 	if(joueurs == NULL){
 		exit(ERREUR_14);
 	}
-	for(int i = 0; i < n; i++) {
+	for(int i = 0; i < nbjoueur; i++) {
 	        printf("\n--- Joueur %d ---\n", i + 1);
-	        printf("Prenom : ");
-			scanf("%s", joueurs[i].prenom);
 	        
-	        while(!PrenomValide(joueurs[i].prenom) ){
-	            printf("Saisie invalide, veuillez recommencer\n");
-	            printf("Prenom (20 caractères max): ");	
-				scanf("%s", joueurs[i].prenom);
-	        }
+			do{
+				printf("Prenom (20 caractères max): ");
+				scanf("%20s", joueurs[i].prenom);
+				while(getchar() != '\n'); // on vide le tampon
+				
+				if(!PrenomValide(joueurs[i].prenom) ){
+					printf("Saisie invalide, veuillez recommencer\n");
+				}
+			} while(!PrenomValide(joueurs[i].prenom));
 
 	        // initialisation du score, etc, à 0;
 	        joueurs[i].score = 0;

@@ -118,7 +118,7 @@ void melanger(Paquet *p) {
 
 // Retourne la carte en haut de la pile 
 Carte piocher(Paquet *p){
-    if (p == 0) {
+    if (p == NULL || p->nbCartes == 0) {
        exit(ERREUR_7);
     }
     
@@ -149,13 +149,13 @@ void carteStop (Perso joueur, Perso* joueurs, int nbjoueur, Carte c) {
             // Si le joueur qui pioche la carte STOP est le seul encore en jeu il se stoppe lui même
             if(enJeu <= 1){
                 printf("\n");
-                printf(GRAS"\n %s vous êtes la seule personne encore en jeu par conséquent vous vous ciblez tout seul !" EMOJI_BLESSURE "\n", joueur.prenom);
+                printf(GRAS"\n%s vous êtes la seule personne encore en jeu par conséquent vous vous ciblez tout seul !" EMOJI_BLESSURE "\n", joueur.prenom);
                 strcpy(prenom, joueur.prenom); // On copie la chaîne de caractère car les tableaux ne sont pas assignable en C
             }
             // Sinon il choisit qui il veut stopper
             else{
                 printf("\n%s qui veux tu stopper ? \n", joueur.prenom);
-                while(scanf("%s", prenom) != 1 && !PrenomValide(prenom)){
+                while(scanf("%20s", prenom) != 1 || !PrenomValide(prenom)){
                     printf("Saisie invalide, veuillez recommencer !");
                     while(getchar() != '\n');
                 }

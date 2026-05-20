@@ -8,13 +8,26 @@
 #include "erreur.h"
 
 // Verifie la validité du prénom du joueur
-bool PrenomValide(char* prenom){
-	for(unsigned int i = 0; i < strlen(prenom); i++){
-				if((prenom[i] < 'A' || prenom[i] > 'Z') && (prenom[i] < 'a' || prenom[i] > 'z') && (unsigned int)prenom[i] < 0xC0){
-					return false;
-				}
+bool PrenomValide (char* prenom) {
+	if (prenom == NULL || prenom[0] == '\0') {
+		return false;
 	}
-	return true;
+
+	for (unsigned int i = 0; i < strlen(prenom); i++) {
+        // Sauter les octets de continuation UTF-8 (ex: 2e octet de 'é')
+        if ((unsigned char)prenom[i] >= 0x80 && (unsigned char)prenom[i] < 0xC0) {
+            continue;
+        }
+        // Sauter l'octet de tête multi-octet (ex: 1er octet de 'é')
+        if ((unsigned char)prenom[i] >= 0xC0 && (unsigned char)prenom[i] != 0xF7) {
+            continue;
+        }
+        // Si c'est un caractère ASCII, on accepte seulement les lettres
+        if ((prenom[i] < 'A' || prenom[i] > 'Z') && (prenom[i] < 'a' || prenom[i] > 'z')) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Verifie que le joueur est valide
@@ -23,7 +36,7 @@ int PersoValide(Perso a){
 				if(a.carte[i].type == 'N' && (a.carte[i].numero < 0 || a.carte[i].numero > 12)){
 					return -1;
 				}
-				else if(a.carte[i].type == 'B' && (a.carte[i].numero < 0 || a.carte[i].numero > 6)){
+				else if(a.carte[i].type == 'B' && (a.carte[i].bonus < PLUS2|| a.carte[i].bonus > FOIS2)){
 					return -1;
 				}
 		}
@@ -61,7 +74,7 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 
 // Calcule le score du joueur a la fin de son tour
 void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
-			if(joueurs == NULL || taille <= 0){
+			if(joueurs == NULL || main == NULL || taille <= 0){
 						return;
 			}
 			unsigned int somme = 0, b = 0;
@@ -161,7 +174,7 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 	char nomFichier[255];
 
 	printf("\nQuel nom donnez vous au fichier ?\n ");
-	while(scanf("%s", nomFichier) != 1){
+	while(scanf("%254s", nomFichier) != 1){
 		printf("Saisie invalide, veuillez recommmencer");
 		while(getchar() != '\n'); // On vide le tampon
 	}
@@ -169,6 +182,11 @@ void Enregistrejoueurs(Perso* a, int nbjoueur){
 	//On ouvre le fichier Fliptech.txt
 	FILE* fichier = NULL; 
 	fichier = fopen(nomFichier, "w+"); 
+
+	if(fichier == NULL){
+		printf("\nErreur le fichier %s n'a pas pu être créer", nomFichier);
+		return;
+	}
 
 	for(int i = 0; i < nbjoueur; i++){
 		char choix;
