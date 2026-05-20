@@ -1,0 +1,71 @@
+Prénoms NOMS : Clément VALLET, Ilian AOUAMRI, Déborah DAUVERGNE
+MI-1-C
+
+Rapport 
+
+I) Pourquoi a-t-on choisit ce sujet ?
+Premièrement, c'est celui qui s'est démarqué parmi les autres. 
+En effet, en découvrant tous les autres jeux, c'est celui qu'on a préféré, avec le MEMO-RPG. 
+On a choisi celui là, car il nous semblait plus abordable (au niveau de la compléxité).
+De plus, le type de jeu ("jeu de carte") nous semblait amusant à réaliser.
+
+
+
+II) Notre organisation par Semaine 
+
+Semaine 1 (06/04) : choix groupe ; choix du sujet ; création et envoie du lien git hub.
+Semaine 2 (13/04) : création et envoie de l'URL (git hub) ; organisation pour la semaine 3 (1ère semaine des vacances).
+Semaine 3 (20/04) : production du code individuellement (travail divisé en trois parties : "carte" (Clément), "score" (Ilian), "manche" (déborah)) ; 
+Appels (/réunions) réguliers pour partager l'avancée des travaux et s'aider si on rencontre des difficultés.
+Semaine 4 (27/04) : Continuité du travail ; finalisation des fonctions et des parties ; création des fichier.h
+Semaine 5 (04/05) : Amélioration ; règlage des bugs ; début du travail sur l'affichage global et la mise en place du jeu (emoji, couleurs etc) ; affichage des cartes restantes.
+Semaine 6 (11/05) : Amélioration (ajout de la carte spécial "STOP") ; ajout de la règle du jeu ; modification de la fonction lancerManche ; 
+Semaine 7 (18/05) : Règlage de certains problèmes (ex : carte spécial "STOP" / règle du flip7 (+15 points)) ; Ajout de la règle du jeu ; écrit du rapport.
+
+
+
+III) Problèmes et solutions 
+
+- Problèmes 1 : Git hub
+
+Problème 1.1 : Difficultés dans la compréhension de git hub
+Solution : Ilian nous a aidé dans la compréhension, en se renseignant plus, et en nous résumant les points clés et important
+Problème 1.2 : On a crée nos fichiers dans la même branche et donc rencontré quelques problèmes
+Solution : Chacun a donc créer sa branche
+Problème 1.3 : Problème dans les sauvegardes (après avoir coder, et avoir fait les commandes, perte des modifications)
+Solution : Sauvegarde sur bloc note de toutes les modifications pour être sûr de pas avoir de perte de données et rélecture du fonctionnement de git hub
+
+- Problèmes 2 : Difficultés dans la compréhension des règles du jeu
+
+Problème 2.1 : Problème dans la compréhension des manches/tous (desordre etc
+Solution : discussion et "compréhension" (pas la bonne)
+Problème 2.2 : Finalement, pas la bonne compréhension de la notion manche
+Solution : On a tout modifié pour que la manche se déroule bien comme dans les règles.
+
+
+
+- Problèmes 3 : Bugs / oublis
+
+Problème 3.1 : 
+Solution : 
+Problème 3.2 :
+Solution :
+Problème 3.3 : 
+Solution : 
+Problème 3.4 :
+Solution :
+Problème 3.1 : 
+Solution : 
+Problème 3.2 :
+Solution :
+
+
+
+
+
+
+
+
+
+
+

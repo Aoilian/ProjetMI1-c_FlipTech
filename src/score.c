@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "affichage.h"
+#include "cartes.h"
 #include "structure.h"
 #include "score.h"
 #include "erreur.h"
@@ -42,17 +43,17 @@ unsigned int AjouterBonus(unsigned int score, int bonus){
 
 	//On applique les bonus au score du joueur
 	switch (bonus) { 
-	        case 1 :
+	        case PLUS2 :
 					return score + 2;
-			case 2 :
+			case PLUS4 :
 					return score + 4;
-			case 3 :
+			case PLUS6 :
 					return score + 6;
-			case 4 :
+			case PLUS8 :
 					return score + 8;
-			case 5 :
+			case PLUS10 :
 					return score + 10;
-			case 6 :
+			case FOIS2 :
 					return score * 2;
 	}
 	return score;
@@ -76,14 +77,14 @@ void CalculScore(Perso* joueurs, Carte* main, int taille,bool doublon){
 			// Ajout des cartes bonus après le tour 
 			for(int j = 0; j < taille; j++){
 					// On part du principe que le joueur voudra appliquer le *2 en dernier si il a plusieurs bonus
-					if(main[j].type == 'B' && (main+j)->bonus != 1){
+					if(main[j].type == 'B' && (main+j)->bonus != FOIS2){
 							b = AjouterBonus(b, (main+j)->bonus);
 					}
 			}
 
 			// On applique le *2 à la fin 
 			for(int k = 0; k < taille; k++){
-					if(main[k].type == 'B' && (main+k)->bonus == 1){
+					if(main[k].type == 'B' && (main+k)->bonus == FOIS2){
 							b = AjouterBonus(b, (main+k)->bonus);
 					}
 			}
@@ -140,7 +141,8 @@ Perso* designerGagnant(Perso* joueurs, int nbjoueur){
 	    // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
 	    for(int j = 1; j < nbjoueur; j++){
 			if(joueurs[j].score >  max){
-				adresseMax =  joueurs + j;
+				adresseMax =  &joueurs[j];
+				max = joueurs[j].score;
 			} 
 		}	
 		afficherGagnant(adresseMax->prenom);
