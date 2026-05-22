@@ -31,6 +31,19 @@ bool PrenomValide(char *prenom) {
   return true;
 }
 
+bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
+  if (joueurs == NULL || prenom == NULL) {
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_13);
+  }
+  for (int i = 0; i < nbjoueurActuel; i++) {
+    if (strcmp(joueurs[i].prenom, prenom) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Verifie que le joueur est valide
 int PersoValide(Perso a) {
   for (int i = 0; i < MAIN; i++) {
@@ -55,7 +68,7 @@ int PersoValide(Perso a) {
 // Est-ce que l'utilisateur va piocher?
 void Decision(int *decision, Perso *joueur) {
   if (decision == NULL || joueur == NULL) {
-    exit(ERREUR_9);
+    exit(ERREUR_14);
   }
   int valide = 0;
 
@@ -137,7 +150,7 @@ void VoirRegle() {
 // nombre de joueurs dans la partie ?
 void nmbJoueurs(int *nbJoueurs) {
   if (nbJoueurs == NULL) {
-    exit(ERREUR_10);
+    exit(ERREUR_15);
   }
   int valide = 0;
   do {
@@ -173,7 +186,7 @@ bool Flip7(Perso joueur) {
 bool Doublon(Perso *joueur) {
   if (joueur == NULL) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_27);
+    exit(ERREUR_16);
   }
 
   for (unsigned int i = 0; i < joueur->nbcarte; i++) {
@@ -199,7 +212,7 @@ bool Doublon(Perso *joueur) {
 bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || nbJoueurs < 3) {
     printf("\n Données invalide, erreur de programation ! \n");
-    exit(ERREUR_11);
+    exit(ERREUR_17);
   }
   for (int i = 0; i < nbJoueurs; i++) {
     if ((joueurs + i)->Ajouer == false) {
@@ -212,7 +225,7 @@ bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
 void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet,
                             int compteur) {
   if (Joueurs == NULL || paquet == NULL) {
-    exit(ERREUR_12);
+    exit(ERREUR_18);
   }
   for (int i = 0; i < nbJoueurs; i++) {
     Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
@@ -230,7 +243,7 @@ void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet,
 void lancerManche(Perso *Joueurs, int nbJoueurs,
                   Paquet *paquet) { // Joueurs => tous les joueurs de la partie
   if (Joueurs == NULL || paquet == NULL) {
-    exit(ERREUR_13);
+    exit(ERREUR_19);
   }
 
   // On choisit qui commence aléatoirement
@@ -324,25 +337,37 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
 
 void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
   if (joueurs == NULL) {
-    exit(ERREUR_14);
+    exit(ERREUR_20);
   }
+
   for (int i = 0; i < nbjoueur; i++) {
+    bool valide = false;
     printf("\n--- Joueur %d ---\n", i + 1);
 
     do {
       printf("Prenom (20 caractères max): ");
-      scanf("%20s", joueurs[i].prenom);
-      while (getchar() != '\n'); // on vide le tampon
+      scanf("%40s", joueurs[i].prenom);
+      while (getchar() != '\n')
+        ; // on vide le tampon
 
       if (!PrenomValide(joueurs[i].prenom)) {
-        printf("Saisie invalide, veuillez recommencer\n");
+        printf("\nSaisie invalide, veuillez recommencer\n");
+      } else if (PrenomDejaUtilise(joueurs, joueurs[i].prenom, i)) {
+        printf("\nCe prenom est déjà utilisé !\n");
+      } else {
+        valide = true;
       }
-    } while (!PrenomValide(joueurs[i].prenom));
+    } while (!valide);
 
     // initialisation du score, etc, à 0;
     joueurs[i].score = 0;
     joueurs[i].nbcarte = 0;
     joueurs[i].Ajouer = false;
     joueurs[i].doublon = false;
+  }
+  for (int i = 0; i < nbjoueur; i++) {
+    // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas
+    // les 20 caractères
+    TronquerUTF8((joueurs + i)->prenom, 20);
   }
 }
