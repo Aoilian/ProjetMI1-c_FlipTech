@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 // Verifie la validité du prénom du joueur
 bool PrenomValide(char *prenom) {
@@ -280,10 +281,23 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
         }
       }
       afficherNbcarte(paquet);
+
       // Cas 1 : la main du joueur est pleine sa manche est terminée
+      // Cas 2 : la main du joueur est vide il est obligé de piocher
+      // Cas 3 : Le joueur choisit si il veut quitter la manche ou piocher
       if (Joueurs[joueurActuel].nbcarte >= MAIN) {
         printf("\nVotre main est pleine, vous ne pouvez plus jouer");
         Joueurs[joueurActuel].Ajouer = true;
+      } else if (Joueurs[joueurActuel].nbcarte == 0) {
+        Carte b = piocher(paquet);
+        Joueurs[joueurActuel].carte[Joueurs[joueurActuel].nbcarte] = b;
+        Joueurs[joueurActuel].nbcarte++;
+
+        printf("\nCarte piochée : ");
+        afficherCarteEsthetique(b);
+        carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, b);
+        printf("\n");
+        sleep(1);
       } else {
         // Cas 2 : le joueur choisit de piocher ou s'arrêter
         Decision(&decision, &Joueurs[joueurActuel]);
@@ -295,7 +309,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
           printf("\nCarte piochée : ");
           afficherCarteEsthetique(c);
 
-          carteStop(Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
+          carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
           printf("\n");
 
           // Cas 2a : le joueur pioche une carte qu'il a déjà dans sa main -> il
@@ -359,11 +373,17 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
       }
     } while (!valide);
 
-    // initialisation du score, etc, à 0;
+    // initialisation du score, nombre de carte, cartes, etc
     joueurs[i].score = 0;
     joueurs[i].nbcarte = 0;
     joueurs[i].Ajouer = false;
     joueurs[i].doublon = false;
+    for (int j = 0; j < MAIN; j++) {
+      joueurs[i].carte[j].type = '\0';
+      joueurs[i].carte[j].numero = 0;
+      joueurs[i].carte[j].bonus = 0;
+      joueurs[i].carte[j].speciale = 0;
+    }
   }
   for (int i = 0; i < nbjoueur; i++) {
     // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas
