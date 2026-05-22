@@ -47,7 +47,7 @@ bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
 
 // Verifie que le joueur est valide
 int PersoValide(Perso a) {
-  for (int i = 0; i < MAIN; i++) {
+  for (int i = 0; i < a.nbcarte; i++) {
     if (a.carte[i].type == 'N' &&
         (a.carte[i].numero < 0 || a.carte[i].numero > 12)) {
       return -1;
@@ -378,12 +378,6 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     joueurs[i].nbcarte = 0;
     joueurs[i].Ajouer = false;
     joueurs[i].doublon = false;
-    for (int j = 0; j < MAIN; j++) {
-      joueurs[i].carte[j].type = '\0';
-      joueurs[i].carte[j].numero = 0;
-      joueurs[i].carte[j].bonus = 0;
-      joueurs[i].carte[j].speciale = 0;
-    }
   }
   for (int i = 0; i < nbjoueur; i++) {
     // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas
