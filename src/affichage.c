@@ -10,7 +10,6 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-
 /*
     - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
     - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir
@@ -77,6 +76,24 @@ int calculeLargeurUtf8(char *chaine) {
     }
   }
   return largeur;
+}
+
+void TronquerUTF8(char *s, int nbCaractere) {
+  if (s == NULL) {
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_1);
+  }
+  int compteur = 0;
+  while (*s != '\0') {
+    if ((unsigned char)*s < 0x80 || (unsigned char)*s >= 0xC0) {
+      compteur++;
+      if (compteur > nbCaractere) {
+        *s = '\0';
+        return;
+      }
+    }
+    s++;
+  }
 }
 
 void effacerEcran() {
@@ -151,7 +168,7 @@ void afficherCarteEsthetique(Carte c) {
 
 void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || joueur == NULL) {
-    exit(ERREUR_15);
+    exit(ERREUR_2);
   }
 
   unsigned int scoreMax = 0;
@@ -195,7 +212,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
 
 void afficherNbcarte(Paquet *p) {
   if (p == NULL) {
-    exit(ERREUR_17);
+    exit(ERREUR_3);
   }
 
   int restanteNum = 0, restanteBon = 0, restanteSpeciale = 0;
@@ -264,7 +281,7 @@ void afficherNbcarte(Paquet *p) {
 
 void afficherJoueur(char *prenom) {
   if (prenom == NULL) {
-    exit(ERREUR_18);
+    exit(ERREUR_4);
   }
 
   int largeurPrenom = calculeLargeurUtf8(prenom);
@@ -286,29 +303,29 @@ void afficherJoueur(char *prenom) {
 
 void afficherGagnant(char *prenom) {
   if (prenom == NULL) {
-    exit(ERREUR_19);
+    exit(ERREUR_5);
   }
   int largeurPrenom = calculeLargeurUtf8(prenom);
-  int espaceRestant = 23 - largeurPrenom;
+  int espaceRestant = 33 - largeurPrenom;
 
   if (espaceRestant < 0) {
     espaceRestant = 0;
   }
 
-  printf(V_BLANC "\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  printf(V_BLANC "\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
                  "━━━━━━━━━━━━━━━━━━━┓");
   printf(GRAS "\n┃ Le gagnant de la partie est : %s ", prenom);
   for (int i = 0; i < espaceRestant; i++) {
     printf(" ");
   }
   printf(EMOJI_TROPHEE "┃\n");
-  printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
          "━━━━━━━━━┛\n" RESET);
 }
 
 void afficherStatut(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL) {
-    exit(ERREUR_20);
+    exit(ERREUR_6);
   }
 
   printf("%s\n", ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
