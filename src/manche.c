@@ -47,7 +47,7 @@ bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
 
 // Verifie que le joueur est valide
 int PersoValide(Perso a) {
-  for (int i = 0; i < MAIN; i++) {
+  for (int i = 0; i < a.nbcarte; i++) {
     if (a.carte[i].type == 'N' &&
         (a.carte[i].numero < 0 || a.carte[i].numero > 12)) {
       return -1;

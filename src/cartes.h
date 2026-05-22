@@ -19,6 +19,6 @@ void RemplirPaquetNumero(Paquet *p, int *position, int numero);
 void creerPaquet(Paquet *p, int nbJoueurs);
 void melanger(Paquet *p);
 Carte piocher(Paquet *p);
-void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c);
+void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c);
 
 #endif // Fin de la garde d'inclusion

@@ -133,7 +133,7 @@ Carte piocher(Paquet *p) {
   return p->cartes[p->nbCartes]; // carte piochée
 }
 
-void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
+void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (nbjoueur < 3 || joueurs == NULL) {
     printf("\nErreur de programation !\n");
     exit(ERREUR_11);
@@ -160,14 +160,14 @@ void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
         printf(GRAS "\n%s vous êtes la seule personne encore en jeu par "
                     "conséquent vous vous ciblez tout seul !" EMOJI_BLESSURE
                     "\n",
-               joueur.prenom);
-        joueur.Ajouer = true;
+               joueur->prenom);
+        joueur->Ajouer = true;
         trouve = true;
         break;
       }
       // Sinon il choisit qui il veut stopper
       else {
-        printf("\n%s qui veux tu stopper ? \n", joueur.prenom);
+        printf("\n%s qui veux tu stopper ? \n", joueur->prenom);
         while (scanf("%40s", prenom) != 1 || !PrenomValide(prenom)) {
           printf("\nSaisie invalide, veuillez recommencer !\n");
           while (getchar() != '\n')
@@ -182,13 +182,13 @@ void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
         if (strcmp(prenom, (joueurs + i)->prenom) == 0) {
           nomTrouve = true;
           if ((joueurs + i)->Ajouer == false &&
-              strcmp((joueurs + i)->prenom, joueur.prenom) != 0) {
+              strcmp((joueurs + i)->prenom, joueur->prenom) != 0) {
             printf(EMOJI_STOP GRAS
                    " %s vous avez été stoper, vous passez votre tour \n" RESET,
                    (joueurs + i)->prenom);
             (joueurs + i)->Ajouer = true;
             trouve = true;
-          } else if (strcmp((joueurs + i)->prenom, joueur.prenom) == 0) {
+          } else if (strcmp((joueurs + i)->prenom, joueur->prenom) == 0) {
             printf(GRAS "\nVous ne pouvez pas vous stopper vous même\n" RESET);
           } else {
             printf(GRAS "\nCe joueur a déjà joué\n" RESET);
