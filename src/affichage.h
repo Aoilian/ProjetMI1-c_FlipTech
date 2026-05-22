@@ -1,26 +1,22 @@
-#ifndef AFFICHAGE_H //Garde d'inclusion pour éviter les inclusions multiples
-#define AFFICHAGE_H 
-#include <stdbool.h>
-#include "structure.h"
+#ifndef AFFICHAGE_H // Garde d'inclusion pour éviter les inclusions multiples
+#define AFFICHAGE_H
 
-// Remise à zero 
+#include "structure.h"
+#include <stdbool.h>
+
+// Remise à zero des styles appliqués
 #define RESET "\033[0m"
 
-// Styles 
+// Styles
 #define GRAS "\033[1m"
 #define DIM "\033[2m"
 #define ITALIC "\033[3m"
-#define SOULIGNER "\033[4m"
-#define CLIGNOTE "\033[5m"
 
-// Couleurs de textes 
+// Couleurs pour le texte
 #define JAUNE "\033[33m"
 #define CYAN "\033[36m"
 
-// Couleurs du fond */
-#define F_BLANC "\033[47m"
-
-// Couleurs Vives 
+// Couleurs Vives pour le texte
 #define V_NOIR "\033[90m"
 #define V_ROUGE "\033[91m"
 #define V_VERT "\033[92m"
@@ -30,7 +26,7 @@
 #define V_CYAN "\033[96m"
 #define V_BLANC "\033[97m"
 
-// Emoji 
+// Emoji
 #define EMOJI_BLESSURE "🤕"
 #define EMOJI_CARTE "🃏"
 #define EMOJI_ETOILE "⭐"
@@ -44,15 +40,16 @@
 #define EMOJI_ECRIRE "📝"
 
 int largeurTerminal();
-int calculeLargeurUtf8 (char* chaine);
+int calculeLargeurUtf8(char *chaine);
+void TronquerUTF8(char *prenom, int nbcaractere);
 void effacerEcran();
 void afficherSeparateur(int largeur);
 void afficherTitrePrincipal();
 void afficherCarteEsthetique(Carte c);
-void afficherTableauScores(Perso* joueur, Perso* joueurs, int nbJoueurs);
-void afficherNbcarte(Paquet* p);
-void afficherJoueur(char* prenom);
-void afficherGagnant(char* prenom);
-void afficherStatut(Perso* joueurs, int nbJoueurs);
+void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs);
+void afficherNbcarte(Paquet *p);
+void afficherJoueur(char *prenom);
+void afficherGagnant(char *prenom);
+void afficherStatut(Perso *joueurs, int nbJoueurs);
 
-#endif //Fin de la garde d'inclusion
+#endif // Fin de la garde d'inclusion

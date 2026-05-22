@@ -1,5 +1,5 @@
-#ifndef ERREUR_H //Garde d'inclusion pour éviter les inclusions multiples
-#define ERREUR_H 
+#ifndef ERREUR_H // Garde d'inclusion pour éviter les inclusions multiples
+#define ERREUR_H
 
 #define ERREUR_1 1
 #define ERREUR_2 2
@@ -25,5 +25,8 @@
 #define ERREUR_22 22
 #define ERREUR_23 23
 #define ERREUR_24 24
+#define ERREUR_25 25
+#define ERREUR_26 26
+#define ERREUR_27 27
 
-#endif //Fin de la garde d'inclusion
+#endif // Fin de la garde d'inclusion
