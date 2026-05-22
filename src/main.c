@@ -6,6 +6,7 @@
 #include "structure.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <termios.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -13,9 +14,10 @@ int main() {
   printf("\x1b[8;40;155t"); // Force la taille du terminale
   fflush(stdout);
   sleep(1);
+  tcflush(STDIN_FILENO,
+          TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
 
-  // On crée une nouvelle graine pour que le mélange des cartes ne soient pas
-  // les mêmes à chaque partie
+  // On crée une nouvelle graine pour que le mélange des cartes ne soient pas les mêmes à chaque partie
   srand(time(NULL));
 
   Paquet paquet;
@@ -33,7 +35,7 @@ int main() {
   joueurs = malloc(sizeof(Perso) * nbJoueurs);
   if (joueurs == NULL) {
     printf("\nAllocation échouée !\n");
-    exit(ERREUR_23);
+    exit(ERREUR_12);
   }
 
   InitialiseJoueurs(joueurs, nbJoueurs);
@@ -54,7 +56,9 @@ int main() {
     for (int j = 0; j < nbJoueurs; j++) {
       afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
     }
-    sleep(1); // Pause de 4 secondes
+    sleep(1); // Pause de 1 secondes
+    tcflush(STDIN_FILENO,
+          TCIFLUSH);
     preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
     compteur++;
   }

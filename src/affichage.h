@@ -4,7 +4,6 @@
 #include "structure.h"
 #include <stdbool.h>
 
-
 // Remise à zero des styles appliqués
 #define RESET "\033[0m"
 
@@ -42,6 +41,7 @@
 
 int largeurTerminal();
 int calculeLargeurUtf8(char *chaine);
+void TronquerUTF8(char *prenom, int nbcaractere);
 void effacerEcran();
 void afficherSeparateur(int largeur);
 void afficherTitrePrincipal();

@@ -11,7 +11,7 @@
 void RemplirPaquetNumero(Paquet *p, int *position, int numero) {
   if (p == NULL || position == NULL || (numero < 1 || numero > 12)) {
     printf("\nErreur de programation !\n");
-    exit(ERREUR_21);
+    exit(ERREUR_7);
   }
   for (int i = 0; i < numero; i++) {
     p->cartes[*position].type = 'N';
@@ -26,7 +26,7 @@ void RemplirPaquetNumero(Paquet *p, int *position, int numero) {
 void creerPaquet(Paquet *p, int nbJoueurs) {
   if (p == NULL || nbJoueurs < 3) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_22);
+    exit(ERREUR_8);
   }
 
   int pos = 0;
@@ -37,7 +37,7 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
 
   if (p->cartes == NULL) {
     printf("Allocation échouée !");
-    exit(ERREUR_6);
+    exit(ERREUR_9);
   }
 
   // On créer plusieurs paquet selon le nombre de joueurs
@@ -126,7 +126,7 @@ void melanger(Paquet *p) {
 Carte piocher(Paquet *p) {
   if (p == NULL || p->nbCartes == 0) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_7);
+    exit(ERREUR_10);
   }
 
   p->nbCartes = p->nbCartes - 1; // décrémente le compteur de carte
@@ -136,11 +136,11 @@ Carte piocher(Paquet *p) {
 void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (nbjoueur < 3 || joueurs == NULL) {
     printf("\nErreur de programation !\n");
-    exit(ERREUR_8);
+    exit(ERREUR_11);
   }
 
   if (c.type == 'S' && c.speciale == STOP) {
-    char prenom[TAILLE];
+    char prenom[TAILLE_PRENOM];
     int enJeu = 0; // Compteur pour le nombre de joueur dans la manche
     bool trouve = false;
 
@@ -161,15 +161,15 @@ void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
                     "conséquent vous vous ciblez tout seul !" EMOJI_BLESSURE
                     "\n",
                joueur.prenom);
-        strcpy(prenom,
-               joueur.prenom); // On copie la chaîne de caractère car les
-                               // tableaux ne sont pas assignable en C
+        joueur.Ajouer = true;
+        trouve = true;
+        break;
       }
       // Sinon il choisit qui il veut stopper
       else {
         printf("\n%s qui veux tu stopper ? \n", joueur.prenom);
-        while (scanf("%20s", prenom) != 1 || !PrenomValide(prenom)) {
-          printf("Saisie invalide, veuillez recommencer !");
+        while (scanf("%40s", prenom) != 1 || !PrenomValide(prenom)) {
+          printf("\nSaisie invalide, veuillez recommencer !\n");
           while (getchar() != '\n')
             ;
         }
@@ -189,9 +189,9 @@ void carteStop(Perso joueur, Perso *joueurs, int nbjoueur, Carte c) {
             (joueurs + i)->Ajouer = true;
             trouve = true;
           } else if (strcmp((joueurs + i)->prenom, joueur.prenom) == 0) {
-              printf(GRAS "\nVous ne pouvez pas vous stopper vous même\n" RESET);
+            printf(GRAS "\nVous ne pouvez pas vous stopper vous même\n" RESET);
           } else {
-              printf(GRAS "\nCe joueur a déjà joué\n" RESET);
+            printf(GRAS "\nCe joueur a déjà joué\n" RESET);
           }
           break; // On arrête la boucle dès que le joueur est trouvé
         }

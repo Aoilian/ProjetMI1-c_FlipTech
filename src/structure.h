@@ -2,7 +2,7 @@
 #define STRUCTURE_H
 
 #include <stdbool.h>
-#define TAILLE 150
+#define TAILLE_PRENOM 80
 #define MAIN 14 // 6 cartes bonus + 7 cartes numero maximum + 1 carte stop
 
 typedef struct {
@@ -16,7 +16,7 @@ typedef struct {
   Carte carte[MAIN];
   unsigned int score;
   unsigned int nbcarte;
-  char prenom[50];
+  char prenom[TAILLE_PRENOM];
   bool Ajouer;
   bool doublon;
 } Perso;
