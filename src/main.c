@@ -56,7 +56,7 @@ int main() {
     for (int j = 0; j < nbJoueurs; j++) {
       afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
     }
-    sleep(1); // Pause de 1 secondes
+    sleep(3); // Pause de 3 secondes
     tcflush(STDIN_FILENO,
           TCIFLUSH);
     preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);

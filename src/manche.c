@@ -47,7 +47,7 @@ bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
 
 // Verifie que le joueur est valide
 int PersoValide(Perso a) {
-  for (int i = 0; i < a.nbcarte; i++) {
+  for (unsigned int i = 0; i < a.nbcarte; i++) {
     if (a.carte[i].type == 'N' &&
         (a.carte[i].numero < 0 || a.carte[i].numero > 12)) {
       return -1;
@@ -284,7 +284,6 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
 
       // Cas 1 : la main du joueur est pleine sa manche est terminée
       // Cas 2 : la main du joueur est vide il est obligé de piocher
-      // Cas 3 : Le joueur choisit si il veut quitter la manche ou piocher
       if (Joueurs[joueurActuel].nbcarte >= MAIN) {
         printf("\nVotre main est pleine, vous ne pouvez plus jouer");
         Joueurs[joueurActuel].Ajouer = true;
@@ -297,9 +296,9 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
         afficherCarteEsthetique(b);
         carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, b);
         printf("\n");
-        sleep(1);
+        sleep(2);
       } else {
-        // Cas 2 : le joueur choisit de piocher ou s'arrêter
+        // Cas 3 : le joueur choisit de piocher ou s'arrêter
         Decision(&decision, &Joueurs[joueurActuel]);
         if (decision == 1) {
           Carte c = piocher(paquet);
@@ -312,7 +311,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
           carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
           printf("\n");
 
-          // Cas 2a : le joueur pioche une carte qu'il a déjà dans sa main -> il
+          // Cas 3a : le joueur pioche une carte qu'il a déjà dans sa main -> il
           // est eliminé de la manche et ne marque pas de point
           if (Doublon(&Joueurs[joueurActuel])) {
             printf("\nVous possédez déjà cette carte dans votre paquet... Vous "
@@ -320,7 +319,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
             Joueurs[joueurActuel].doublon = true;
             Joueurs[joueurActuel].Ajouer = true;
           }
-          // Cas 2b : Un jouer fais un flip7 (7 cartes numéro différente) -> la
+          // Cas 3b : Un jouer fais un flip7 (7 cartes numéro différente) -> la
           // manche s'arrête pour tout le monde et le joueur prend un bonus de
           // +15 points
           if (Flip7(Joueurs[joueurActuel])) {
@@ -331,7 +330,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
             flip_7 = true;
           }
         } else {
-          // Cas 2c : le joueur décide de s'arrêter volontairement -> il garde
+          // Cas 3c : le joueur décide de s'arrêter volontairement -> il garde
           // le score qu'il avait accumulé jusqu'à préssent et sa manche se
           // termine
           printf(GRAS "\nC'est la fin de la manche pour toi !\n" RESET);
@@ -378,6 +377,12 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     joueurs[i].nbcarte = 0;
     joueurs[i].Ajouer = false;
     joueurs[i].doublon = false;
+    for (int j = 0; j < MAIN; j++) {
+      joueurs[i].carte[j].type = '\0';
+      joueurs[i].carte[j].numero = 0;
+      joueurs[i].carte[j].bonus = 0;
+      joueurs[i].carte[j].speciale = 0;
+    }
   }
   for (int i = 0; i < nbjoueur; i++) {
     // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas
