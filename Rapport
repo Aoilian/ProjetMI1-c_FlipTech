@@ -4,11 +4,11 @@ MI-1-C
 Rapport 
 
 I) Pourquoi a-t-on choisit ce sujet ?
+
 Premièrement, c'est celui qui s'est démarqué parmi les autres. 
 En effet, en découvrant tous les autres jeux, c'est celui qu'on a préféré, avec le MEMO-RPG. 
 On a choisi celui là, car il nous semblait plus abordable (au niveau de la compléxité).
 De plus, le type de jeu ("jeu de carte") nous semblait amusant à réaliser.
-
 
 
 II) Notre organisation par Semaine 
@@ -18,47 +18,58 @@ Semaine 2 (13/04) : création et envoie de l'URL (git hub) ; organisation pour l
 Semaine 3 (20/04) : production du code individuellement (travail divisé en trois parties : "carte" (Clément), "score" (Ilian), "manche" (déborah)) ; 
 Appels (/réunions) réguliers pour partager l'avancée des travaux et s'aider si on rencontre des difficultés.
 Semaine 4 (27/04) : Continuité du travail ; finalisation des fonctions et des parties ; création des fichier.h
-Semaine 5 (04/05) : Amélioration ; règlage des bugs ; début du travail sur l'affichage global et la mise en place du jeu (emoji, couleurs etc) ; affichage des cartes restantes.
-Semaine 6 (11/05) : Amélioration (ajout de la carte spécial "STOP") ; ajout de la règle du jeu ; modification de la fonction lancerManche ; 
+Semaine 5 (04/05) : Amélioration ; règlage des bugs ; début du travail sur l'affichage global et la mise en place du jeu (emoji, couleurs etc) ; affichage du nombres de cartes restantes ;   
+réaménagement des différentes branches.
+Semaine 6 (11/05) : Amélioration (ajout de la carte spécial "STOP") ; ajout de la règle du jeu ; modification de la fonction lancerManche ; création du fichier pour les erreurs.
 Semaine 7 (18/05) : Règlage de certains problèmes (ex : carte spécial "STOP" / règle du flip7 (+15 points)) ; Ajout de la règle du jeu ; écrit du rapport.
-
 
 
 III) Problèmes et solutions 
 
+(problème *num* : thème)
+
 - Problèmes 1 : Git hub
 
-Problème 1.1 : Difficultés dans la compréhension de git hub
-Solution : Ilian nous a aidé dans la compréhension, en se renseignant plus, et en nous résumant les points clés et important
-Problème 1.2 : On a crée nos fichiers dans la même branche et donc rencontré quelques problèmes
-Solution : Chacun a donc créer sa branche
-Problème 1.3 : Problème dans les sauvegardes (après avoir coder, et avoir fait les commandes, perte des modifications)
-Solution : Sauvegarde sur bloc note de toutes les modifications pour être sûr de pas avoir de perte de données et rélecture du fonctionnement de git hub
+  1) Difficultés dans la compréhension de git hub
+  Solution : Ilian nous a aidé dans la compréhension, en se renseignant plus, et en nous résumant les points clés et important
+  2) On a crée nos fichiers dans la même branche et donc rencontré quelques problèmes
+  Solution : Chacun a donc créer sa branche
+  3) Problème dans les sauvegardes (après avoir coder, et avoir fait les commandes, perte des modifications)
+  Solution : Sauvegarde sur bloc note de toutes les modifications pour être sûr de pas avoir de perte de données et rélecture du fonctionnement de git hub
 
 - Problèmes 2 : Difficultés dans la compréhension des règles du jeu
 
-Problème 2.1 : Problème dans la compréhension des manches/tous (desordre etc
-Solution : discussion et "compréhension" (pas la bonne)
-Problème 2.2 : Finalement, pas la bonne compréhension de la notion manche
-Solution : On a tout modifié pour que la manche se déroule bien comme dans les règles.
-
+  1) Problème dans la compréhension des manches/tous (desordre etc
+  Solution : discussion et "compréhension" (pas la bonne)
+  2) Finalement, pas la bonne compréhension de la notion manche, ce qui nous a amené à faire un grand changement.
+  Solution : On a tout modifié pour que la manche se déroule bien comme dans les règles (chaque joueur joue l'un après les autres et une seule fois, c'est à dire, 
+  pas deux plusieurs d'affilés.
 
 
 - Problèmes 3 : Bugs / oublis
 
-Problème 3.1 : 
-Solution : 
-Problème 3.2 :
-Solution :
-Problème 3.3 : 
-Solution : 
-Problème 3.4 :
-Solution :
-Problème 3.1 : 
-Solution : 
-Problème 3.2 :
-Solution :
+  1) problèmes dans la gestions des scores à la fin des manches
+  Solution : ??
+  2) oubli d'ajout, ex : les 15 points supplémentaires 
+  Solution :
+  3) bug dans le fonctionnement de la carte STOP : parfois une apparition de carte STOP agis comme si cela est une carte normal,
+  ou bien nombre de carte STOP bien superieur au nombre qu'il y a dans le paquet.
+  Solution : ??
+  4) répétition de certaines lignes (qui doivent apparaitre qu'une seule fois dans le terminal) et problème dans l'affichage du gagnant (pas la bonne personne affichée)
+  Solution : ??
+  5)
+  Solution : 
+  6)
+  Solution :
 
+- Problèmes 4 : Affichage
+  1) Notre objectif était d'afficher le prénom d'un joueur avec la première lettre en majuscule et le reste en minuscule, peu importe la manière dont le joueur l'a écrit.
+  Cela a demandé beaucoup de reflexion et malgré les modifications faites on a pas réussi à faire marcher correctement notre fonction.
+  Solution : On a préféré mettre cette idée de côté et donc ne pas mettre les prénoms dans ce format, pour se concentrer sur l'esentiel.
+  2) Problème dans l'affichage des gagnants (le cadre délassait)
+  Solution : cela a été ajusté pour que cela fonctionne correctement.
+  3) 
+  
 
 
 
