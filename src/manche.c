@@ -7,14 +7,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <termios.h>
 
 bool PrenomValide(char *prenom) {
   if (prenom == NULL || prenom[0] == '\0') {
     return false;
   }
 
-  unsigned char *s = (unsigned char *)prenom; // S lit chaque octet de prenom comme un nombre entre 0 et 255 
-                                             // car les UTF8 sont des caractères qui dépasse la valeur 127 d'un char
+  unsigned char *s = (unsigned char *)prenom; // S lit chaque octet de prenom comme un nombre entre 0 et 255 car les UTF8 sont des caractères qui dépasse la valeur 127 d'un char
 
   while (*s != '\0') {
 
@@ -155,13 +155,13 @@ void AfficherRegle() {
          "la partie.\n");
   printf("- si la pioche est épuisée (dans ce cas, le bonus de 15 points n’est "
          "accordé que si le dernier joueur a bien obtenu 7 cartes "
-         "différentes).\n\n\n");
+         "différentes).\n\n\n"RESET);
 }
 
 void VoirRegle() {
   int lire = 0, valide = 0;
   do {
-    printf("Voulez-vous consulter les rêgles du jeu avant de commencer la partie ?\n- Oui : 1 \n- Non : 0\n");
+    printf(RESET V_BLANC"Voulez-vous consulter les rêgles du jeu avant de commencer la partie ?\n- Oui : 1 \n- Non : 0\n");
     if (scanf("%d", &lire) == 1 && (lire == 0 || lire == 1)) {
       valide = 1; // si c'est valide, c'est fini
     } else {
@@ -325,7 +325,8 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
         afficherCarteEsthetique(b);
         carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, b);
         printf("\n");
-        sleep(3);
+        sleep(2);
+        tcflush(STDIN_FILENO,TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
       } else {
         // Cas 3 : le joueur choisit de piocher ou s'arrêter
         Decision(&decision, &Joueurs[joueurActuel]);

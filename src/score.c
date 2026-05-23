@@ -69,17 +69,16 @@ void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   b = somme;
 
   // Ajout des cartes bonus après le tour
+  // On ajoute d'abord le FOIS2 puis les autres bonus
   for (int j = 0; j < taille; j++) {
-    // On part du principe que le joueur voudra appliquer le *2 en dernier si il
-    // a plusieurs bonus
-    if (main[j].type == 'B' && (main + j)->bonus != FOIS2) {
+    if (main[j].type == 'B' && (main + j)->bonus == FOIS2) {
       b = AjouterBonus(b, (main + j)->bonus);
     }
   }
 
-  // On applique le *2 à la fin
+  // On applique ensuite les autres bonus
   for (int k = 0; k < taille; k++) {
-    if (main[k].type == 'B' && (main + k)->bonus == FOIS2) {
+    if (main[k].type == 'B' && (main + k)->bonus != FOIS2) {
       b = AjouterBonus(b, (main + k)->bonus);
     }
   }

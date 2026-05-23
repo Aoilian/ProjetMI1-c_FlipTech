@@ -48,8 +48,7 @@ int main() {
     lancerManche(joueurs, nbJoueurs, &paquet);
     for (int i = 0; i < nbJoueurs; i++) {
       if (joueurs[i].nbcarte > 0) {
-        CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte,
-                    joueurs[i].doublon);
+        CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte,joueurs[i].doublon);
       }
     }
     for (int j = 0; j < nbJoueurs; j++) {
