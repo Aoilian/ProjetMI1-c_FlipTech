@@ -14,7 +14,7 @@
     - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
     - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir
    ses dimensions
-    - Renvoie la largeur du terminale ou 80 par défaut si
+    - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du terminal n'ont pas pu être récupéré
 */
 int largeurTerminal() {
   // Structure pour stocker les dimensions du terminal (lignes et colonnes)
@@ -30,8 +30,7 @@ int largeurTerminal() {
     return w.ws_col;
   }
 
-  return 80; // Valeur par défaut si l'appel échoue -> 80 est une valeur
-             // standard pour les terminaux
+  return 80; // Valeur par défaut si l'appel échoue -> 80 est une valeur standard pour les terminaux
 }
 
 /*
@@ -78,6 +77,10 @@ int calculeLargeurUtf8(char *chaine) {
   return largeur;
 }
 
+// Tronque une chaîne de caractère UTF-8 à nbCaractere caractères
+// En UTF-8 on peut pas simplement écrire S[n] = '\0' car on risque de couper un caractère en plein milieu de ses octets.
+// On identifie  le début de chaque nouveau caractère : en UTF-8, les octets de continuation commencent toujours par 10......(valeur entre 0x80 et 0xBF)
+// Seuls les octets qui ne sont pas des octets  de continuation  marquent le début d'un nouveau caractère
 void TronquerUTF8(char *s, int nbCaractere) {
   if (s == NULL) {
     printf("\nErreur de programmation !\n");
@@ -97,7 +100,7 @@ void TronquerUTF8(char *s, int nbCaractere) {
 }
 
 void effacerEcran() {
-  printf("\033[2J\033[H"); // CSI 2J = effacer, CSI H = curseur en (0,0)
+  printf("\033[2J\033[H"); // CSI 2J = efface tout l'écran, CSI H = déplace le curseur en (1,1)
 }
 
 void afficherSeparateur(int largeur) {
@@ -107,6 +110,7 @@ void afficherSeparateur(int largeur) {
   printf(RESET "\n");
 }
 
+// Affiche le Titre  du jeu, centré dans le terminal. L'espacement est calculé dynamiquement en fonction de la largeur du terminal
 void afficherTitrePrincipal() {
   int col = largeurTerminal();
   int longueurTitre =
@@ -172,8 +176,8 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   }
 
   unsigned int scoreMax = 0;
-  int largeurPrenom = calculeLargeurUtf8(joueur->prenom);
-  int espaceRestant = 23 - largeurPrenom;
+  int largeurPrenom = calculeLargeurUtf8(joueur->prenom); 
+  int espaceRestant = 23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
 
   if (espaceRestant < 0) {
     espaceRestant = 0;

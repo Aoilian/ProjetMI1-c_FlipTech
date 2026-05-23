@@ -45,7 +45,7 @@ unsigned int AjouterBonus(unsigned int score, int bonus) {
   return score;
 }
 
-// Calcule le score du joueur a la fin de son tour
+// Calcule le score du joueur a la fin de sa manche 
 void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   if (joueurs == NULL || main == NULL || taille <= 0) {
     printf("\nErreur de programmation !\n");
@@ -169,7 +169,6 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
       ; // On vide le tampon
   }
 
-  // On ouvre le fichier Fliptech.txt
   FILE *fichier = NULL;
   fichier = fopen(nomFichier, "a");
 

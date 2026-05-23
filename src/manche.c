@@ -8,24 +8,54 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-// Verifie la validité du prénom du joueur
 bool PrenomValide(char *prenom) {
   if (prenom == NULL || prenom[0] == '\0') {
     return false;
   }
 
-  for (unsigned int i = 0; i < strlen(prenom); i++) {
-    // Sauter les octets de continuation UTF-8 (ex: 2e octet de 'é')
-    if ((unsigned char)prenom[i] >= 0x80 && (unsigned char)prenom[i] < 0xC0) {
-      continue;
+  unsigned char *s = (unsigned char *)prenom; // S lit chaque octet de prenom comme un nombre entre 0 et 255 
+                                             // car les UTF8 sont des caractères qui dépasse la valeur 127 d'un char
+
+  while (*s != '\0') {
+
+    // Caractère ASCII simple (ex: a, b, Z)
+    if (*s < 0x80) {
+      if ((*s < 'A' || *s > 'Z') && (*s < 'a' || *s > 'z')) {
+        return false; // ni lettre majuscule ni minuscule -> refusé
+      }
+      s++; // on avance d'1 octet
     }
-    // Sauter l'octet de tête multi-octet (ex: 1er octet de 'é')
-    if ((unsigned char)prenom[i] >= 0xC0 && (unsigned char)prenom[i] != 0xF7) {
-      continue;
+
+    /* On décode le caractère UTF-8 pour obtenir sa valeur réelle */
+    // On accepte uniquement les lettres accentuée européenne (ex: é, à, ü)
+    // Dans le teableau Unicode chaque caractère a un numero unique
+    // Problème : UTF-8 ne stocke pas directement ce numero, il le decoupe en
+    // morceaux et le rapartit en plusieurs  octets. Exemple : octet 1 : 0xC3 → on extrait le morceau 1  →  3
+    //                                                         octet 2 : 0xA9 → on extrait le morceau 2  → 41
+    // Réassemblage : (3 × 64) + 41 = 192 + 41 = 233 = numéro Unicode de é
+    // Une fois qu'on a ce numéro, on peut vérifier si le caractère est dans la
+    // plage des lettres autorisées (0x00C0 à 0x017F)
+    else if (*s >= 0xC2 && *s <= 0xD9) {
+      // On décale les bits du 1er octets de 6 cases vers la gauche pour
+      // reserver de la place pour les bits du 2ème octet En binaire, decaler
+      // vers la gauche de N position revient à multiplier la valeur initiale
+      // par 2^N
+      // << 6 = multiplier par 2^6
+      // Exemple : avec bit1 = 3 (Avant decalage : 00000011 | Après le décalage
+      // : 11000000)
+      unsigned int bit1 = *s & 0x1F;
+      unsigned int bit2 = *(s + 1) & 0x3F;
+      unsigned int valeur = (bit1 << 6) | bit2; // On colle les 2 morceuax
+
+      // Plage des lettres accentuées acceptées : U+00C0 (À) à U+017F (ſ)
+      if (valeur < 0x00C0 || valeur > 0x017F) {
+        return false; // ex: § (U+00A7) -> refusé
+      }
+      s += 2; // on avance de 2 octets
     }
-    // Si c'est un caractère ASCII, on accepte seulement les lettres
-    if ((prenom[i] < 'A' || prenom[i] > 'Z') &&
-        (prenom[i] < 'a' || prenom[i] > 'z')) {
+
+    // Tout autre caractère (emoji, symboles chinois...) -> refusé
+    else {
       return false;
     }
   }
@@ -45,7 +75,7 @@ bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
   return false;
 }
 
-// Verifie que le joueur est valide
+// Verifie que les données d'un joueur est valide
 int PersoValide(Perso a) {
   for (unsigned int i = 0; i < a.nbcarte; i++) {
     if (a.carte[i].type == 'N' &&
@@ -66,7 +96,7 @@ int PersoValide(Perso a) {
   return 0;
 }
 
-// Est-ce que l'utilisateur va piocher?
+// Demande au joueur si il veut piocher ?
 void Decision(int *decision, Perso *joueur) {
   if (decision == NULL || joueur == NULL) {
     exit(ERREUR_14);
@@ -131,8 +161,7 @@ void AfficherRegle() {
 void VoirRegle() {
   int lire = 0, valide = 0;
   do {
-    printf("Voulez-vous consulter les rêgles du jeu avant de commencer la "
-           "partie ?\n- Oui : 1 \n- Non : 0\n");
+    printf("Voulez-vous consulter les rêgles du jeu avant de commencer la partie ?\n- Oui : 1 \n- Non : 0\n");
     if (scanf("%d", &lire) == 1 && (lire == 0 || lire == 1)) {
       valide = 1; // si c'est valide, c'est fini
     } else {
@@ -148,15 +177,14 @@ void VoirRegle() {
   }
 }
 
-// nombre de joueurs dans la partie ?
+// Demande le nombre de joueur dans la partie
 void nmbJoueurs(int *nbJoueurs) {
   if (nbJoueurs == NULL) {
     exit(ERREUR_15);
   }
   int valide = 0;
   do {
-    printf(RESET V_BLANC "\nCommençons, combien il y a t-il de joueurs dans la "
-                         "partie ?" EMOJI_JOUEUR "\n");
+    printf(RESET V_BLANC "\nCommençons, combien il y a t-il de joueurs dans la partie ?" EMOJI_JOUEUR "\n");
     if (scanf("%d", nbJoueurs) == 1 && (*nbJoueurs >= 3)) {
       valide = 1;
       while (getchar() != '\n')
@@ -210,6 +238,7 @@ bool Doublon(Perso *joueur) {
   return false;
 }
 
+// La manche est terminé si chacun des joueurs
 bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || nbJoueurs < 3) {
     printf("\n Données invalide, erreur de programation ! \n");
@@ -223,8 +252,7 @@ bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
   return true;
 }
 
-void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet,
-                            int compteur) {
+void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet, int compteur) {
   if (Joueurs == NULL || paquet == NULL) {
     exit(ERREUR_18);
   }
@@ -240,14 +268,15 @@ void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet,
   }
 }
 
-/* Gère le déroulement d'une manche */
-void lancerManche(Perso *Joueurs, int nbJoueurs,
-                  Paquet *paquet) { // Joueurs => tous les joueurs de la partie
+// Gère le déroulement d'une manche :
+// - Le joueur de départ est tiré aléatoirement
+// - Les joueurs jouent à tour de rôle
+// - La manche s'arrête si : tous les joueurs ont finis de jouer, un flip7 est réalisé ou le paquet est vide
+void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs => tous les joueurs de la partie
   if (Joueurs == NULL || paquet == NULL) {
     exit(ERREUR_19);
   }
 
-  // On choisit qui commence aléatoirement
   int joueurActuel = rand() % nbJoueurs;
   int decision = 0;
 
@@ -296,7 +325,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
         afficherCarteEsthetique(b);
         carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, b);
         printf("\n");
-        sleep(2);
+        sleep(3);
       } else {
         // Cas 3 : le joueur choisit de piocher ou s'arrêter
         Decision(&decision, &Joueurs[joueurActuel]);
@@ -366,7 +395,7 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
       if (!PrenomValide(joueurs[i].prenom)) {
         printf("\nSaisie invalide, veuillez recommencer\n");
       } else if (PrenomDejaUtilise(joueurs, joueurs[i].prenom, i)) {
-        printf("\nCe prenom est déjà utilisé !\n");
+        printf("\nCe prenom est déjà utilisé !\n\n");
       } else {
         valide = true;
       }

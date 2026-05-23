@@ -14,8 +14,7 @@ int main() {
   printf("\x1b[8;40;155t"); // Force la taille du terminale
   fflush(stdout);
   sleep(1);
-  tcflush(STDIN_FILENO,
-          TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
+  tcflush(STDIN_FILENO,TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
 
   // On crée une nouvelle graine pour que le mélange des cartes ne soient pas les mêmes à chaque partie
   srand(time(NULL));
@@ -57,8 +56,7 @@ int main() {
       afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
     }
     sleep(3); // Pause de 3 secondes
-    tcflush(STDIN_FILENO,
-          TCIFLUSH);
+    tcflush(STDIN_FILENO,TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
     preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
     compteur++;
   }
