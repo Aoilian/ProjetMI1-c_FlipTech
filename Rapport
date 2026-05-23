@@ -6,69 +6,75 @@ Rapport
 I) Pourquoi a-t-on choisit ce sujet ?
 
 Premièrement, c'est celui qui s'est démarqué parmi les autres. 
-En effet, en découvrant tous les autres jeux, c'est celui qu'on a préféré, avec le MEMO-RPG. 
-On a choisi celui là, car il nous semblait plus abordable (au niveau de la compléxité).
-De plus, le type de jeu ("jeu de carte") nous semblait amusant à réaliser.
+En effet, en découvrant tous les autres projets, c'est celui qui a le plus retenu notre attention avec le MEMO-RPG.
+Après de longues discussion nous avons finalement choisit le fliptech pour 3 raisons principales :
+D'abord nous voulions choisir un projet qui soit un jeu car un projets de gestions n'est pas amusant a faire
+De plus, De tous les choix de jeu il nous semblait particulièrement abordable pour notre niveau.
+Et enfin, le type de jeu ("jeu de carte") nous semblait amusant à réaliser.
+C'est donc pour ces 3 raisons que nous avons décider de partir sur le fliptech
 
 
 II) Notre organisation par Semaine 
 
-Semaine 1 (06/04) : choix groupe ; choix du sujet ; création et envoie du lien git hub.
-Semaine 2 (13/04) : création et envoie de l'URL (git hub) ; organisation pour la semaine 3 (1ère semaine des vacances).
-Semaine 3 (20/04) : production du code individuellement (travail divisé en trois parties : "carte" (Clément), "score" (Ilian), "manche" (déborah)) ; 
+Semaine 1 (06/04) : choix du groupe ; choix du sujet ; création et envoie du dépôt git.
+Semaine 2 (13/04) : Clonage en locale du dépôt git et organisation pour la répartition des fonctions en semaine 3 (1ère semaine des vacances).
+Semaine 3 (20/04) : production du code individuellement (travail divisé en trois parties : gestion des "cartes" (Clément), gestion du système de "score" (Ilian), gestion du deroulement des "manche" (déborah)) ; 
 Appels (/réunions) réguliers pour partager l'avancée des travaux et s'aider si on rencontre des difficultés.
 Semaine 4 (27/04) : Continuité du travail ; finalisation des fonctions et des parties ; création des fichier.h
-Semaine 5 (04/05) : Amélioration ; règlage des bugs ; début du travail sur l'affichage global et la mise en place du jeu (emoji, couleurs etc) ; affichage du nombres de cartes restantes ;   
+Semaine 5 (04/05) : on s'est reparti les bugs qu'on a rencontré à travers nos différents test du jeu pour les règler; début du travail sur l'affichage global et la mise en place du jeu : affichage du nombres de cartes restantes, emoji, couleurs, etc... ;   
 réaménagement des différentes branches.
-Semaine 6 (11/05) : Amélioration (ajout de la carte spécial "STOP") ; ajout de la règle du jeu ; modification de la fonction lancerManche ; création du fichier pour les erreurs.
-Semaine 7 (18/05) : Règlage de certains problèmes (ex : carte spécial "STOP" / règle du flip7 (+15 points)) ; Ajout de la règle du jeu ; écrit du rapport.
+Semaine 6 (11/05) : Amélioration (ajout de la carte spécial "STOP") ; ajout de l'affichage des règles du jeu ;
+modification de la fonction lancerManche (la logique n'était pas la bonne, avant : les joueurs jouaient toute leur manche chacun leur tour); création du fichier pour les erreurs.
+Semaine 7 (18/05) : Corrections des derniers bugs/oublis (ex : carte spécial "STOP" présente en trop grande quantité dans la paquet / règle du flip7 (+15 points supplémentaire)) ; amélioration de l'indentation du code et ajout de commentaire pour la lisibilité et la compréhension du code; écrit du rapport.
 
+IV) Les problèmes rencontrés et les solutions trouvées 
 
-III) Problèmes et solutions 
-
-(problème *num* : thème)
+(problème *num* = thème)
 
 - Problèmes 1 : Git hub
 
   1) Difficultés dans la compréhension de git hub
-  Solution : Ilian nous a aidé dans la compréhension, en se renseignant plus, et en nous résumant les points clés et important
-  2) On a crée nos fichiers dans la même branche et donc rencontré quelques problèmes
-  Solution : Chacun a donc créer sa branche
-  3) Problème dans les sauvegardes (après avoir coder, et avoir fait les commandes, perte des modifications)
-  Solution : Sauvegarde sur bloc note de toutes les modifications pour être sûr de pas avoir de perte de données et rélecture du fonctionnement de git hub
+  Solution : Ilian nous a aidé dans la compréhension globale du fonctionnement de git, puis tout le monde s'est renseigné pour comprendre plus en profondeur les concept clés (commandes, etc...). Néanmoins, il reste malgrès tous les efforts, fourni jusqu'à ajourd'hui, quelques difficultés quant à la compréhension de cet outil.
+  2) Tout le groupe travaillais sur la même branche, nous avons donc rencontré quelques conflits lors de l'envoie de nos tout premier codes
+  Solution : Chacun a créé sa propre branche pour travailler de son côté afin d'éviter tout éventuelles conflit
+  3) Pertes de certaines modifications faîtes localement après de mauvaises manipulations des commandes git
+  Solution : rélecture approfondie des commandes git pour ne pas repeter la même erreur et sauvegarde sur bloc note de toutes les modifications pour être sûr de pas avoir de perte de données 
 
 - Problèmes 2 : Difficultés dans la compréhension des règles du jeu
 
-  1) Problème dans la compréhension des manches/tous (desordre etc
-  Solution : discussion et "compréhension" (pas la bonne)
-  2) Finalement, pas la bonne compréhension de la notion manche, ce qui nous a amené à faire un grand changement.
-  Solution : On a tout modifié pour que la manche se déroule bien comme dans les règles (chaque joueur joue l'un après les autres et une seule fois, c'est à dire, 
-  pas deux plusieurs d'affilés.
+  1) Problème dans la compréhension des manches/tours (desordre, etc...) + nous suivions chacun des règles différentes
+  Solution : Nous avons fais des reunion pour discuter des règles du jeu et nous avons suivi les règles fourni par le cahier des charges
+  2) Mauvaise compréhension de la notion de manche, ce qui nous a amené à faire un grand changement.
+  Solution : - Nous avons modifié la fonction qui s'occupe du déroulement de la manche pour que chaque joueur joue l'un après les autres. 
+  A la place de redemander si le joueurveut repiocher après avoir pioché une première fois on passe directement 
+  - De plus le paquet était auparavant recréer entre chaque manche, nous avons donc supprimer la création d'un nouveau paquet dans la fonction qui s'occupe de preparer la manche suivante
 
 
 - Problèmes 3 : Bugs / oublis
 
-  1) problèmes dans la gestions des scores à la fin des manches
-  Solution : ??
-  2) oubli d'ajout, ex : les 15 points supplémentaires 
-  Solution :
-  3) bug dans le fonctionnement de la carte STOP : parfois une apparition de carte STOP agis comme si cela est une carte normal,
+  1) Problèmes dans le calcule du scores (score non calculé, bonus dans le désordre, score mal calculé, etc...)
+  Solution : - Nous avons changé le prototype de la fonction pour utiliser un passage par adresse, en ramplacant la structure joueur par un pointeur sur le joueur, la fonction a pu acceder directement a la zone mémoire pour modifier son score de manière permanente
+  - 
+  2) Oublis : les 15 points supplémentaires quand le joueur réalise un flip7
+  3) Bug dans le fonctionnement de la carte STOP : parfois une apparition de carte STOP agis comme si cela est une carte normal,
   ou bien nombre de carte STOP bien superieur au nombre qu'il y a dans le paquet.
-  Solution : ??
-  4) répétition de certaines lignes (qui doivent apparaitre qu'une seule fois dans le terminal) et problème dans l'affichage du gagnant (pas la bonne personne affichée)
-  Solution : ??
-  5)
-  Solution : 
-  6)
-  Solution :
+  Solution : Le problème du nombre de cartes stop supérieur au nombre initialement prévue dans le paquet,
+  dû a un oubli : celui d'initialiser toutes les cartes numéro dans le paquet 
+  4) Répétition de certaines lignes (qui doivent apparaitre qu'une seule fois dans le terminal) 
+  Solution : Nous avions vider le tampon après les saisies des joueurs
+  5) Problème avec la fonction prenomValide, tous les caractères UTF-8 étaient acceptés 
+  Solution : Nous avons implémenté un algorithme de décodage manuel des octets UTF-8 pour reconstruire la valeur unicode réelle du caractère :
+  - Lorsque le programme détecte un premier octet indicateur d'un caractère multi-octet (compris entre 0xC2 et 0xD9), il extrait les bits utiles  de ce premier octet , applique un décalage de 6 bits vers la gauche pour libérer de l'espace, puis y assemble les bits utiles du second octet 
+  - Une fois ce numéro reconstruit , le programme vérifie qu'il est bien dans la plage des lettres avec accents autorisées 
+  
 
 - Problèmes 4 : Affichage
-  1) Notre objectif était d'afficher le prénom d'un joueur avec la première lettre en majuscule et le reste en minuscule, peu importe la manière dont le joueur l'a écrit.
-  Cela a demandé beaucoup de reflexion et malgré les modifications faites on a pas réussi à faire marcher correctement notre fonction.
-  Solution : On a préféré mettre cette idée de côté et donc ne pas mettre les prénoms dans ce format, pour se concentrer sur l'esentiel.
-  2) Problème dans l'affichage des gagnants (le cadre délassait)
-  Solution : cela a été ajusté pour que cela fonctionne correctement.
-  3) 
+  1) Notre objectif était d'afficher le prénom des joueurs avec la première lettre en majuscule et le reste en minuscule. Nous avons néanmoins rencontré une impasse avec les lettres avec accent.
+  Solution : Nous avons préféré mettre cette idée de côté et donc ne pas mettre les prénoms dans ce format, pour se concentrer sur l'essentiel.
+  2) Problème dans l'affichage des gagnants (le cadre dépassait)
+  Solution : Nous avons corrigé le calcul de l'espacement calculé dynamiquement
+  3) Problème dans l'affichage du titre (pas centré)
+  Solution : Nous avons récuperé la taille du terminal via ioctl et créer un espacement dynamique qui dépend de la taille de la fenêtre du terminal
   
 
 
