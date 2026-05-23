@@ -53,7 +53,7 @@ A la place de redemander si le joueur veut repiocher après avoir pioché une pr
 
 1) Problèmes dans le calcul du score (score non calculé, bonus dans le désordre, score mal calculé, etc...)
 Solution : - Nous avons changé le prototype de la fonction pour utiliser un passage par adresse, en remplaçant la structure joueur par un pointeur sur le joueur, la fonction a pu accéder directement à la zone mémoire pour modifier son score de manière permanente
-- 
+- Initialisation du score de chaque joueur au début de la manche (avant cela il n'était pas initialisé ce qui créait un gros problème car on ne savait pas quelle valeur était stockée dans le score du joueur)
 2) Oublis : les 15 points supplémentaires quand le joueur réalise un flip 7
 3) Bug dans le fonctionnement de la carte STOP : parfois une apparition de carte STOP agis comme si cela est une carte normale,
 ou bien nombre de cartes STOP bien supérieur au nombre qu'il y a dans le paquet.
@@ -71,6 +71,6 @@ Solution : Nous avons implémenté un algorithme de décodage manuel des octets 
 1) Notre objectif était d'afficher le prénom des joueurs avec la première lettre en majuscule et le reste en minuscule. Nous avons néanmoins rencontré une impasse avec les lettres avec accent.
 Solution : Nous avons préféré mettre cette idée de côté et donc ne pas mettre les prénoms dans ce format, pour se concentrer sur l'essentiel.
 2) Problème dans l'affichage des gagnants (le cadre dépassait)
-Solution : Nous avons corrigé le calcul de l'espacement calculé dynamiquement
+Solution : Nous avons corrigé le calcul de l'espacement, calculé dynamiquement en fonction de la largeur du prénom
 3) Problème dans l'affichage du titre (pas centré)
 Solution : Nous avons récuperé la taille du terminal via ioctl et crée un espacement dynamique qui dépend de la taille de la fenêtre du terminal
