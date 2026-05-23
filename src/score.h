@@ -11,6 +11,7 @@ bool NomFichierValide(char *nom);
 unsigned int AjouterBonus(unsigned int score, int bonus);
 void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon);
 bool FinDePartie(Perso *joueurs, Paquet pioche, int nbjoueur);
+void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur);
 void VideLaMain(Perso *joueurs, int nbjoueur);
 Perso *designerGagnant(Perso *joueurs, int taille);
 void Enregistrejoueurs(Perso *a, int nbjoueur);

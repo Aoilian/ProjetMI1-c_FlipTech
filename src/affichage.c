@@ -10,12 +10,10 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-/*
-    - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
-    - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir
-   ses dimensions
-    - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du terminal n'ont pas pu être récupéré
-*/
+
+//   - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
+//   - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir ses dimensions
+//   - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du terminal n'ont pas pu être récupéré
 int largeurTerminal() {
   // Structure pour stocker les dimensions du terminal (lignes et colonnes)
   // ws_col : nombre de colonnes (entier non signé)
@@ -33,11 +31,10 @@ int largeurTerminal() {
   return 80; // Valeur par défaut si l'appel échoue -> 80 est une valeur standard pour les terminaux
 }
 
-/*
-    - Calcule la largeur en colonnes terminales d'une chaîne UTF-8
-    - En UTF-8, certains caractères (comme les accent ou les emoji) occupent
-   plusieurs octet mais ne doivent compter que pour 1 ou 2 colonne à l'affichage
-*/
+
+// - Calcule la largeur en colonnes terminales d'une chaîne UTF-8
+// - En UTF-8, certains caractères (comme les accent ou les emoji) occupent 
+// plusieurs octet mais ne doivent compter que pour 1 ou 2 colonne à l'affichage
 int calculeLargeurUtf8(char *chaine) {
   int largeur = 0;
 

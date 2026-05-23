@@ -6,6 +6,8 @@
 #include "structure.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <termios.h>
+#include <unistd.h>
 
 bool NomFichierValide(char *nom) {
   if (nom == NULL || nom[0] == '\0') {
@@ -45,7 +47,7 @@ unsigned int AjouterBonus(unsigned int score, int bonus) {
   return score;
 }
 
-// Calcule le score du joueur a la fin de sa manche 
+// Calcule le score du joueur a la fin de sa manche
 void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   if (joueurs == NULL || main == NULL || taille <= 0) {
     printf("\nErreur de programmation !\n");
@@ -88,14 +90,77 @@ void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   joueurs->score += b;
 }
 
+void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
+  if (joueurs == NULL || paquet == NULL || compteur == NULL || nbjoueur < 3) {
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_28);
+  }
+
+  unsigned int scoreMax = 0;
+  for (int i = 0; i < nbjoueur; i++) {
+    if (joueurs[i].score > scoreMax) {
+      scoreMax = joueurs[i].score;
+    }
+  }
+  int nbEgalite = 0;
+  for (int i = 0; i < nbjoueur; i++) {
+    if (joueurs[i].score == scoreMax){
+      nbEgalite++;
+    }
+  }
+
+  while (nbEgalite > 1) {
+    printf(GRAS V_JAUNE "\n ÉGALITÉ entre %d joueurs à %u points ! Manche supplémentaire de départage !\n" RESET,
+            nbEgalite, scoreMax);
+    sleep(2);
+    tcflush(STDIN_FILENO, TCIFLUSH);
+
+    // Seuls les joueurs à égalité participent, les autres sont exclus
+    for (int i = 0; i < nbjoueur; i++) {
+      joueurs[i].Ajouer = (joueurs[i].score < scoreMax);
+    }
+
+    free(paquet->cartes); // On libère l'espace alloué par le paquet précédent
+    creerPaquet(paquet, nbjoueur); // 
+    melanger(paquet);
+
+    lancerManche(joueurs, nbjoueur, paquet);
+    for (int i = 0; i < nbjoueur; i++) {
+      if (joueurs[i].nbcarte > 0) {
+        CalculScore(&joueurs[i], joueurs[i].carte, joueurs[i].nbcarte,
+                    joueurs[i].doublon);
+      }
+    }
+    for (int j = 0; j < nbjoueur; j++) {
+      afficherTableauScores(&joueurs[j], joueurs, nbjoueur);
+    }
+    sleep(3);
+    tcflush(STDIN_FILENO, TCIFLUSH);
+    preparerNouvelleManche(joueurs, nbjoueur, paquet, *compteur);
+    (*compteur)++;
+
+    // Recalcul pour savoir si l'égalité persiste
+    scoreMax = 0;
+    for (int i = 0; i < nbjoueur; i++) {
+      if (joueurs[i].score > scoreMax)
+        scoreMax = joueurs[i].score;
+    }
+    nbEgalite = 0;
+    for (int i = 0; i < nbjoueur; i++) {
+      if (joueurs[i].score == scoreMax){
+        nbEgalite++;
+      }
+    }
+  }
+}
+
 void VideLaMain(Perso *joueurs, int nbjoueur) {
   if (joueurs == NULL || nbjoueur < 3) {
     printf("\nErreur\n");
     exit(ERREUR_24);
   }
   for (int i = 0; i < nbjoueur; i++) {
-    // On remet à 0 le nombre de carte que les joueurs possèdent quand la manche
-    // est terminé
+    // On remet à 0 le nombre de carte que les joueurs possèdent quand la manche est terminé
     (joueurs + i)->nbcarte = 0;
     for (int j = 0; j < MAIN; j++) {
       // On supprime la main des joueurs quand la manche est terminé
@@ -107,8 +172,7 @@ void VideLaMain(Perso *joueurs, int nbjoueur) {
   }
 }
 
-// Condtion de fin de partie : - Un des joueurs atteint ou dépasse le seuil de
-// 200 points
+// Condtion de fin de partie : - Un des joueurs atteint ou dépasse le seuil de 200 points
 //                             - Le paquet est vide
 bool FinDePartie(Perso *joueurs, Paquet pioche, int nbjoueur) {
   if (joueurs == NULL || nbjoueur < 3) {
@@ -138,8 +202,7 @@ Perso *designerGagnant(Perso *joueurs, int nbjoueur) {
   Perso *adresseMax;
   adresseMax = joueurs;
 
-  // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le
-  // score du gagnant
+  // On fait une recherche de maximum sur le score pour renvoyer l'adresse et le score du gagnant
   for (int j = 1; j < nbjoueur; j++) {
     if (joueurs[j].score > max) {
       adresseMax = &joueurs[j];
@@ -183,7 +246,8 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
                  ": O / non : N) \n",
            (a + i)->prenom, nomFichier);
 
-    // Tant que l'utilisateur ne saisi pas 'O' ou 'N' on lui redemande son choix
+    // Tant que l'utilisateur ne saisi pas 'O' ou 'N' on lui redemande son
+    // choix
     while (scanf(" %c", &choix) != 1 || (choix != 'O' && choix != 'N')) {
       printf("Saisi invalide, veuillre réessayer. \n");
       while (getchar() != '\n')
@@ -195,8 +259,8 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
       if ((a + i) == gagnant) {
         fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip tech \n",
                 (a + i)->prenom,
-                (a + i)->score); // On enregistre le nom du gagnant de la partie
-                                 // dans le fichier Fliptech.txt
+                (a + i)->score); // On enregistre le nom du gagnant de la
+                                 // partie dans le fichier Fliptech.txt
       } else {
         fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom,
                 (a + i)->score);

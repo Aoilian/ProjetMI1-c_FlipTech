@@ -60,6 +60,7 @@ int main() {
     compteur++;
   }
 
+  GererEgalite(joueurs, nbJoueurs, &paquet, &compteur); // On gère les éventuelles égalité si il y en a
   // Fin de partie on affiche le gagnant et on demande aux joueurs si ils
   // veulent enregistrer leur score
   Enregistrejoueurs(joueurs, nbJoueurs);
