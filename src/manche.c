@@ -254,10 +254,10 @@ bool Doublon(Perso *joueur) {
   return false;
 }
 
-// La manche est terminé si chacun des joueurs
+// La manche est terminée si chacun des joueurs
 bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || nbJoueurs < 3) {
-    printf("\n Données invalide, erreur de programation ! \n");
+    printf("\n Données invalide, erreur de programmation ! \n");
     exit(ERREUR_18);
   }
   for (int i = 0; i < nbJoueurs; i++) {
@@ -300,7 +300,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
   int joueurActuel = rand() % nbJoueurs;
   int decision = 0;
 
-  // Variable colonne qui stocke la largeur du terminale
+  // Variable colonne qui stocke la largeur du terminal
   int col = largeurTerminal();
 
   bool flip_7 = false;
@@ -375,7 +375,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
           // Cas 3b : Un jouer fais un flip7 (7 cartes numéro différente) -> la manche s'arrête pour tout le monde 
           //                                                                 et le joueur prend un bonus de +15 points
           if (Flip7(Joueurs[joueurActuel])) {
-            printf("Bravo, %s a fait un flip 7 ! La manche est terminé et %s "
+            printf("Bravo, %s a fait un flip 7 ! La manche est terminée et %s "
                    "la gagne avec 15 points supplémentaires !\n",
                    Joueurs[joueurActuel].prenom, Joueurs[joueurActuel].prenom);
             Joueurs[joueurActuel].score += 15;
@@ -424,7 +424,7 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
       }
     } while (!valide);
 
-    // initialisation du score, nombre de carte, cartes, etc
+    // initialisation du score, nombre de cartes, cartes, etc
     joueurs[i].score = 0;
     joueurs[i].nbcarte = 0;
     joueurs[i].Ajouer = false;

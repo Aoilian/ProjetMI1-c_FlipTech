@@ -11,13 +11,13 @@
 #include <unistd.h>
 
 int main() {
-  printf("\x1b[8;40;155t"); // Force la taille du terminale
+  printf("\x1b[8;40;155t"); // Force la taille du terminal
   fflush(stdout);
   sleep(1);
   tcflush(STDIN_FILENO,
-          TCIFLUSH); // Vide toute saisie qui a été tapé par l'utilisateur pendant le sleep
+          TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
 
-  // On crée une nouvelle graine pour que le mélange des cartes ne soient pas les mêmes à chaque partie
+  // On crée une nouvelle graine pour que le mélange des cartes ne soient pas le même à chaque partie
   srand(time(NULL));
 
   Paquet paquet;
@@ -29,7 +29,7 @@ int main() {
 
   VoirRegle();
 
-  // Saisie des joueurs
+  // Saisie du nombre de joueurs
   nmbJoueurs(&nbJoueurs);
   joueurs = malloc(sizeof(Perso) * nbJoueurs);
   if (joueurs == NULL) {
@@ -37,6 +37,7 @@ int main() {
     exit(ERREUR_12);
   }
 
+  // Initialisation des joueurs
   InitialiseJoueurs(joueurs, nbJoueurs);
 
   // Initialisation du paquet
@@ -64,7 +65,7 @@ int main() {
 
   GererEgalite(joueurs, nbJoueurs, &paquet,
                &compteur); // On gère les éventuelles égalité si il y en a fin de partie 
-  Enregistrejoueurs(joueurs, nbJoueurs);  // on affiche le gagnant et on demande aux joueurs si ils veulent enregistrer leur score
+  Enregistrejoueurs(joueurs, nbJoueurs);  // on affiche le gagnant et on demande aux joueurs s'ils veulent enregistrer leur score
 
   // on libère l'espace alloué pour les joueurs et le paquet
   free(joueurs);

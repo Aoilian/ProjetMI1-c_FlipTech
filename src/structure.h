@@ -15,7 +15,7 @@ typedef struct {
 typedef struct {
   Carte carte[MAIN]; // Main actuelle du joueur
   unsigned int score; // Cumul des points sur toutes les manches jouées
-  unsigned int nbcarte; // Nombre de carte actuellement dans sa main
+  unsigned int nbcarte; // Nombre de cartes actuellement dans sa main
   char prenom[TAILLE_PRENOM]; // Prenom du joueur
   bool Ajouer; // Vaut false si le joueur est encore dans la manche et true sinon
   bool doublon; // Vaut true si le joueur  a pioché une carte numéro qu'il possédait déjà dans sa main

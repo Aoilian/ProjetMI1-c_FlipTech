@@ -11,7 +11,7 @@
 // Remplis le paquet avec les cartes numéro
 void RemplirPaquetNumero(Paquet *p, int *position, int numero) {
   if (p == NULL || position == NULL || (numero < 1 || numero > 12)) {
-    printf("\nErreur de programation !\n");
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_7);
   }
   for (int i = 0; i < numero; i++) {
@@ -31,7 +31,7 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
   }
 
   int pos = 0;
-  // 1 paquet pour 3 à 7 joueurs, 2 paquet pour 8 à 15 joueurs, etc.
+  // 1 paquet pour 3 à 7 joueurs, 2 paquets pour 8 à 15 joueurs, etc.
   int nbPaquet = (nbJoueurs / 8) + 1;
 
   p->cartes = malloc(sizeof(Carte) * (nbPaquet * FLIP7));
@@ -41,7 +41,7 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
     exit(ERREUR_9);
   }
 
-  // On créer plusieurs paquet selon le nombre de joueurs
+  // On crée plusieurs paquets selon le nombre de joueurs
   for (int i = 0; i < nbPaquet; i++) {
     // Initialisation des 79 cartes numéro
     for (int j = 1; j <= 12; j++) {
@@ -106,7 +106,7 @@ void melanger(Paquet *p) {
   int j;
   Carte tmp; // Carte temporaire pour inverser les 2 cartes
 
-  //  - Algorithme de Fisher-Yates (mélange de knuth)
+  //  - Algorithme de Fisher-Yates (mélange de Knuth)
   //  - On parcourt le paquet de la fin vers le début
   //  - A chaque position i on échange la carte avec une carte  choisie aléatoirement (complexité o(N))
   for (int i = p->nbCartes - 1; i > 0; i--) {
@@ -133,17 +133,17 @@ Carte piocher(Paquet *p) {
   return p->cartes[p->nbCartes]; // Renvoie la carte tout en haut de la pile
 }
 
-// Fonction qui gère le cas de la carte stop : - Si le joueur qui pioche la carte STOP est le seul encore en jeu il se stoppe lui même
+// Fonction qui gère le cas de la carte stop : - Si le joueur qui pioche la carte STOP est le seul encore en jeu il se stoppe lui-même
 //                                             - Sinon il choisit qui il veut stopper
 void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (nbjoueur < 3 || joueurs == NULL) {
-    printf("\nErreur de programation !\n");
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_11);
   }
 
   if (c.type == 'S' && c.speciale == STOP) {
     char prenom[TAILLE_PRENOM];
-    int enJeu = 0; // Compteur pour le nombre de joueur dans la manche
+    int enJeu = 0; // Compteur pour le nombre de joueurs dans la manche
     bool trouve = false;
 
     // Tant qu'aucun joueur n'est trouvé la boucle continue
@@ -178,18 +178,18 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
       for (int i = 0; i < nbjoueur; i++) {
         if (strcmp(prenom, (joueurs + i)->prenom) == 0) {
           nomTrouve = true;
-          // strcmp -> compare 2 chaîne de caractères et renvoie 0 si elles sont identiques
+          // strcmp -> compare 2 chaînes de caractères et renvoie 0 si elles sont identiques
           if ((joueurs + i)->Ajouer == false &&
-              strcmp((joueurs + i)->prenom, joueur->prenom) == 0) {
+              strcmp((joueurs + i)->prenom, joueur->prenom) != 0) {
             printf("\n");
             printf(
                 EMOJI_STOP GRAS
-                " %s vous avez été stoper, vous passez votre manche \n" RESET,
+                " %s vous avez été stopper, vous passez votre manche \n" RESET,
                 (joueurs + i)->prenom);
             (joueurs + i)->Ajouer = true;
             trouve = true;
           } else if (strcmp((joueurs + i)->prenom, joueur->prenom) == 0) {
-            printf(GRAS "\nVous ne pouvez pas vous stopper vous même\n" RESET);
+            printf(GRAS "\nVous ne pouvez pas vous stopper vous-même\n" RESET);
           } else {
             printf(GRAS "\nCe joueur a déjà joué\n" RESET);
           }
@@ -197,7 +197,7 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
         }
       }
       if (!nomTrouve) {
-        printf(GRAS "\nCe Joueur n'existe pas \n" RESET);
+        printf(GRAS "\nCe joueur n'existe pas \n" RESET);
       }
     }
   } else {

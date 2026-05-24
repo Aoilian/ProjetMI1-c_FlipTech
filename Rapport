@@ -46,7 +46,7 @@ Solution : nous avons fait des réunion pour discuter des règles du jeu et nous
 2) Mauvaise compréhension de la notion de manche, ce qui nous a amenés à faire un grand changement.
 Solution : - Nous avons modifié la fonction qui s'occupe du déroulement de la manche pour que chaque joueur joue l'un après les autres. 
 A la place de redemander si le joueur veut repiocher après avoir pioché une première fois, on passe directement 
-- De plus le paquet était auparavant recréer entre chaque manche, nous avons donc supprimer la création d'un nouveau paquet dans la fonction qui s'occupe de preparer la manche suivante
+- De plus le paquet était auparavant recréé entre chaque manche, nous avons donc supprimer la création d'un nouveau paquet dans la fonction qui s'occupe de preparer la manche suivante
 
 
 - Problèmes 3 : bugs / oublis

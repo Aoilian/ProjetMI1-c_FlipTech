@@ -13,7 +13,7 @@
 //   - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
 //   - Utilise l'appel système 'ioctl' pour interagir avec le terminal et
 //   obtenir ses dimensions
-//   - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du
+//   - Renvoie la largeur du terminal ou 80 par défaut si les dimensions du
 //   terminal n'ont pas pu être récupéré
 int largeurTerminal() {
   // Structure pour stocker les dimensions du terminal (lignes et colonnes)
@@ -23,7 +23,7 @@ int largeurTerminal() {
   // Appel du système pour obtenir les dimensions du terminal :
   //- STDOUT_FILENO : descripteur de fichier de la sortie standrad
   //- TIOCGWINSZ : commande  pour récupérer la taille de la fenêtre du terminal
-  //- Retourne 0 en cas de succès et -1 sinon on verifie que la valeur récupérée est valide
+  //- Retourne 0 en cas de succès et -1 sinon on vérifie que la valeur récupérée est valide
   if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0 && w.ws_col > 0) {
     return w.ws_col;
   }
@@ -32,34 +32,34 @@ int largeurTerminal() {
 }
 
 // - Calcule la largeur en colonnes terminales d'une chaîne UTF-8
-// - En UTF-8, certains caractères (comme les accent ou les emoji) occupent
-// plusieurs octet mais ne doivent compter que pour 1 ou 2 colonne à l'affichage
+// - En UTF-8, certains caractères (comme les accents ou les emoji) occupent
+// plusieurs octets mais ne doivent compter que pour 1 ou 2 colonnes à l'affichage
 int calculeLargeurUtf8(char *chaine) {
   int largeur = 0;
 
-  // Parcourt la chaine de charactère jusqu'à la fin
+  // Parcourt la chaine de caractère jusqu'à la fin
   while (*chaine != '\0') {
 
     // CAS 1 : caractère ASCII (1 octet, 1 colonne)
-    // 0x80 = 10000000 en binaire -> Si le bit de poid fort est 0 c'est un caractère ASCII
+    // 0x80 = 10000000 en binaire -> Si le bit de poids fort est 0 c'est un caractère ASCII
     if ((*chaine & 0x80) == 0) {
 
       largeur++;
       chaine++;
     }
-    // CAS 2 : caractère UTF-8 (2 octets, 1 colonne)
+    // CAS 2 : caractères UTF-8 (2 octets, 1 colonne)
     // 0xE0 = 11100000 en binaire -> Si les 3 premiers bits sont 110, c'est un caractère sur 2 octets
     else if ((*chaine & 0xE0) == 0xC0) {
       largeur++;
       chaine += 2;
     }
-    // CAS 3 : caractère UTF-8 (3 octet, 1 colonne)
+    // CAS 3 : caractères UTF-8 (3 octet, 1 colonne)
     // 0xF0 = 11110000 en binaire -> Si les 4 premiers bits sont 1110, c'est un caractère sur 3 octets
     else if ((*chaine & 0xF0) == 0xE0) {
       largeur++;
       chaine += 3;
     }
-    // CAS 4 : caractère UTF-8 (4 octet, 2 colonne)
+    // CAS 4 : caractères UTF-8 (4 octet, 2 colonne)
     // 0xF0 = 11110000 en binaire -> Si les 5 premiers bits sont 11110, c'est un caractère sur 4 octets
     else {
       largeur += 2;
@@ -177,7 +177,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   int espaceRestant =
       23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
 
-  // Si la taille du prénom est supérieu à 23 on ne met aucun espace
+  // Si la taille du prénom est supérieur à 23 on ne met aucun espace
   if (espaceRestant < 0) {
     espaceRestant = 0;
   }
@@ -211,7 +211,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   }
 }
 
-// Affiche le nombre de carte restante dans le paquet de carte
+// Affiche le nombre de cartes restantes dans le paquet de cartes
 void afficherNbcarte(Paquet *p) {
   if (p == NULL) {
     printf("\nErreur de programmation !\n");
