@@ -29,5 +29,6 @@
 #define ERREUR_26 26
 #define ERREUR_27 27
 #define ERREUR_28 28
+#define ERREUR_29 29
 
 #endif // Fin de la garde d'inclusion

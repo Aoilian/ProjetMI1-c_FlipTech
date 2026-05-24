@@ -11,7 +11,8 @@
 
 bool PrenomValide(char *prenom) {
   if (prenom == NULL || prenom[0] == '\0') {
-    return false;
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_13);
   }
 
   unsigned char *s = (unsigned char *)prenom; // S lit chaque octet de prenom comme un nombre entre 0 et 255 car les UTF8 sont des caractères qui dépasse la valeur 127 d'un char
@@ -65,7 +66,7 @@ bool PrenomValide(char *prenom) {
 bool PrenomDejaUtilise(Perso *joueurs, char *prenom, int nbjoueurActuel) {
   if (joueurs == NULL || prenom == NULL) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_13);
+    exit(ERREUR_14);
   }
   for (int i = 0; i < nbjoueurActuel; i++) {
     if (strcmp(joueurs[i].prenom, prenom) == 0) {
@@ -99,7 +100,8 @@ int PersoValide(Perso a) {
 // Demande au joueur si il veut piocher ?
 void Decision(int *decision, Perso *joueur) {
   if (decision == NULL || joueur == NULL) {
-    exit(ERREUR_14);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_15);
   }
   int valide = 0;
 
@@ -112,8 +114,7 @@ void Decision(int *decision, Perso *joueur) {
     } else {
       printf("\nErreur : Saisie invalide.\n");
       // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-      while (getchar() != '\n')
-        ;
+      while (getchar() != '\n');
     }
 
   } while (valide == 0); // On recommence tant que ce n'est pas valide
@@ -167,8 +168,7 @@ void VoirRegle() {
     } else {
       printf("\nErreur : Saisie invalide.\n");
       // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-      while (getchar() != '\n')
-        ;
+      while (getchar() != '\n');
     }
   } while (valide == 0);
   if (lire == 1) {
@@ -180,15 +180,15 @@ void VoirRegle() {
 // Demande le nombre de joueur dans la partie
 void nmbJoueurs(int *nbJoueurs) {
   if (nbJoueurs == NULL) {
-    exit(ERREUR_15);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_16);
   }
   int valide = 0;
   do {
     printf(RESET V_BLANC "\nCommençons, combien il y a t-il de joueurs dans la partie ?" EMOJI_JOUEUR "\n");
     if (scanf("%d", nbJoueurs) == 1 && (*nbJoueurs >= 3)) {
       valide = 1;
-      while (getchar() != '\n')
-        ; // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+      while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
     } else {
       printf("\nErreur : saisie invalide.\n");
       while (getchar() != '\n')
@@ -215,7 +215,7 @@ bool Flip7(Perso joueur) {
 bool Doublon(Perso *joueur) {
   if (joueur == NULL) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_16);
+    exit(ERREUR_17);
   }
 
   for (unsigned int i = 0; i < joueur->nbcarte; i++) {
@@ -242,7 +242,7 @@ bool Doublon(Perso *joueur) {
 bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || nbJoueurs < 3) {
     printf("\n Données invalide, erreur de programation ! \n");
-    exit(ERREUR_17);
+    exit(ERREUR_18);
   }
   for (int i = 0; i < nbJoueurs; i++) {
     if ((joueurs + i)->Ajouer == false) {
@@ -254,7 +254,8 @@ bool MancheTerminee(Perso *joueurs, int nbJoueurs) {
 
 void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet, int compteur) {
   if (Joueurs == NULL || paquet == NULL) {
-    exit(ERREUR_18);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_19);
   }
   for (int i = 0; i < nbJoueurs; i++) {
     Joueurs[i].Ajouer = false; // Tout le monde peut à nouveau jouer
@@ -274,7 +275,8 @@ void preparerNouvelleManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet, int c
 // - La manche s'arrête si : tous les joueurs ont finis de jouer, un flip7 est réalisé ou le paquet est vide
 void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs => tous les joueurs de la partie
   if (Joueurs == NULL || paquet == NULL) {
-    exit(ERREUR_19);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_20);
   }
 
   int joueurActuel = rand() % nbJoueurs;
@@ -286,7 +288,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
   bool flip_7 = false;
 
   printf("\n-------- LE TOUR COMMENCE --------\n");
-  printf("Attention : Pour le premier tour, vous êtes obligé de piocher : vous n'avez donc pas le choix !")
+  printf("Attention : Pour le premier tour, vous êtes obligé de piocher : vous n'avez donc pas le choix !\n");
 
   // boucle du tour : tant que tout le monde n'a pas fini son tour ou qu'un
   // joueur n'a pas fait de flip7 ou que la paquet de cartes n'est pas vide on
@@ -296,7 +298,6 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
 
     // On ne fait jouer le joueur que s'il n'a pas encore joué
     if (Joueurs[joueurActuel].Ajouer == false) {
-
       afficherSeparateur(col);
       afficherStatut(Joueurs, nbJoueurs);
       afficherSeparateur(col);
@@ -324,6 +325,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
 
         printf("\nCarte piochée : ");
         afficherCarteEsthetique(b);
+        printf("\n");
         carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, b);
         printf("\n");
         sleep(2);
@@ -338,6 +340,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
 
           printf("\nCarte piochée : ");
           afficherCarteEsthetique(c);
+          printf("\n");
 
           carteStop(&Joueurs[joueurActuel], Joueurs, nbJoueurs, c);
           printf("\n");
@@ -381,7 +384,8 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
 
 void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
   if (joueurs == NULL) {
-    exit(ERREUR_20);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_21);
   }
 
   for (int i = 0; i < nbjoueur; i++) {
@@ -391,8 +395,7 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     do {
       printf("Prenom (20 caractères max): ");
       scanf("%40s", joueurs[i].prenom);
-      while (getchar() != '\n')
-        ; // on vide le tampon
+      while (getchar() != '\n'); // on vide le tampon
 
       if (!PrenomValide(joueurs[i].prenom)) {
         printf("\nSaisie invalide, veuillez recommencer\n");

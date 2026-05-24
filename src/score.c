@@ -26,7 +26,8 @@ bool NomFichierValide(char *nom) {
 
 unsigned int AjouterBonus(unsigned int score, int bonus) {
   if (bonus < PLUS2 || bonus > FOIS2) {
-    exit(ERREUR_21);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_22);
   }
 
   // On applique les bonus au score du joueur
@@ -51,14 +52,14 @@ unsigned int AjouterBonus(unsigned int score, int bonus) {
 void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   if (joueurs == NULL || main == NULL || taille <= 0) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_22);
+    exit(ERREUR_23);
   }
 
   if (PersoValide(*joueurs) != 0) {
     printf("\nErreur : donnée du joueurs %s corompues, le score du joueur "
            "n'est pas calculé.\n",
            joueurs->prenom);
-    exit(ERREUR_23);
+    exit(ERREUR_24);
   }
 
   unsigned int somme = 0, b = 0;
@@ -93,7 +94,7 @@ void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
 void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
   if (joueurs == NULL || paquet == NULL || compteur == NULL || nbjoueur < 3) {
     printf("\nErreur de programmation !\n");
-    exit(ERREUR_28);
+    exit(ERREUR_25);
   }
 
   unsigned int scoreMax = 0;
@@ -115,9 +116,8 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
     sleep(2);
     tcflush(STDIN_FILENO, TCIFLUSH);
 
-    // Seuls les joueurs à égalité participent, les autres sont exclus
     for (int i = 0; i < nbjoueur; i++) {
-      joueurs[i].Ajouer = (joueurs[i].score < scoreMax);
+      joueurs[i].Ajouer = false;
     }
 
     free(paquet->cartes); // On libère l'espace alloué par le paquet précédent
@@ -156,8 +156,8 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
 
 void VideLaMain(Perso *joueurs, int nbjoueur) {
   if (joueurs == NULL || nbjoueur < 3) {
-    printf("\nErreur\n");
-    exit(ERREUR_24);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_26);
   }
   for (int i = 0; i < nbjoueur; i++) {
     // On remet à 0 le nombre de carte que les joueurs possèdent quand la manche est terminé
@@ -176,8 +176,8 @@ void VideLaMain(Perso *joueurs, int nbjoueur) {
 //                             - Le paquet est vide
 bool FinDePartie(Perso *joueurs, Paquet pioche, int nbjoueur) {
   if (joueurs == NULL || nbjoueur < 3) {
-    printf("\nErreur \n");
-    exit(ERREUR_25);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_27);
   }
 
   if (pioche.nbCartes == 0) {
@@ -193,8 +193,8 @@ bool FinDePartie(Perso *joueurs, Paquet pioche, int nbjoueur) {
 
 Perso *designerGagnant(Perso *joueurs, int nbjoueur) {
   if (joueurs == NULL || nbjoueur < 3) {
-    printf("\nErreur\n");
-    exit(ERREUR_26);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_28);
   }
 
   // On initialise le max et son adresse avec celle du premier joueur
@@ -218,8 +218,8 @@ Perso *designerGagnant(Perso *joueurs, int nbjoueur) {
 // On enregistre le Nom de chaque gagnant de la partie
 void Enregistrejoueurs(Perso *a, int nbjoueur) {
   if (a == NULL || nbjoueur < 3) {
-    printf("\nErreur\n");
-    exit(ERREUR_27);
+    printf("\nErreur de programmation !\n");
+    exit(ERREUR_29);
   }
   Perso *gagnant = designerGagnant(a, nbjoueur);
   char nomFichier[255];
@@ -227,8 +227,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
   printf("\nQuel nom donnez vous au fichier ?\n ");
   while (scanf("%254s", nomFichier) != 1 || !NomFichierValide(nomFichier)) {
     printf("Saisie invalide, veuillez recommmencer");
-    while (getchar() != '\n')
-      ; // On vide le tampon
+    while (getchar() != '\n'); // On vide le tampon
   }
 
   FILE *fichier = NULL;
@@ -250,8 +249,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
     // choix
     while (scanf(" %c", &choix) != 1 || (choix != 'O' && choix != 'N')) {
       printf("Saisi invalide, veuillre réessayer. \n");
-      while (getchar() != '\n')
-        ; // On vide le tampon après la saisi de l'utilisateur
+      while (getchar() != '\n'); // On vide le tampon après la saisi de l'utilisateur
     }
     if (choix == 'O') {
       // On affiche le joueur et on indique qu'il est vainqeur du flip tech si

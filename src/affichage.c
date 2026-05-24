@@ -169,6 +169,7 @@ void afficherCarteEsthetique(Carte c) {
 
 void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL || joueur == NULL) {
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_2);
   }
 
@@ -213,6 +214,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
 
 void afficherNbcarte(Paquet *p) {
   if (p == NULL) {
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_3);
   }
 
@@ -282,6 +284,7 @@ void afficherNbcarte(Paquet *p) {
 
 void afficherJoueur(char *prenom) {
   if (prenom == NULL) {
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_4);
   }
 
@@ -304,6 +307,7 @@ void afficherJoueur(char *prenom) {
 
 void afficherGagnant(char *prenom) {
   if (prenom == NULL) {
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_5);
   }
   int largeurPrenom = calculeLargeurUtf8(prenom);
@@ -326,15 +330,16 @@ void afficherGagnant(char *prenom) {
 
 void afficherStatut(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL) {
+    printf("\nErreur de programmation !\n");
     exit(ERREUR_6);
   }
 
-  printf("%s\n", ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
+  printf("%s\n",V_BLANC ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
   for (int i = 0; i < nbJoueurs; i++) {
     if (joueurs[i].Ajouer == false) {
-      printf(ITALIC V_VERT "►►► %s ◄◄◄ " RESET, joueurs[i].prenom);
+      printf(RESET ITALIC V_VERT "►►► %s ◄◄◄ " RESET, joueurs[i].prenom);
     } else {
-      printf(ITALIC V_ROUGE "►►► %s ◄◄◄ " RESET, joueurs[i].prenom);
+      printf(RESET ITALIC V_ROUGE "►►► %s ◄◄◄ " RESET, joueurs[i].prenom);
     }
   }
   printf("\n\n");
