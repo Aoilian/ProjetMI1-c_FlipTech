@@ -114,11 +114,11 @@ void Decision(int *decision, Perso *joueur) {
           valide = 1;
           while (getchar() != '\n'); // On vide le tampon d'entrée
       } else {
-        printf(RESET V_BLANC"\nTapez 0 ou 1 !\n");
+        printf(RESET GRAS"\nTapez 0 ou 1 !\n");
         while (getchar() != '\n'); // On vide le tampon d'entrée
       }
     } else {
-      printf(RESET V_BLANC "\nErreur : Saisie invalide.\n");
+      printf(RESET GRAS "\nErreur : Saisie invalide, vous n'avez pas tapé un nombre.\n");
       while (getchar() != '\n'); // On vide le tampon d'entrée
     } 
   } while (valide == 0); // On recommence tant que ce n'est pas valide
@@ -172,11 +172,11 @@ void VoirRegle() {
           valide = 1;
           while (getchar() != '\n'); // On vide le tampon d'entrée
       } else {
-        printf(RESET V_BLANC"\nTapez 0 ou 1 !\n\n");
+        printf(RESET GRAS"\nTapez 0 ou 1 !\n\n");
         while (getchar() != '\n'); // On vide le tampon d'entrée
       }
     } else {
-      printf(RESET V_BLANC"\nErreur : Saisie invalide, vous n'avez pas tapé un nombre.\n\n");
+      printf(RESET GRAS"\nErreur : Saisie invalide, vous n'avez pas tapé un nombre.\n\n");
       while (getchar() != '\n'); // On vide le tampon d'entrée
     }
   } while (valide == 0);
@@ -200,14 +200,14 @@ void nmbJoueurs(int *nbJoueurs) {
         valide = 1;
         while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
       } else if(*nbJoueurs < 3){
-          printf(V_BLANC"\nIl n'y a pas assez de joueurs dans la partie !\n");
+          printf(RESET GRAS"\nIl n'y a pas assez de joueurs dans la partie !\n");
           while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
       } else{
-          printf(V_BLANC"\nIl a trop de joueurs dans la partie !\n");
+          printf(RESET GRAS"\nIl a trop de joueurs dans la partie !\n");
           while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
       }
     } else {
-      printf(V_BLANC"\nErreur : Vous n'avez pas saisie un nombre.\n");
+      printf(GRAS"\nErreur : Vous n'avez pas saisie un nombre.\n");
       while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
     } 
   } while (valide == 0);
@@ -416,9 +416,9 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
       while (getchar() != '\n'); // on vide le tampon
 
       if (!PrenomValide(joueurs[i].prenom)) {
-        printf( V_BLANC"\nSaisie invalide, veuillez recommencer\n\n");
+        printf( RESET GRAS"\nSaisie invalide, veuillez recommencer\n\n");
       } else if (PrenomDejaUtilise(joueurs, joueurs[i].prenom, i)) {
-        printf("\nCe prenom est déjà utilisé !\n\n");
+        printf(RESET GRAS"\nCe prenom est déjà utilisé !\n\n");
       } else {
         valide = true;
       }

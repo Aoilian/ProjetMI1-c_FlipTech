@@ -233,11 +233,11 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
           valide = 1;
           while (getchar() != '\n'); // On vide le tampon d'entrée
       } else {
-        printf(RESET V_BLANC"Vous ne pouvez pas utiliser les caractères suivant pour votre nom de fichier : '\\' '/' '.'\n");
+        printf(RESET V_BLANC"Vous ne pouvez pas utiliser les caractères suivant pour votre nom de fichier : '\\' '/' '.'\n\n");
         while (getchar() != '\n'); // On vide le tampon d'entrée
       }
     } else {
-      printf(RESET V_BLANC"\nErreur : Saisie invalide\n");
+      printf(RESET GRAS"\nErreur : Saisie invalide\n\n");
       while (getchar() != '\n'); // On vide le tampon d'entrée
     }
   } while (valide == 0);
@@ -246,7 +246,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
   fichier = fopen(nomFichier, "a");
 
   if (fichier == NULL) {
-    printf("\nErreur le fichier %s n'a pas pu être créer", nomFichier);
+    printf(GRAS"\n\nErreur le fichier %s n'a pas pu être créer\n", nomFichier);
     return;
   }
 
@@ -260,7 +260,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
     // Tant que l'utilisateur ne saisi pas 'O' ou 'N' on lui redemande son
     // choix
     while (scanf(" %c", &choix) != 1 || (choix != 'O' && choix != 'N')) {
-      printf("Saisi invalide, veuillre réessayer. \n");
+      printf(RESET GRAS"Saisi invalide, veuillre réessayer. \n");
       while (getchar() != '\n'); // On vide le tampon après la saisi de l'utilisateur
     }
     if (choix == 'O') {
@@ -269,8 +269,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
       if ((a + i) == gagnant) {
         fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip tech \n",
                 (a + i)->prenom,
-                (a + i)->score); // On enregistre le nom du gagnant de la
-                                 // partie dans le fichier Fliptech.txt
+                (a + i)->score); // On enregistre le nom du gagnant dans le fichier qu'il vient de créer
       } else {
         fprintf(fichier, "Prenom : %s | score : %u \n", (a + i)->prenom,
                 (a + i)->score);
