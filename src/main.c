@@ -12,7 +12,7 @@
 
 int main() {
   printf("\x1b[8;40;155t"); // Force la taille du terminal
-  fflush(stdout);
+  fflush(stdout); // Force l'affichage du texte en vidant le tampon de sorti
   sleep(1);
   tcflush(STDIN_FILENO,
           TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
@@ -58,7 +58,7 @@ int main() {
     }
     sleep(3); // Pause de 3 secondes
     tcflush(STDIN_FILENO,
-            TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
+            TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
     preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
     compteur++;
   }

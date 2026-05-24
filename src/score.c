@@ -117,7 +117,7 @@ void GererEgalite(Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
                         "supplémentaire de départage !\n" RESET,
            nbEgalite, scoreMax);
     sleep(2);
-    tcflush(STDIN_FILENO, TCIFLUSH);
+    tcflush(STDIN_FILENO, TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
 
     for (int i = 0; i < nbjoueur; i++) {
       joueurs[i].Ajouer = false;
@@ -139,7 +139,7 @@ void GererEgalite(Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
       afficherTableauScores(&joueurs[j], joueurs, nbjoueur);
     }
     sleep(3);
-    tcflush(STDIN_FILENO, TCIFLUSH);
+    tcflush(STDIN_FILENO, TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
 
     // On calcule à nouveau le nombre de joueurs qui ont le même score pour savoir si l'égalité persiste
     scoreMax = 0;

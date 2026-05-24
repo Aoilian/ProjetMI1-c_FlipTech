@@ -349,7 +349,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
         printf("\n");
         sleep(2);
         tcflush(STDIN_FILENO,
-                TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
+                TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
       } else {
         // Cas 3 : le joueur choisit de piocher ou s'arrêter
         Decision(&decision, &Joueurs[joueurActuel]);
