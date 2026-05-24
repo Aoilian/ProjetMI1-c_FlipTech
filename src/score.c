@@ -224,19 +224,19 @@ Perso *designerGagnant(Perso *joueurs, int nbjoueur) {
 }
 
 // On enregistre le Nom de chaque gagnant de la partie
-void Enregistrejoueurs(Perso *a, int nbjoueur) {
-  if (a == NULL || nbjoueur < 3) {
+void Enregistrejoueurs(Perso *joueurs, int nbjoueur) {
+  if (joueurs == NULL || nbjoueur < 3) {
     printf("\nErreur de programmation !\n");
     exit(ERREUR_29);
   }
-  Perso *gagnant = designerGagnant(a, nbjoueur);
+  Perso *gagnant = designerGagnant(joueurs, nbjoueur);
   char nomFichier[102];
   int valide = 0;
 
   printf("\n\n ");
   do {
     printf(RESET V_BLANC
-           "\nQuel nom donnezvous au fichier pour enregistrer votre partie ? "
+           "\nQuel nom donnez-vous au fichier pour enregistrer votre partie ? "
            "(Sans espace et 100 caractères maximum)\n");
     if (scanf("%100s", nomFichier) == 1) {
       if (NomFichierValide(nomFichier)) {
@@ -267,22 +267,38 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
 
     printf(RESET "\n%s veux tu enregistrer ton score sur le fichier %s ? (oui "
                  ": O / non : N) \n",
-           (a + i)->prenom, nomFichier);
+           (joueurs + i)->prenom, nomFichier);
 
     // Tant que l'utilisateur ne saisie pas 'O' ou 'N' on lui redemande son choix
     while (scanf(" %c", &choix) != 1 || (choix != 'O' && choix != 'N')) {
-      printf(RESET GRAS "Saisie invalide, veuillez réessayer. \n");
+      printf(RESET GRAS "\nSaisie invalide, veuillez réessayer. \n");
+      printf(RESET "\n%s veux tu enregistrer ton score sur le fichier %s ? (oui "
+                 ": O / non : N) \n",(joueurs + i)->prenom, nomFichier);
       while (getchar() != '\n'); // On vide le tampon d'entrée
     }
     if (choix == 'O') {
       // On affiche le joueur et on indique qu'il est vainqueur du flip tech si il a gagné une partie
-      if ((a + i) == gagnant) {
-        fprintf(fichier, "Prénom : %s | score : %u | vainqueur du flip tech \n",
-                (a + i)->prenom,
-                (a + i)->score); // On enregistre le nom du gagnant dans le fichier qu'il vient de créer
+      int largeurPrenom = calculeLargeurUtf8((joueurs+i)->prenom);
+      int espaceRestant = 20 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
+      
+      if(espaceRestant < 0){
+        espaceRestant = 0;
+      }
+
+      if ((joueurs + i) == gagnant) {
+        fprintf(fichier, "Prénom : %s ",
+                (joueurs + i)->prenom); // On enregistre le nom du gagnant dans le fichier qu'il vient de créer
+        for (int i = 0; i < espaceRestant; i++) { 
+          fprintf(fichier," ");
+        }
+        fprintf(fichier,"|score : %-3u | vainqueur du flip tech \n", (joueurs + i)->score);
       } else {
-        fprintf(fichier, "Prénom : %s | score : %u \n", (a + i)->prenom,
-                (a + i)->score);
+        fprintf(fichier, "Prénom : %s ",
+                (joueurs + i)->prenom); // On enregistre le nom du gagnant dans le fichier qu'il vient de créer
+        for (int i = 0; i < espaceRestant; i++) { 
+          fprintf(fichier," ");
+        }
+        fprintf(fichier,"|score : %-3u |\n", (joueurs + i)->score);
       }
     }
   }

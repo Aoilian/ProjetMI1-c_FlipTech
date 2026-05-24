@@ -168,6 +168,7 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
         printf("\n%s qui veux tu stopper ? \n", joueur->prenom);
         while (scanf("%40s", prenom) != 1 || !PrenomValide(prenom)) {
           printf(RESET GRAS "\nSaisie invalide, veuillez recommencer !\n");
+          printf(RESET "\n%s qui veux tu stopper ? \n\n", joueur->prenom);
           while (getchar() != '\n'); // On vide le tampon d'entrée
         }
         while (getchar() != '\n'); // On vide le tampon d'entrée

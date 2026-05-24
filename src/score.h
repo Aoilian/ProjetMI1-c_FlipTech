@@ -14,6 +14,6 @@ bool FinDePartie(Perso *joueurs, Paquet pioche, int nbjoueur);
 void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur);
 void VideLaMain(Perso *joueurs, int nbjoueur);
 Perso *designerGagnant(Perso *joueurs, int taille);
-void Enregistrejoueurs(Perso *a, int nbjoueur);
+void Enregistrejoueurs(Perso *joueurs, int nbjoueur);
 
 #endif // Fin de la garde d'inclusion

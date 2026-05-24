@@ -104,7 +104,7 @@ void Decision(int *decision, Perso *joueur) {
   int valide = 0;
 
   do {
-    printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
+    printf(RESET"\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
 
     if (scanf("%d", decision) == 1) {
       if ((*decision) == 0 || (*decision) == 1) {

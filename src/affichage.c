@@ -174,8 +174,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
 
   unsigned int scoreMax = 0;
   int largeurPrenom = calculeLargeurUtf8(joueur->prenom);
-  int espaceRestant =
-      23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
+  int espaceRestant = 23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
 
   // Si la taille du prénom est supérieur à 23 on ne met aucun espace
   if (espaceRestant < 0) {
