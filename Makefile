@@ -13,7 +13,7 @@ EXEC = fliptech
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) $(OBJ) -o $(EXEC) -fsanitize=address,undefined
+	$(CC) $(OBJ) -o $(EXEC) 
 
 build/%.o: %.c
 	mkdir -p build/src
