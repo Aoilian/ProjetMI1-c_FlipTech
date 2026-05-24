@@ -308,7 +308,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
   printf("\n-------- LE TOUR COMMENCE --------\n");
   printf("\nAttention : Pour le premier tour, vous êtes obligé de piocher : "
          "vous n'avez donc pas le choix.\n\n");
-  sleep(5);
+  sleep(4);
 
   // boucle du tour : tant que tout le monde n'a pas fini son tour ou qu'un
   // joueur n'a pas fait de flip7 ou que la paquet de cartes n'est pas vide on continue le tour
@@ -389,6 +389,9 @@ void lancerManche(Perso *Joueurs, int nbJoueurs,
         }
       }
     }
+    sleep(1);
+    tcflush(STDIN_FILENO,
+    TCIFLUSH); // Vide toute saisie qui a été taper par l'utilisateur pendant le sleep
     // On passe au joueur suivant
     joueurActuel = (joueurActuel + 1) % nbJoueurs;
 
@@ -410,7 +413,7 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     printf("\n--- Joueur %d ---\n", i + 1);
 
     do {
-      printf(RESET V_BLANC "Prenom (20 caractères max): ");
+      printf(RESET V_BLANC "Prénom (20 caractères max): ");
       scanf("%40s", joueurs[i].prenom);
       while (getchar() != '\n')
         ; // on vide le tampon
