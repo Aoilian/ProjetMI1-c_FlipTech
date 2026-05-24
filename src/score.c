@@ -13,10 +13,8 @@ bool NomFichierValide(char *nom) {
   if (nom == NULL || nom[0] == '\0') {
     return false;
   }
-
   for (int i = 0; nom[i] != '\0'; i++) {
-    // On interdit les séparateur pour ne pas que le fichier créer traverse des
-    // répertoires et écrase un fichier déjà existant
+    // On interdit les séparateur pour ne pas que le fichier créer traverse des répertoires et écrase un fichier déjà existant
     if (nom[i] == '/' || nom[i] == '\\' || nom[i] == '.') {
       return false;
     }
@@ -225,12 +223,24 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
   }
   Perso *gagnant = designerGagnant(a, nbjoueur);
   char nomFichier[255];
+  int valide = 0;
 
-  printf("\nQuel nom donnez vous au fichier ?\n ");
-  while (scanf("%254s", nomFichier) != 1 || !NomFichierValide(nomFichier)) {
-    printf("Saisie invalide, veuillez recommmencer");
-    while (getchar() != '\n'); // On vide le tampon
-  }
+  printf("\n\n ");
+  do {
+    printf(RESET V_BLANC"\nQuel nom donnez vous au fichier pour enregistrer votre partie ?\n");
+    if (scanf("%254s", nomFichier) == 1) {
+      if (NomFichierValide(nomFichier)){
+          valide = 1;
+          while (getchar() != '\n'); // On vide le tampon d'entrée
+      } else {
+        printf(RESET V_BLANC"Vous ne pouvez pas utiliser les caractères suivant pour votre nom de fichier : '\\' '/' '.'\n");
+        while (getchar() != '\n'); // On vide le tampon d'entrée
+      }
+    } else {
+      printf(RESET V_BLANC"\nErreur : Saisie invalide\n");
+      while (getchar() != '\n'); // On vide le tampon d'entrée
+    }
+  } while (valide == 0);
 
   FILE *fichier = NULL;
   fichier = fopen(nomFichier, "a");

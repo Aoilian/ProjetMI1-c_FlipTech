@@ -109,14 +109,18 @@ void Decision(int *decision, Perso *joueur) {
     printf("\nVoulez-vous piocher ? \n- oui : 1 \n- non : 0\n");
 
     // verification si scanf a bien marché, et si le nombre est respecté
-    if (scanf("%d", decision) == 1 && (*decision == 0 || *decision == 1)) {
-      valide = 1; // si c'est valide, c'est fini
+    if (scanf("%d", decision) == 1 ) {
+      if ((*decision) == 0 || (*decision) == 1){
+          valide = 1;
+          while (getchar() != '\n'); // On vide le tampon d'entrée
+      } else {
+        printf(RESET V_BLANC"\nTapez 0 ou 1 !\n");
+        while (getchar() != '\n'); // On vide le tampon d'entrée
+      }
     } else {
-      printf("\nErreur : Saisie invalide.\n");
-      // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-      while (getchar() != '\n');
-    }
-
+      printf(RESET V_BLANC "\nErreur : Saisie invalide.\n");
+      while (getchar() != '\n'); // On vide le tampon d'entrée
+    } 
   } while (valide == 0); // On recommence tant que ce n'est pas valide
 }
 
@@ -163,12 +167,17 @@ void VoirRegle() {
   int lire = 0, valide = 0;
   do {
     printf(RESET V_BLANC"Voulez-vous consulter les rêgles du jeu avant de commencer la partie ?\n- Oui : 1 \n- Non : 0\n");
-    if (scanf("%d", &lire) == 1 && (lire == 0 || lire == 1)) {
-      valide = 1; // si c'est valide, c'est fini
+    if (scanf("%d", &lire) == 1 ) {
+      if (lire == 0 || lire == 1){
+          valide = 1;
+          while (getchar() != '\n'); // On vide le tampon d'entrée
+      } else {
+        printf(RESET V_BLANC"\nTapez 0 ou 1 !\n\n");
+        while (getchar() != '\n'); // On vide le tampon d'entrée
+      }
     } else {
-      printf("\nErreur : Saisie invalide.\n");
-      // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-      while (getchar() != '\n');
+      printf(RESET V_BLANC"\nErreur : Saisie invalide, vous n'avez pas tapé un nombre.\n\n");
+      while (getchar() != '\n'); // On vide le tampon d'entrée
     }
   } while (valide == 0);
   if (lire == 1) {
@@ -402,12 +411,12 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     printf("\n--- Joueur %d ---\n", i + 1);
 
     do {
-      printf("Prenom (20 caractères max): ");
+      printf(V_BLANC "Prenom (20 caractères max): ");
       scanf("%40s", joueurs[i].prenom);
       while (getchar() != '\n'); // on vide le tampon
 
       if (!PrenomValide(joueurs[i].prenom)) {
-        printf("\nSaisie invalide, veuillez recommencer\n");
+        printf( V_BLANC"\nSaisie invalide, veuillez recommencer\n\n");
       } else if (PrenomDejaUtilise(joueurs, joueurs[i].prenom, i)) {
         printf("\nCe prenom est déjà utilisé !\n\n");
       } else {
@@ -428,8 +437,7 @@ void InitialiseJoueurs(Perso *joueurs, int nbjoueur) {
     }
   }
   for (int i = 0; i < nbjoueur; i++) {
-    // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas
-    // les 20 caractères
+    // On tronque le prénom saisie par l'utilisateur pour qu'il ne dépasse pas les 20 caractères
     TronquerUTF8((joueurs + i)->prenom, 20);
   }
 }

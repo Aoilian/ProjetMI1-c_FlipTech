@@ -173,7 +173,7 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
           printf("\nSaisie invalide, veuillez recommencer !\n");
           while (getchar() != '\n');
         }
-        while (getchar() != '\n'); // On vide le tampon même si la saisie est valide
+        while (getchar() != '\n'); // On vide le tampon d'entrée
       }
 
       bool nomTrouve = false;
