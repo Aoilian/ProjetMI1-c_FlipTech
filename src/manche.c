@@ -290,7 +290,7 @@ void lancerManche(Perso *Joueurs, int nbJoueurs, Paquet *paquet) { // Joueurs =>
   printf("\n-------- LE TOUR COMMENCE --------\n");
   printf("\nAttention : Pour le premier tour, vous êtes obligé de piocher :"
     "vous n'avez donc pas le choix \n\n");
-  sleep(3);
+  sleep(5);
 
   // boucle du tour : tant que tout le monde n'a pas fini son tour ou qu'un
   // joueur n'a pas fait de flip7 ou que la paquet de cartes n'est pas vide on
