@@ -25,7 +25,6 @@ int main() {
 
   effacerEcran();
   afficherTitrePrincipal();
-  printf(RESET);
 
   VoirRegle();
 
@@ -38,7 +37,7 @@ int main() {
   }
 
   InitialiseJoueurs(joueurs, nbJoueurs);
-  
+ 
   // Initialisation du paquet
   creerPaquet(&paquet, nbJoueurs);
   melanger(&paquet);

@@ -136,20 +136,22 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
     }
     sleep(3);
     tcflush(STDIN_FILENO, TCIFLUSH);
-    preparerNouvelleManche(joueurs, nbjoueur, paquet, *compteur);
-    (*compteur)++;
-
     // Recalcul pour savoir si l'égalité persiste
     scoreMax = 0;
     for (int i = 0; i < nbjoueur; i++) {
-      if (joueurs[i].score > scoreMax)
+      if (joueurs[i].score > scoreMax){
         scoreMax = joueurs[i].score;
+      }
     }
     nbEgalite = 0;
     for (int i = 0; i < nbjoueur; i++) {
       if (joueurs[i].score == scoreMax){
         nbEgalite++;
       }
+    }
+    if(nbEgalite > 1){
+      preparerNouvelleManche(joueurs, nbjoueur, paquet, *compteur);
+      (*compteur)++;
     }
   }
 }

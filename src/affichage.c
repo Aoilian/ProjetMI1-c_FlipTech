@@ -97,7 +97,7 @@ void TronquerUTF8(char *s, int nbCaractere) {
 }
 
 void effacerEcran() {
-  printf("\033[2J\033[H"); // CSI 2J = efface tout l'écran, CSI H = déplace le curseur en (1,1)
+  printf("\033[2J\033[H"); // CSI 2J = efface tout l'écran, CSI H = déplace le curseur à la position (1,1)
 }
 
 void afficherSeparateur(int largeur) {
@@ -107,7 +107,8 @@ void afficherSeparateur(int largeur) {
   printf(RESET "\n");
 }
 
-// Affiche le Titre  du jeu, centré dans le terminal. L'espacement est calculé dynamiquement en fonction de la largeur du terminal
+// - Affiche le Titre du jeu, centré dans le terminal
+// - L'espacement est calculé dynamiquement en fonction de la largeur du terminal
 void afficherTitrePrincipal() {
   int col = largeurTerminal();
   int longueurTitre =
@@ -122,9 +123,9 @@ void afficherTitrePrincipal() {
   printf("\n" V_NOIR);
   afficherSeparateur(col);
   printf(RESET "%*s%s%*s", espacement, "",
-         RESET EMOJI_CARTE GRAS V_NOIR
-         " F L I P T E C H - Le jeu de cartes ultime" RESET EMOJI_CARTE,
-         espacement, "\n" V_NOIR);
+        RESET EMOJI_CARTE GRAS V_NOIR
+        " F L I P T E C H - Le meilleur jeu de cartes de tous les temps " RESET EMOJI_CARTE,
+        espacement, "\n" V_NOIR);
   afficherSeparateur(col);
   printf("\n" RESET);
 }
@@ -177,20 +178,19 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   int largeurPrenom = calculeLargeurUtf8(joueur->prenom); 
   int espaceRestant = 23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
 
+  // Si la taille du prénom est supérieu à 23 on ne met aucun espace
   if (espaceRestant < 0) {
     espaceRestant = 0;
   }
 
   for (int i = 0; i < nbJoueurs; i++) {
     if (joueurs[i].score > scoreMax) {
-      scoreMax = joueurs[i].score;
+      scoreMax = joueurs[i].score; // Score le plus élevé de la manche
     }
   }
-
   printf("\n");
 
-  // Si le joueur est leader de la manche et que son score est différent de 0 on
-  // l'indique avec une étoile
+  // Si le joueur est leader de la manche et que son score est différent de 0 on l'indique avec une étoile
   if (joueur->score == scoreMax && joueur->score != 0) {
     printf("\n╔════════════════════════════════════════════════════╗ ");
     printf("\n║" EMOJI_SCORE " SCORE de %s = %5d pts", joueur->prenom,
@@ -212,6 +212,7 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   }
 }
 
+// Affiche le nombre de carte restante dans le paquet de carte
 void afficherNbcarte(Paquet *p) {
   if (p == NULL) {
     printf("\nErreur de programmation !\n");
@@ -289,7 +290,7 @@ void afficherJoueur(char *prenom) {
   }
 
   int largeurPrenom = calculeLargeurUtf8(prenom);
-  int espaceRestant = 23 - largeurPrenom;
+  int espaceRestant = 23 - largeurPrenom; // espace calculé dynamiquement avec la taille du prénom des joueurs
 
   if (espaceRestant < 0) {
     espaceRestant = 0;
@@ -311,7 +312,7 @@ void afficherGagnant(char *prenom) {
     exit(ERREUR_5);
   }
   int largeurPrenom = calculeLargeurUtf8(prenom);
-  int espaceRestant = 33 - largeurPrenom;
+  int espaceRestant = 33 - largeurPrenom; // espace calculé dynamiquement avec la taille du prénom des joueurs
 
   if (espaceRestant < 0) {
     espaceRestant = 0;
@@ -328,6 +329,8 @@ void afficherGagnant(char *prenom) {
          "━━━━━━━┛\n" RESET);
 }
 
+// Affiche le statut des joueurs : - Vert  : le joueur est encore présent dans la manche 
+//                                 - Rouge : le joueur est éliminé de la manche
 void afficherStatut(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL) {
     printf("\nErreur de programmation !\n");

@@ -185,15 +185,22 @@ void nmbJoueurs(int *nbJoueurs) {
   }
   int valide = 0;
   do {
-    printf(RESET V_BLANC "\nCommençons, combien il y a t-il de joueurs dans la partie ?" EMOJI_JOUEUR "\n");
-    if (scanf("%d", nbJoueurs) == 1 && (*nbJoueurs >= 3)) {
-      valide = 1;
-      while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+    printf(RESET V_BLANC "\nCommençons, combien il y a t-il de joueurs dans la partie ? (3-100 joueurs) " EMOJI_JOUEUR "\n");
+    if (scanf("%d", nbJoueurs) == 1) {
+      if ((*nbJoueurs) >= 3 && (*nbJoueurs) <= 100 ) {
+        valide = 1;
+        while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+      } else if(*nbJoueurs < 3){
+          printf(V_BLANC"\nIl n'y a pas assez de joueurs dans la partie !\n");
+          while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+      } else{
+          printf(V_BLANC"\nIl a trop de joueurs dans la partie !\n");
+          while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+      }
     } else {
-      printf("\nErreur : saisie invalide.\n");
-      while (getchar() != '\n')
-        ; // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
-    }
+      printf(V_BLANC"\nErreur : Vous n'avez pas saisie un nombre.\n");
+      while (getchar() != '\n'); // On vide le tampon au cas où l'utilisateur aurais tapé un caractère
+    } 
   } while (valide == 0);
 }
 

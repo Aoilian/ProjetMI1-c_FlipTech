@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Remplis le paquet avec les cartes numéro 
 void RemplirPaquetNumero(Paquet *p, int *position, int numero) {
   if (p == NULL || position == NULL || (numero < 1 || numero > 12)) {
     printf("\nErreur de programation !\n");
@@ -30,7 +31,7 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
   }
 
   int pos = 0;
-  // 1 paquet pour 3 à 10 joueurs, 2 paquet pour 11 à 20 joueurs, etc.
+  // 1 paquet pour 3 à 10 joueurs, 2 paquet pour 11 à 19 joueurs, etc.
   int nbPaquet = (nbJoueurs + 9) / 10;
 
   p->cartes = malloc(sizeof(Carte) * (nbPaquet * FLIP7));
@@ -142,7 +143,7 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (c.type == 'S' && c.speciale == STOP) {
     char prenom[TAILLE_PRENOM];
     int enJeu = 0; // Compteur pour le nombre de joueur dans la manche
-    bool trouve = false;
+    bool trouve = false; 
 
     // Tant qu'aucun joueur n'est trouvé la boucle continue
     while (!trouve) {
@@ -176,13 +177,15 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
       }
 
       bool nomTrouve = false;
+     
       for (int i = 0; i < nbjoueur; i++) {
         if (strcmp(prenom, (joueurs + i)->prenom) == 0) {
           nomTrouve = true;
           if ((joueurs + i)->Ajouer == false &&
-              strcmp((joueurs + i)->prenom, joueur->prenom) != 0) {
+            strcmp((joueurs + i)->prenom, joueur->prenom) != 0) {
+            printf("\n");
             printf(EMOJI_STOP GRAS
-                   " %s vous avez été stoper, vous passez votre tour \n" RESET,
+                   " %s vous avez été stoper, vous passez votre manche \n" RESET,
                    (joueurs + i)->prenom);
             (joueurs + i)->Ajouer = true;
             trouve = true;
