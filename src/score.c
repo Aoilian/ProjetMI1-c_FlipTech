@@ -69,8 +69,7 @@ void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   }
   b = somme;
 
-  // Ajout des cartes bonus après le tour
-  // On ajoute d'abord le FOIS2 puis les autres bonus
+  // Ajout des cartes bonus après le tour On ajoute d'abord le FOIS2 puis les autres bonus
   for (int j = 0; j < taille; j++) {
     if (main[j].type == 'B' && (main + j)->bonus == FOIS2) {
       b = AjouterBonus(b, (main + j)->bonus);
@@ -89,7 +88,7 @@ void CalculScore(Perso *joueurs, Carte *main, int taille, bool doublon) {
   joueurs->score += b;
 }
 
-void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
+void GererEgalite(Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) {
   if (joueurs == NULL || paquet == NULL || compteur == NULL || nbjoueur < 3) {
     printf("\nErreur de programmation !\n");
     exit(ERREUR_25);
@@ -103,14 +102,15 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
   }
   int nbEgalite = 0;
   for (int i = 0; i < nbjoueur; i++) {
-    if (joueurs[i].score == scoreMax){
+    if (joueurs[i].score == scoreMax) {
       nbEgalite++;
     }
   }
 
   while (nbEgalite > 1) {
-    printf(GRAS V_JAUNE "\n ÉGALITÉ entre %d joueurs à %u points ! Manche supplémentaire de départage !\n" RESET,
-            nbEgalite, scoreMax);
+    printf(GRAS V_JAUNE "\n ÉGALITÉ entre %d joueurs à %u points ! Manche "
+                        "supplémentaire de départage !\n" RESET,
+           nbEgalite, scoreMax);
     sleep(2);
     tcflush(STDIN_FILENO, TCIFLUSH);
 
@@ -118,8 +118,9 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
       joueurs[i].Ajouer = false;
     }
 
-    free(paquet->cartes); // On libère l'espace alloué par le paquet précédent
-    creerPaquet(paquet, nbjoueur); // 
+    // On libère l'espace alloué par le paquet précédent et on en recréer un
+    free(paquet->cartes);
+    creerPaquet(paquet, nbjoueur);
     melanger(paquet);
 
     lancerManche(joueurs, nbjoueur, paquet);
@@ -134,20 +135,22 @@ void GererEgalite (Perso *joueurs, int nbjoueur, Paquet *paquet, int *compteur) 
     }
     sleep(3);
     tcflush(STDIN_FILENO, TCIFLUSH);
-    // Recalcul pour savoir si l'égalité persiste
+
+    // On calcule à nouveau le nombre de joueurs qui ont le même score pour savoir si l'égalité persiste
     scoreMax = 0;
     for (int i = 0; i < nbjoueur; i++) {
-      if (joueurs[i].score > scoreMax){
+      if (joueurs[i].score > scoreMax) {
         scoreMax = joueurs[i].score;
       }
     }
     nbEgalite = 0;
     for (int i = 0; i < nbjoueur; i++) {
-      if (joueurs[i].score == scoreMax){
+      if (joueurs[i].score == scoreMax) {
         nbEgalite++;
       }
     }
-    if(nbEgalite > 1){
+    // On prépare la manche suivante si il y a de nouveau une égalité
+    if (nbEgalite > 1) {
       preparerNouvelleManche(joueurs, nbjoueur, paquet, *compteur);
       (*compteur)++;
     }
@@ -222,22 +225,26 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
     exit(ERREUR_29);
   }
   Perso *gagnant = designerGagnant(a, nbjoueur);
-  char nomFichier[255];
+  char nomFichier[102];
   int valide = 0;
 
   printf("\n\n ");
   do {
-    printf(RESET V_BLANC"\nQuel nom donnez vous au fichier pour enregistrer votre partie ?\n");
-    if (scanf("%254s", nomFichier) == 1) {
-      if (NomFichierValide(nomFichier)){
-          valide = 1;
-          while (getchar() != '\n'); // On vide le tampon d'entrée
+    printf(RESET V_BLANC
+           "\nQuel nom donnez vous au fichier pour enregistrer votre partie ? "
+           "(Sans espace et 100 caractères maximum)\n");
+    if (scanf("%100s", nomFichier) == 1) {
+      if (NomFichierValide(nomFichier)) {
+        valide = 1;
+        while (getchar() != '\n'); // On vide le tampon d'entrée
       } else {
-        printf(RESET V_BLANC"Vous ne pouvez pas utiliser les caractères suivant pour votre nom de fichier : '\\' '/' '.'\n\n");
+        printf(RESET V_BLANC
+               "Vous ne pouvez pas utiliser les caractères suivant pour votre "
+               "nom de fichier : '\\' '/' '.'\n\n");
         while (getchar() != '\n'); // On vide le tampon d'entrée
       }
     } else {
-      printf(RESET GRAS"\nErreur : Saisie invalide\n\n");
+      printf(RESET GRAS "\nErreur : Saisie invalide\n\n");
       while (getchar() != '\n'); // On vide le tampon d'entrée
     }
   } while (valide == 0);
@@ -246,7 +253,7 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
   fichier = fopen(nomFichier, "a");
 
   if (fichier == NULL) {
-    printf(GRAS"\n\nErreur le fichier %s n'a pas pu être créer\n", nomFichier);
+    printf(GRAS "\n\nErreur le fichier %s n'a pas pu être créer\n", nomFichier);
     return;
   }
 
@@ -257,15 +264,13 @@ void Enregistrejoueurs(Perso *a, int nbjoueur) {
                  ": O / non : N) \n",
            (a + i)->prenom, nomFichier);
 
-    // Tant que l'utilisateur ne saisi pas 'O' ou 'N' on lui redemande son
-    // choix
+    // Tant que l'utilisateur ne saisi pas 'O' ou 'N' on lui redemande son choix
     while (scanf(" %c", &choix) != 1 || (choix != 'O' && choix != 'N')) {
-      printf(RESET GRAS"Saisi invalide, veuillre réessayer. \n");
-      while (getchar() != '\n'); // On vide le tampon après la saisi de l'utilisateur
+      printf(RESET GRAS "Saisi invalide, veuillre réessayer. \n");
+      while (getchar() != '\n'); // On vide le tampon d'entrée
     }
     if (choix == 'O') {
-      // On affiche le joueur et on indique qu'il est vainqeur du flip tech si
-      // il a gagné une partie
+      // On affiche le joueur et on indique qu'il est vainqeur du flip tech si il a gagné une partie
       if ((a + i) == gagnant) {
         fprintf(fichier, "Prenom : %s | score : %u | vainqueur du flip tech \n",
                 (a + i)->prenom,

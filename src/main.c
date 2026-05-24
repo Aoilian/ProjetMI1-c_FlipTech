@@ -14,7 +14,8 @@ int main() {
   printf("\x1b[8;40;155t"); // Force la taille du terminale
   fflush(stdout);
   sleep(1);
-  tcflush(STDIN_FILENO,TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
+  tcflush(STDIN_FILENO,
+          TCIFLUSH); // Vide toute saisie qui a été tapé par l'utilisateur pendant le sleep
 
   // On crée une nouvelle graine pour que le mélange des cartes ne soient pas les mêmes à chaque partie
   srand(time(NULL));
@@ -37,7 +38,7 @@ int main() {
   }
 
   InitialiseJoueurs(joueurs, nbJoueurs);
- 
+
   // Initialisation du paquet
   creerPaquet(&paquet, nbJoueurs);
   melanger(&paquet);
@@ -47,23 +48,25 @@ int main() {
     lancerManche(joueurs, nbJoueurs, &paquet);
     for (int i = 0; i < nbJoueurs; i++) {
       if (joueurs[i].nbcarte > 0) {
-        CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte,joueurs[i].doublon);
+        CalculScore(&(joueurs[i]), joueurs[i].carte, joueurs[i].nbcarte,
+                    joueurs[i].doublon);
       }
     }
     for (int j = 0; j < nbJoueurs; j++) {
       afficherTableauScores(&joueurs[j], joueurs, nbJoueurs);
     }
     sleep(3); // Pause de 3 secondes
-    tcflush(STDIN_FILENO,TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
+    tcflush(STDIN_FILENO,
+            TCIFLUSH); // Vide tout ce qui a été tapé pendant le sleep
     preparerNouvelleManche(joueurs, nbJoueurs, &paquet, compteur);
     compteur++;
   }
 
-  GererEgalite(joueurs, nbJoueurs, &paquet, &compteur); // On gère les éventuelles égalité si il y en a
-  // Fin de partie on affiche le gagnant et on demande aux joueurs si ils
-  // veulent enregistrer leur score
-  Enregistrejoueurs(joueurs, nbJoueurs);
+  GererEgalite(joueurs, nbJoueurs, &paquet,
+               &compteur); // On gère les éventuelles égalité si il y en a fin de partie 
+  Enregistrejoueurs(joueurs, nbJoueurs);  // on affiche le gagnant et on demande aux joueurs si ils veulent enregistrer leur score
 
+  // on libère l'espace alloué pour les joueurs et le paquet
   free(joueurs);
   free(paquet.cartes);
   return 0;

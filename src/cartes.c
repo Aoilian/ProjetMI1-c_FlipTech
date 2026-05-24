@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Remplis le paquet avec les cartes numéro 
+// Remplis le paquet avec les cartes numéro
 void RemplirPaquetNumero(Paquet *p, int *position, int numero) {
   if (p == NULL || position == NULL || (numero < 1 || numero > 12)) {
     printf("\nErreur de programation !\n");
@@ -31,8 +31,8 @@ void creerPaquet(Paquet *p, int nbJoueurs) {
   }
 
   int pos = 0;
-  // 1 paquet pour 3 à 10 joueurs, 2 paquet pour 11 à 19 joueurs, etc.
-  int nbPaquet = (nbJoueurs + 9) / 10;
+  // 1 paquet pour 3 à 7 joueurs, 2 paquet pour 8 à 15 joueurs, etc.
+  int nbPaquet = (nbJoueurs / 8) + 1;
 
   p->cartes = malloc(sizeof(Carte) * (nbPaquet * FLIP7));
 
@@ -108,8 +108,7 @@ void melanger(Paquet *p) {
 
   //  - Algorithme de Fisher-Yates (mélange de knuth)
   //  - On parcourt le paquet de la fin vers le début
-  //  - A chaque position i on échange la carte avec une carte  choisie
-  //  aléatoirement (complexité o(N))
+  //  - A chaque position i on échange la carte avec une carte  choisie aléatoirement (complexité o(N))
   for (int i = p->nbCartes - 1; i > 0; i--) {
     // formule rand() %(max-min+1) + min = Valeurs aléatoires entre 0 et i
     j = rand() % (i + 1);
@@ -131,9 +130,11 @@ Carte piocher(Paquet *p) {
   }
 
   p->nbCartes = p->nbCartes - 1; // décrémente le compteur de carte
-  return p->cartes[p->nbCartes]; // carte piochée
+  return p->cartes[p->nbCartes]; // Renvoie la carte tout en haut de la pile
 }
 
+// Fonction qui gère le cas de la carte stop : - Si le joueur qui pioche la carte STOP est le seul encore en jeu il se stoppe lui même
+//                                             - Sinon il choisit qui il veut stopper
 void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (nbjoueur < 3 || joueurs == NULL) {
     printf("\nErreur de programation !\n");
@@ -143,7 +144,7 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
   if (c.type == 'S' && c.speciale == STOP) {
     char prenom[TAILLE_PRENOM];
     int enJeu = 0; // Compteur pour le nombre de joueur dans la manche
-    bool trouve = false; 
+    bool trouve = false;
 
     // Tant qu'aucun joueur n'est trouvé la boucle continue
     while (!trouve) {
@@ -154,8 +155,6 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
         }
       }
 
-      // Si le joueur qui pioche la carte STOP est le seul encore en jeu il se
-      // stoppe lui même
       if (enJeu <= 1) {
         printf("\n");
         printf(GRAS "\n%s vous êtes la seule personne encore en jeu par "
@@ -165,28 +164,28 @@ void carteStop(Perso *joueur, Perso *joueurs, int nbjoueur, Carte c) {
         joueur->Ajouer = true;
         trouve = true;
         break;
-      }
-      // Sinon il choisit qui il veut stopper
-      else {
+      } else {
         printf("\n%s qui veux tu stopper ? \n", joueur->prenom);
         while (scanf("%40s", prenom) != 1 || !PrenomValide(prenom)) {
-          printf(RESET GRAS"\nSaisie invalide, veuillez recommencer !\n");
-          while (getchar() != '\n');
+          printf(RESET GRAS "\nSaisie invalide, veuillez recommencer !\n");
+          while (getchar() != '\n'); // On vide le tampon d'entrée
         }
         while (getchar() != '\n'); // On vide le tampon d'entrée
       }
 
       bool nomTrouve = false;
-     
+
       for (int i = 0; i < nbjoueur; i++) {
         if (strcmp(prenom, (joueurs + i)->prenom) == 0) {
           nomTrouve = true;
+          // strcmp -> compare 2 chaîne de caractères et renvoie 0 si elles sont identiques
           if ((joueurs + i)->Ajouer == false &&
-            strcmp((joueurs + i)->prenom, joueur->prenom) != 0) {
+              strcmp((joueurs + i)->prenom, joueur->prenom) == 0) {
             printf("\n");
-            printf(EMOJI_STOP GRAS
-                   " %s vous avez été stoper, vous passez votre manche \n" RESET,
-                   (joueurs + i)->prenom);
+            printf(
+                EMOJI_STOP GRAS
+                " %s vous avez été stoper, vous passez votre manche \n" RESET,
+                (joueurs + i)->prenom);
             (joueurs + i)->Ajouer = true;
             trouve = true;
           } else if (strcmp((joueurs + i)->prenom, joueur->prenom) == 0) {

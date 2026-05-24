@@ -10,10 +10,11 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-
 //   - Récupère la largeur actuelle  du terminal ( en nombre de colonne )
-//   - Utilise l'appel système 'ioctl' pour interagir avec le terminal et obtenir ses dimensions
-//   - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du terminal n'ont pas pu être récupéré
+//   - Utilise l'appel système 'ioctl' pour interagir avec le terminal et
+//   obtenir ses dimensions
+//   - Renvoie la largeur du terminale ou 80 par défaut si les dimensions du
+//   terminal n'ont pas pu être récupéré
 int largeurTerminal() {
   // Structure pour stocker les dimensions du terminal (lignes et colonnes)
   // ws_col : nombre de colonnes (entier non signé)
@@ -22,8 +23,7 @@ int largeurTerminal() {
   // Appel du système pour obtenir les dimensions du terminal :
   //- STDOUT_FILENO : descripteur de fichier de la sortie standrad
   //- TIOCGWINSZ : commande  pour récupérer la taille de la fenêtre du terminal
-  //- Retourne 0 en cas de succès et -1 sinon
-  // On verifie que la valeur récupérée est valide
+  //- Retourne 0 en cas de succès et -1 sinon on verifie que la valeur récupérée est valide
   if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0 && w.ws_col > 0) {
     return w.ws_col;
   }
@@ -31,9 +31,8 @@ int largeurTerminal() {
   return 80; // Valeur par défaut si l'appel échoue -> 80 est une valeur standard pour les terminaux
 }
 
-
 // - Calcule la largeur en colonnes terminales d'une chaîne UTF-8
-// - En UTF-8, certains caractères (comme les accent ou les emoji) occupent 
+// - En UTF-8, certains caractères (comme les accent ou les emoji) occupent
 // plusieurs octet mais ne doivent compter que pour 1 ou 2 colonne à l'affichage
 int calculeLargeurUtf8(char *chaine) {
   int largeur = 0;
@@ -42,30 +41,26 @@ int calculeLargeurUtf8(char *chaine) {
   while (*chaine != '\0') {
 
     // CAS 1 : caractère ASCII (1 octet, 1 colonne)
-    // 0x80 = 10000000 en binaire -> Si le bit de poid fort est 0 c'est un
-    // caractère ASCII
+    // 0x80 = 10000000 en binaire -> Si le bit de poid fort est 0 c'est un caractère ASCII
     if ((*chaine & 0x80) == 0) {
 
       largeur++;
       chaine++;
     }
     // CAS 2 : caractère UTF-8 (2 octets, 1 colonne)
-    // 0xE0 = 11100000 en binaire -> Si les 3 premiers bits sont 110, c'est un
-    // caractère sur 2 octets
+    // 0xE0 = 11100000 en binaire -> Si les 3 premiers bits sont 110, c'est un caractère sur 2 octets
     else if ((*chaine & 0xE0) == 0xC0) {
       largeur++;
       chaine += 2;
     }
     // CAS 3 : caractère UTF-8 (3 octet, 1 colonne)
-    // 0xF0 = 11110000 en binaire -> Si les 4 premiers bits sont 1110, c'est un
-    // caractère sur 3 octets
+    // 0xF0 = 11110000 en binaire -> Si les 4 premiers bits sont 1110, c'est un caractère sur 3 octets
     else if ((*chaine & 0xF0) == 0xE0) {
       largeur++;
       chaine += 3;
     }
     // CAS 4 : caractère UTF-8 (4 octet, 2 colonne)
-    // 0xF0 = 11110000 en binaire -> Si les 5 premiers bits sont 11110, c'est un
-    // caractère sur 4 octets
+    // 0xF0 = 11110000 en binaire -> Si les 5 premiers bits sont 11110, c'est un caractère sur 4 octets
     else {
       largeur += 2;
       chaine += 4;
@@ -75,9 +70,11 @@ int calculeLargeurUtf8(char *chaine) {
 }
 
 // Tronque une chaîne de caractère UTF-8 à nbCaractere caractères
-// En UTF-8 on peut pas simplement écrire S[n] = '\0' car on risque de couper un caractère en plein milieu de ses octets.
-// On identifie  le début de chaque nouveau caractère : en UTF-8, les octets de continuation commencent toujours par 10......(valeur entre 0x80 et 0xBF)
-// Seuls les octets qui ne sont pas des octets  de continuation  marquent le début d'un nouveau caractère
+// En UTF-8 on peut pas simplement écrire S[n] = '\0' car on risque de couper un
+// caractère en plein milieu de ses octets. On identifie  le début de chaque
+// nouveau caractère : en UTF-8, les octets de continuation commencent toujours
+// par 10......(valeur entre 0x80 et 0xBF) Seuls les octets qui ne sont pas des
+// octets  de continuation  marquent le début d'un nouveau caractère
 void TronquerUTF8(char *s, int nbCaractere) {
   if (s == NULL) {
     printf("\nErreur de programmation !\n");
@@ -111,21 +108,22 @@ void afficherSeparateur(int largeur) {
 // - L'espacement est calculé dynamiquement en fonction de la largeur du terminal
 void afficherTitrePrincipal() {
   int col = largeurTerminal();
-  int longueurTitre =
-      strlen(" F L I P T E C H - Le meilleur jeu de cartes de tous les temps");
+  int longueurTitre = strlen(" F L I P T E C H - Le meilleur jeu de cartes de tous les temps");
   int espacement = 0;
 
   if (col > longueurTitre) {
-    espacement = (col - longueurTitre) / 2;
+    espacement = (col - longueurTitre) / 2; // Espace calculé avec la taille du titre
+                                            // On l'utilisera à droite et à gauche du titre pour le centrer
   }
 
   effacerEcran();
   printf("\n" V_NOIR);
   afficherSeparateur(col);
   printf(RESET "%*s%s%*s", espacement, "",
-        RESET EMOJI_CARTE GRAS V_NOIR
-        " F L I P T E C H - Le meilleur jeu de cartes de tous les temps " RESET EMOJI_CARTE,
-        espacement, "\n" V_NOIR);
+         RESET EMOJI_CARTE GRAS V_NOIR
+         " F L I P T E C H - Le meilleur jeu de cartes de tous les temps " RESET
+             EMOJI_CARTE,
+         espacement, "\n" V_NOIR);
   afficherSeparateur(col);
   printf("\n" RESET);
 }
@@ -175,8 +173,9 @@ void afficherTableauScores(Perso *joueur, Perso *joueurs, int nbJoueurs) {
   }
 
   unsigned int scoreMax = 0;
-  int largeurPrenom = calculeLargeurUtf8(joueur->prenom); 
-  int espaceRestant = 23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
+  int largeurPrenom = calculeLargeurUtf8(joueur->prenom);
+  int espaceRestant =
+      23 - largeurPrenom; // l'espacement est calculé dynamiquement en fonction de la taille du prénom du joueur
 
   // Si la taille du prénom est supérieu à 23 on ne met aucun espace
   if (espaceRestant < 0) {
@@ -329,7 +328,7 @@ void afficherGagnant(char *prenom) {
          "━━━━━━━┛\n" RESET);
 }
 
-// Affiche le statut des joueurs : - Vert  : le joueur est encore présent dans la manche 
+// Affiche le statut des joueurs : - Vert  : le joueur est encore présent dans la manche
 //                                 - Rouge : le joueur est éliminé de la manche
 void afficherStatut(Perso *joueurs, int nbJoueurs) {
   if (joueurs == NULL) {
@@ -337,7 +336,7 @@ void afficherStatut(Perso *joueurs, int nbJoueurs) {
     exit(ERREUR_6);
   }
 
-  printf("%s\n",V_BLANC ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
+  printf("%s\n", V_BLANC ITALIC "\nSTATUT DES JOUEURS DANS LA PARTIE :\n");
   for (int i = 0; i < nbJoueurs; i++) {
     if (joueurs[i].Ajouer == false) {
       printf(RESET ITALIC V_VERT "►►► %s ◄◄◄ " RESET, joueurs[i].prenom);
